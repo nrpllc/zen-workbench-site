@@ -1,4 +1,4 @@
-<title>Zen Analytics Workbench — Your architecture diagram has never been wrong</title>
+<title>Zen Analytics Workbench — Describe it. Model it. Prove it.</title>
 
 <style>
   :root{
@@ -248,6 +248,14 @@
     .koan{padding:34px 0;gap:14px}
     .koan span{font-size:10px;letter-spacing:.14em;white-space:normal}
   }
+
+  .yeti{position:relative;overflow:hidden;isolation:isolate}
+  #zenField{position:absolute;inset:0;width:100%;height:100%;display:block;
+    pointer-events:none;z-index:0;opacity:.9}
+  .yeti::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:linear-gradient(100deg, var(--panel) 0%, rgba(0,0,0,0) 46%)}
+  :root[data-theme="light"] .yeti::after{background:linear-gradient(100deg, var(--panel) 0%, rgba(255,255,255,0) 46%)}
+  .yeti-mark,.yeti-copy{position:relative;z-index:1}
 </style>
 
 <div class="wrap">
@@ -739,6 +747,7 @@
     thing everyone swears is out there, that leaves no evidence behind. Zen exists to produce the
     evidence.</p>
     <div class="yeti">
+      <canvas id="zenField" aria-hidden="true"></canvas>
       <span class="yeti-mark" role="img" aria-label="The Architecture Yeti"></span>
       <div class="yeti-copy">
         <span class="k">The Architecture Yeti · purity ≡ 1</span>
@@ -796,4 +805,227 @@
     }
   });
 })();
+</script>
+
+<script>
+// Zen field — the ambient lore that drifts through Zen Mode, brought into the
+// yeti panel. Particles find each other, snow falls, and the laws of scale drift
+// past: Amdahl, Little, Metcalfe, Conway, the tail at scale. Everything is
+// derived from the same palette variables as the page, so it follows the theme.
+(function () {
+  var host = document.getElementById('zenField');
+  if (!host || !host.getContext) return;
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ctx = host.getContext('2d');
+  var W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  // Palette read from the page so light and dark both work.
+  var C = {};
+  function readPalette() {
+    var cs = getComputedStyle(document.documentElement);
+    C.teal = (cs.getPropertyValue('--teal') || '#5eb0b7').trim();
+    C.ok = (cs.getPropertyValue('--oss') || '#8bb894').trim();
+    C.ink3 = (cs.getPropertyValue('--ink-3') || '#6e7d88').trim();
+  }
+  readPalette();
+
+  function rgba(hex, a) {
+    var h = hex.replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+  }
+
+  // The laws that drift past — verbatim from the workbench.
+  var FACTS = [
+    ['S ≤ 1 / (1 − p)', "Amdahl's Law"],
+    ['L = λW', "Little's Law"],
+    ['V ∝ n²', "Metcalfe's Law"],
+    ['org ≈ system', "Conway's Law"],
+    ['p99 ≫ p50', 'The tail at scale'],
+    ['C · A · P → 2', 'CAP theorem'],
+    ['X(N) → ceiling', 'Universal Scalability Law'],
+    ['async → ⊥', 'FLP impossibility'],
+    ['+devs → +time', "Brooks's Law"],
+    ['O(log n) < O(n) < O(n²)', 'complexity ladder'],
+  ];
+
+  var rand = function (a, b) { return a + Math.random() * (b - a); };
+
+  var particles = [], snow = [], floaters = [];
+
+  function seed() {
+    particles = [];
+    for (var i = 0; i < 20; i++) {
+      particles.push({ x: rand(0, W), y: rand(0, H), vx: rand(-0.16, 0.16), vy: rand(-0.16, 0.16), r: rand(0.7, 2) });
+    }
+    snow = [];
+    for (var j = 0; j < 12; j++) {
+      snow.push({ x: rand(0, W), y: rand(0, H), r: rand(0.5, 1.6), vy: rand(0.18, 0.55), sway: rand(0.2, 0.7), phase: rand(0, 6.28) });
+    }
+    // A handful of drifting glyphs and laws — kept sparse so the copy stays first.
+    floaters = [
+      { kind: 'cap', x: rand(0.12, 0.4) * W, y: rand(0.2, 0.5) * H, vx: rand(-0.13, 0.13), vy: rand(-0.1, 0.1), a: 0, spin: rand(-0.0016, 0.0016) },
+      { kind: 'lambda', x: rand(0.5, 0.85) * W, y: rand(0.15, 0.45) * H, vx: rand(-0.12, 0.12), vy: rand(-0.09, 0.09), a: 0, spin: 0 },
+      { kind: 'kappa', x: rand(0.5, 0.9) * W, y: rand(0.5, 0.85) * H, vx: rand(-0.12, 0.12), vy: rand(-0.09, 0.09), a: 0, spin: 0 },
+      { kind: 'fact', idx: 0, t: rand(0, 9000), x: rand(0.3, 0.7) * W, y: rand(0.2, 0.8) * H, vx: rand(-0.14, 0.14), vy: rand(-0.08, 0.08), a: 0, spin: 0 },
+      { kind: 'fact', idx: 4, t: rand(0, 9000), x: rand(0.15, 0.6) * W, y: rand(0.3, 0.9) * H, vx: rand(-0.14, 0.14), vy: rand(-0.08, 0.08), a: 0, spin: 0 },
+    ];
+  }
+
+  function resize() {
+    var r = host.getBoundingClientRect();
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    host.width = Math.round(W * dpr); host.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seed();
+  }
+
+  function drawFloater(f, t) {
+    if (f.kind === 'cap') {
+      var R = 26;
+      ctx.save(); ctx.translate(f.x, f.y);
+      ctx.strokeStyle = rgba(C.teal, 0.3); ctx.lineWidth = 1;
+      ctx.beginPath();
+      var verts = [];
+      for (var i = 0; i < 3; i++) {
+        var ang = f.a - Math.PI / 2 + (i * Math.PI * 2) / 3;
+        var vx = Math.cos(ang) * R, vy = Math.sin(ang) * R;
+        verts.push([vx, vy]);
+        i === 0 ? ctx.moveTo(vx, vy) : ctx.lineTo(vx, vy);
+      }
+      ctx.closePath(); ctx.stroke();
+      ctx.font = '500 9px ui-monospace, monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = rgba(C.ink3, 0.5);
+      var L = ['C', 'A', 'P'];
+      for (var k = 0; k < 3; k++) ctx.fillText(L[k], verts[k][0] * 1.3, verts[k][1] * 1.3);
+      ctx.restore();
+      return;
+    }
+    if (f.kind === 'lambda' || f.kind === 'kappa') {
+      ctx.save(); ctx.translate(f.x, f.y);
+      ctx.rotate(Math.sin(t * 0.0006 + f.x) * 0.1);
+      ctx.font = '300 34px Georgia, serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = rgba(C.ok, 0.26);
+      ctx.fillText(f.kind === 'lambda' ? 'λ' : 'κ', 0, 0);
+      ctx.restore();
+      return;
+    }
+    // A law, cross-fading on its own clock.
+    var PERIOD = 11000;
+    f.t += 16;
+    if (f.t > PERIOD) { f.t = 0; f.idx = (f.idx + 1) % FACTS.length; }
+    var p = f.t / PERIOD;
+    var fade = Math.max(0, Math.min(p / 0.14, 1) * Math.min((1 - p) / 0.14, 1));
+    var fact = FACTS[f.idx];
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = 'italic 400 15px Georgia, "Times New Roman", serif';
+    ctx.fillStyle = rgba(C.teal, fade * 0.6);
+    ctx.fillText(fact[0], f.x, f.y - 7);
+    ctx.font = '400 8px ui-monospace, monospace';
+    ctx.fillStyle = rgba(C.ink3, fade * 0.55);
+    ctx.fillText(fact[1].toUpperCase(), f.x, f.y + 9);
+  }
+
+  var lastT = 0;
+  function frame(t) {
+    raf = requestAnimationFrame(frame);
+    if (t - lastT < 33) return;   // ~30fps is plenty for drifting glyphs
+    lastT = t;
+    ctx.clearRect(0, 0, W, H);
+
+    // snow
+    for (var s = 0; s < snow.length; s++) {
+      var f = snow[s];
+      f.phase += 0.01; f.y += f.vy; f.x += Math.sin(f.phase) * f.sway;
+      if (f.y > H + 3) { f.y = -3; f.x = rand(0, W); }
+      ctx.beginPath();
+      ctx.fillStyle = rgba(C.ink3, 0.16 + f.r * 0.06);
+      ctx.arc(f.x, f.y, f.r, 0, 6.2832); ctx.fill();
+    }
+
+    // particles + the constellation between them
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -8) p.x = W + 8; if (p.x > W + 8) p.x = -8;
+      if (p.y < -8) p.y = H + 8; if (p.y > H + 8) p.y = -8;
+      ctx.beginPath();
+      ctx.fillStyle = rgba(C.teal, 0.32);
+      ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+    }
+    ctx.lineWidth = 1;
+    for (var a = 0; a < particles.length; a++) {
+      for (var b = a + 1; b < particles.length; b++) {
+        var dx = particles[a].x - particles[b].x, dy = particles[a].y - particles[b].y;
+        var d2 = dx * dx + dy * dy;
+        if (d2 < 8100) {
+          ctx.strokeStyle = rgba(C.teal, (1 - Math.sqrt(d2) / 90) * 0.13);
+          ctx.beginPath();
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // drifting lore, bouncing gently off the edges
+    for (var g = 0; g < floaters.length; g++) {
+      var fl = floaters[g];
+      fl.x += fl.vx; fl.y += fl.vy; fl.a += fl.spin;
+      var padX = 70, padY = 40;
+      if (fl.x < padX) { fl.x = padX; fl.vx = Math.abs(fl.vx); }
+      else if (fl.x > W - padX) { fl.x = W - padX; fl.vx = -Math.abs(fl.vx); }
+      if (fl.y < padY) { fl.y = padY; fl.vy = Math.abs(fl.vy); }
+      else if (fl.y > H - padY) { fl.y = H - padY; fl.vy = -Math.abs(fl.vy); }
+      drawFloater(fl, t);
+    }
+  }
+
+  var raf = 0;
+  resize();
+  // Layout is not final when this script runs — the panel grows once the mark and
+  // copy lay out. Re-measure on the next frame, and track the element itself
+  // rather than only the window.
+  requestAnimationFrame(resize);
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
+
+  function paintOnce() {
+    ctx.clearRect(0, 0, W, H);
+    for (var q = 0; q < floaters.length; q++) drawFloater(floaters[q], 0);
+    for (var s2 = 0; s2 < particles.length; s2++) {
+      var pp = particles[s2];
+      ctx.beginPath(); ctx.fillStyle = rgba(C.teal, 0.32);
+      ctx.arc(pp.x, pp.y, pp.r, 0, 6.2832); ctx.fill();
+    }
+  }
+  paintOnce();
+
+  if (reduce) {
+    // One still frame is already painted above; nothing moves.
+  } else {
+    raf = requestAnimationFrame(frame);
+    // Stop when off-screen; an ambient canvas should not burn a laptop battery
+    // while the reader is three sections further down.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && !raf) raf = requestAnimationFrame(frame);
+          else if (!e.isIntersecting && raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
+      }, { threshold: 0 }).observe(host);
+    }
+  }
+
+  window.addEventListener('resize', resize);
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(readPalette);
+  }
+  new MutationObserver(readPalette).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+
 </script>
