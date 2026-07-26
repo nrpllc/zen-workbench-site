@@ -1,5 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zen Analytics Workbench — Describe it. Model it. Prove it.</title>
-
+<meta name="description" content="Zen Analytics Workbench models organisations, processes, software and infrastructure as one connected system — so every claim in the design carries a number you can check.">
+<meta name="theme-color" content="#0b0e11">
+<meta property="og:title" content="Zen Analytics Workbench — Describe it. Model it. Prove it.">
+<meta property="og:description" content="A modelling tool, not a drawing tool. Describe it, model it, prove it.">
+<meta property="og:type" content="website">
+</head>
+<body>
 <style>
   :root{
     --ink:#f2f5f7; --ink-2:#a8b4bd; --ink-3:#6e7d88;
@@ -256,6 +267,27 @@
     background:linear-gradient(100deg, var(--panel) 0%, rgba(0,0,0,0) 46%)}
   :root[data-theme="light"] .yeti::after{background:linear-gradient(100deg, var(--panel) 0%, rgba(255,255,255,0) 46%)}
   .yeti-mark,.yeti-copy{position:relative;z-index:1}
+
+  /* ── Phone ────────────────────────────────────────────────────────────
+     The only breakpoint used to be 900px, which on a 390px screen leaves
+     every grid at its desktop minimum. */
+  .okr-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .okr-scroll .okr-table{min-width:520px}
+
+  @media (max-width:560px){
+    .wrap{padding:0 18px}
+    section{padding:56px 0}
+    .stat-strip{grid-template-columns:1fr 1fr;margin-top:40px}
+    .stat{padding:16px 14px 16px 0}
+    /* auto-fit keeps a 250px floor, which overflows a 354px content box */
+    .metric-grid,.cases{grid-template-columns:1fr}
+    .cta-row .btn{flex:1 1 100%;justify-content:center}
+    .okr-scroll .okr-table{min-width:460px}
+    .okr-table th,.okr-table td{padding-left:14px;padding-right:14px}
+    .guard{padding:16px 18px}
+    .yeti{padding:22px 16px}
+    .screen-bar .t{display:none}
+  }
 </style>
 
 <div class="wrap">
@@ -322,7 +354,7 @@
         </div>
         <span class="okr-verdict off">Off track · 0%</span>
       </div>
-      <table class="okr-table">
+      <div class="okr-scroll"><table class="okr-table">
         <thead>
           <tr><th>Key result</th><th class="num">Baseline</th><th class="num">Now</th><th class="num">Target</th><th>Progress</th></tr>
         </thead>
@@ -348,7 +380,7 @@
             <td><span class="unmeasured">unmeasured</span></td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="okr-note">
         Three of four key results read straight out of the value stream — and the design as drawn
         doesn't move any of them. That's the answer, delivered in the planning meeting rather than the
@@ -1029,3 +1061,6 @@
 })();
 
 </script>
+
+</body>
+</html>
