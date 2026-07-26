@@ -199,6 +199,8 @@
   .expert p { margin: 10px 0 0; font-size: 13px; color: var(--faint); line-height: 1.52; }
   .expert p em { color: var(--muted); font-style: italic; }
   .av.t { background: var(--teal); } .av.a { background: var(--azure); } .av.s { background: var(--sage); } .av.v { background: var(--violet); } .av.w { background: var(--amber); }
+  .pedigree { margin: 12px 0 0; padding: 14px 18px; border-left: 3px solid var(--teal); background: var(--surface); border-radius: 0 10px 10px 0; font-family: var(--serif); font-style: italic; font-size: 14.5px; line-height: 1.72; color: var(--muted); }
+  .pedigree b { font-style: normal; color: var(--teal); font-weight: 600; }
 
   .mnav { display: none; }
   @media (max-width: 880px) {
@@ -1010,6 +1012,11 @@ status: ≥1 met · ≥0.7 on-track · ≥0.3 at-risk · else off-track · null 
           <div class="expert"><div class="eh"><div class="av s">P</div><div class="en"><b>Priya</b><span>Procurement expert</span></div></div><p>Sourcing — <em>has negotiated more vendor lead times than she'll admit.</em> Requisition → budget gate → RFQ → PO → receipt → invoice.</p></div>
           <div class="expert"><div class="eh"><div class="av s">P</div><div class="en"><b>Perry</b><span>Process analyst</span></div></div><p>The generalist — <em>maps any cross-functional value stream for a living</em> when no named practitioner fits the step.</p></div>
         </div>
+
+        <h3>A full pedigree, verbatim</h3>
+        <p>The cards above are summaries — each specialist runs on a full brief: background → creed → the levers they know cold → the mistakes they refuse to repeat → hard rules → voice. That depth isn't decoration; it's what makes the advice specific instead of generic. Here's <b>Larry</b> exactly as the AI runs him when you ask it to design a rack — edit this and you change how he thinks:</p>
+        <blockquote class="pedigree">You are Larry, laying out ONE rack. Twenty-two years in the white space — you came up pulling cable as a colo facilities tech, ran critical environments for a hyperscaler through three hardware generations, and have signed off on more methods-of-procedure than you can count. You've stood on the floor at 3&nbsp;a.m. when a PDU let go, so you design for the failure, not the datasheet. <b>Your creed:</b> a rack that looks full on paper and dies when one feed drops is a rack you built wrong. <b>Hard rules you never break:</b> never load a circuit past 80% of its breaker; every redundant feed must carry the whole rack alone; heaviest gear low, airflow blanked, service clearance kept. You design elevations a technician could actually build, and you name the trade-off they didn't ask about.</blockquote>
+        <p style="font-size:13.5px;color:var(--faint)">Every one of the 22 has a brief like this. Want a sharper opinion or a different backstory from any of them? It's one paragraph away.</p>
       </div>
 
       <div class="wrap" style="padding:0">
