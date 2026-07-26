@@ -212,6 +212,21 @@
   .ped .pb b { color: var(--teal); font-weight: 600; }
   .ped .pb em { color: var(--ink); font-style: italic; }
 
+  /* §6 parameter tables */
+  .pbreak { width: min(860px, calc(100vw - 384px)); }
+  @media (max-width: 880px) { .pbreak { width: 100%; } }
+  .pcat { font-size: 12px; text-transform: uppercase; letter-spacing: .11em; color: var(--teal); margin: 30px 0 2px; font-weight: 600; }
+  .psvc { margin-top: 15px; }
+  .psvc b { color: var(--ink); font-size: 14.5px; }
+  .psvc span { color: var(--faint); font-size: 11.5px; margin-left: 8px; }
+  .ptable { width: 100%; border-collapse: collapse; margin: 6px 0 4px; font-size: 13px; }
+  .ptable th { text-align: left; color: var(--faint); font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; padding: 4px 14px 5px 0; border-bottom: 1px solid var(--border); }
+  .ptable td { padding: 6px 14px 6px 0; border-bottom: 1px solid var(--border-soft); vertical-align: top; color: var(--muted); line-height: 1.45; }
+  .ptable td.k { font-family: var(--mono); color: var(--teal); white-space: nowrap; font-size: 12px; }
+  .ptable td.k em { color: var(--faint); font-style: normal; font-size: 10.5px; margin-left: 2px; }
+  .ptable td.t { color: var(--faint); font-size: 11px; white-space: nowrap; text-align: right; }
+  .ptable th:last-child { text-align: right; }
+
   .mnav { display: none; }
   @media (max-width: 880px) {
     .model .row { grid-template-columns: 1fr; gap: 3px; }
@@ -1025,6 +1040,295 @@ status: ≥1 met · ≥0.7 on-track · ≥0.3 at-risk · else off-track · null 
 
         <p style="font-size:13.5px;color:var(--faint);margin-top:20px">Each bio above <b>is</b> the system prompt that specialist runs under — background, creed, expertise, anti-patterns and hard rules become the reasoning the AI draws on. Want a sharper opinion or a different backstory from any of them? It's one paragraph away.</p>
 
+      </div>
+
+      <div class="agroup">
+        <div class="gh"><span class="no">§6</span> Every tunable parameter, by service</div>
+        <p class="gd">Every dial the tune modal exposes for a service, grouped by the model behind it. Services that share a cost model are listed together — the first names it, the rest run the same maths. <strong>Every parameter below is checked by an automated test</strong> that perturbs it and confirms the analysis actually moves: 177 assertions, zero phantom dials. The <em>Verified via</em> column says which output each one moves — the cost/latency <b>estimate</b> for most, the <b>port map</b> for a listening port, or the <b>peak load</b> / <b>diurnal curve</b> for a field device's shape dials.</p>
+
+        <div class="pbreak">
+        <h3>The data &amp; storage bench</h3>
+        <h4 class="pcat">Databases &amp; storage</h4>
+        <div class="psvc"><b>PostgreSQL</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">nodes</td><td>Primary + read replicas — read-throughput ceiling and cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">vcores</td><td>CPU per node — compute-throughput ceiling and licensing</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicationFactor</td><td>Data copies — storage and write amplification</td><td class="t">estimate</td></tr>
+          <tr><td class="k">indexes</td><td>Read speed vs write cost and storage</td><td class="t">estimate</td></tr>
+          <tr><td class="k">connectionPool</td><td>Concurrency headroom — tail latency when under/over-sized, pool memory</td><td class="t">estimate</td></tr>
+          <tr><td class="k">cacheHitRatio</td><td>Buffer-cache fit — disk-read latency and disk-bound capacity</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>MinIO</b><span>same model: Azure Blob Storage, ADLS Gen2, Amazon S3</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">tier</td><td>Hot / cool / archive — price and retrieval latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">redundancy</td><td>Copies kept — stored bytes</td><td class="t">estimate</td></tr>
+          <tr><td class="k">egressGbMo <em>GB/mo</em></td><td>Monthly egress — network cost</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>MongoDB</b><span>same model: Cassandra, Azure Cosmos DB, Azure Table Storage, Amazon DynamoDB</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">nodes</td><td>Cluster size — read-throughput ceiling and fleet cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">consistency</td><td>Strong / session / eventual — latency, cost, availability under partition</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>HA / read copies — storage, read scale, write fan-out</td><td class="t">estimate</td></tr>
+          <tr><td class="k">provisionedThroughput <em>RU/s</em></td><td>RU/s cap — the hard throughput ceiling and cost</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>SQL Server (Always On)</b><span>same model: MySQL, CockroachDB, Azure SQL, Amazon RDS, Amazon Aurora</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">nodes</td><td>Cluster size — read-throughput ceiling and fleet cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">vcores</td><td>CPU per node — compute-throughput ceiling and licensing</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>HA / read copies — storage, read scale, write fan-out</td><td class="t">estimate</td></tr>
+          <tr><td class="k">cacheHitRatio</td><td>Buffer-cache fit — disk-read latency and disk-bound capacity</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>TimescaleDB</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">nodes</td><td>Cluster size — read-throughput ceiling and fleet cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">vcores</td><td>CPU per node — compute-throughput ceiling and licensing</td><td class="t">estimate</td></tr>
+          <tr><td class="k">chunkIntervalDays <em>d</em></td><td>Chunk pruning granularity vs planning overhead (range-query latency)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">compression</td><td>Cold-chunk compression — storage and decompress tail</td><td class="t">estimate</td></tr>
+          <tr><td class="k">retentionDays <em>d</em></td><td>History retained — storage</td><td class="t">estimate</td></tr>
+          <tr><td class="k">continuousAggregates</td><td>Materialized rollups — read latency vs storage</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h4 class="pcat">Search</h4>
+        <div class="psvc"><b>Elasticsearch</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">dataNodes</td><td>Instance fleet — cost and serve-side throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">shards</td><td>Scatter-gather parallelism vs cross-shard tail</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>HA / read copies — storage, read scale, write fan-out</td><td class="t">estimate</td></tr>
+          <tr><td class="k">refreshIntervalS <em>s</em></td><td>Segment-merge CPU and search tail vs write batching</td><td class="t">estimate</td></tr>
+          <tr><td class="k">heapGb <em>GB</em></td><td>JVM heap — GC-pause tail (keep ≤ 31 GB)</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>OpenSearch</b><span>same model: Azure AI Search, Amazon OpenSearch</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">dataNodes</td><td>Instance fleet — cost and serve-side throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">shards</td><td>Scatter-gather parallelism vs cross-shard tail</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>HA / read copies — storage, read scale, write fan-out</td><td class="t">estimate</td></tr>
+          <tr><td class="k">semanticRanking</td><td>Adds a semantic re-rank stage — latency</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h4 class="pcat">Vector search</h4>
+        <div class="psvc"><b>Pinecone</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">dimension</td><td>Embedding width — index memory, per-query compute, network</td><td class="t">estimate</td></tr>
+          <tr><td class="k">metric</td><td>Distance metric — per-query compute (cosine dearest, dot cheapest)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">targetRecall</td><td>Recall vs latency (probe depth)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">pods</td><td>Shards / replicas — throughput ceiling and index-memory fit</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Milvus</b><span>same model: Qdrant, Weaviate</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">dimension</td><td>Embedding width — index memory, per-query compute, network</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>Shards / replicas — throughput ceiling and index-memory fit</td><td class="t">estimate</td></tr>
+          <tr><td class="k">targetRecall</td><td>Recall vs latency (probe depth)</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h4 class="pcat">Graph</h4>
+        <div class="psvc"><b>Neo4j</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">pageCacheGb <em>GB</em></td><td>Hot graph in memory vs disk-hop latency; memory-bound capacity</td><td class="t">estimate</td></tr>
+          <tr><td class="k">heapGb <em>GB</em></td><td>JVM heap — cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">avgDegree</td><td>Fan-out — traversal frontier (latency, storage)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">traversalDepth</td><td>Hops per query — cost grows ~degree^depth</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicationMode</td><td>Single vs causal cluster — read members (capacity), storage, cost</td><td class="t">estimate + capacity</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>JanusGraph</b><span>same model: Amazon Neptune</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">avgDegree</td><td>Fan-out — traversal frontier (latency, storage)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">traversalDepth</td><td>Hops per query — cost grows ~degree^depth</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>Read / traversal scale — capacity, storage</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h3>The streaming, cache &amp; compute bench</h3>
+        <h4 class="pcat">Messaging &amp; queues</h4>
+        <div class="psvc"><b>Apache Kafka</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">partitions</td><td>Consumer-parallelism ceiling — throughput and rebalance overhead</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicationFactor</td><td>Data copies — storage and write amplification</td><td class="t">estimate</td></tr>
+          <tr><td class="k">retentionHours <em>h</em></td><td>Replay window — storage</td><td class="t">estimate</td></tr>
+          <tr><td class="k">brokers</td><td>Broker fleet — cost and fallback ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">compression</td><td>Codec ratio — retained storage and network</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>MSMQ</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">queues</td><td>Queue count — storage and host cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">units</td><td>Concurrent receivers — throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">maxMessageKb <em>KB</em></td><td>Message size — per-op throughput, storage, network</td><td class="t">estimate</td></tr>
+          <tr><td class="k">instances</td><td>Hosts behind the endpoint — HA, cost, capacity</td><td class="t">estimate</td></tr>
+          <tr><td class="k">inboundProtocol</td><td>Wire protocol — TLS/transport per-request overhead; sets the port map</td><td class="t">estimate + port map</td></tr>
+          <tr><td class="k">inboundPort</td><td>Listening port — the wire shown on the port map (topology, not cost)</td><td class="t">port map</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>RabbitMQ</b><span>same model: NATS, Apache Pulsar, Azure Event Hubs, Azure Service Bus, Amazon Kinesis, Amazon SQS, Amazon SNS</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">units</td><td>Concurrent receivers — throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">retentionHours <em>h</em></td><td>Replay window — storage</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>HA / read copies — storage, read scale, write fan-out</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h4 class="pcat">Analytics &amp; streaming</h4>
+        <div class="psvc"><b>ClickHouse</b><span>same model: Trino / Presto, Azure Synapse, Azure Data Explorer, Amazon Redshift, Amazon Athena</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">units</td><td>Concurrent receivers — throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">resultCache</td><td>Result-set cache — repeat-query latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">concurrency</td><td>Concurrent work — throughput ceiling</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Stream Processor</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">windowType</td><td>Tumbling / hopping / sliding — CPU (overlap re-evaluation)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">windowSizeS <em>s</em></td><td>Window width — state size and latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">streamingUnits</td><td>Parallelism — throughput ceiling and cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">watermarkDelayS <em>s</em></td><td>Late-arrival grace — dominant p50/p99</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Apache Spark</b><span>same model: Apache Flink, Databricks, Amazon EMR</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">nodes</td><td>Cluster size — compute ceiling and cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">autoscale</td><td>Scale-to-load — monthly cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">shuffleHeavy</td><td>Wide shuffles — CPU and network</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Azure Stream Analytics</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">streamingUnits</td><td>Parallelism — throughput ceiling and cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">windowSizeS <em>s</em></td><td>Window width — state size and latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">watermarkDelayS <em>s</em></td><td>Late-arrival grace — dominant p50/p99</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h4 class="pcat">Cache</h4>
+        <div class="psvc"><b>Redis</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">nodes</td><td>Shard count — cluster memory and throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">memoryGb <em>GB</em></td><td>Per-node RAM — hot-set fit; memory-bound capacity</td><td class="t">estimate</td></tr>
+          <tr><td class="k">evictionPolicy</td><td>Hot-set retention under pressure; noeviction stalls</td><td class="t">estimate</td></tr>
+          <tr><td class="k">hitRatio</td><td>Cache effectiveness — downstream load and latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>Read scale and HA — cost</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Memcached</b><span>same model: Azure Cache for Redis, Amazon ElastiCache</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">nodes</td><td>Shard count — cluster memory and throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">memoryGb <em>GB</em></td><td>Per-node RAM — hot-set fit; memory-bound capacity</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicas</td><td>Read scale and HA — cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">hitRatio</td><td>Cache effectiveness — downstream load and latency</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h4 class="pcat">Gateways, routing &amp; joins</h4>
+        <div class="psvc"><b>F5 BIG-IP</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">throughputGbps <em>Gbps</em></td><td>L4 throughput tier — appliance license</td><td class="t">estimate</td></tr>
+          <tr><td class="k">l7Rps <em>rps</em></td><td>L7 requests/s ceiling — saturation tail</td><td class="t">estimate</td></tr>
+          <tr><td class="k">sslTps</td><td>SSL handshakes/s — SSL saturation tail</td><td class="t">estimate</td></tr>
+          <tr><td class="k">sslOffload</td><td>Terminate TLS on the ADC — latency and cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">vips</td><td>Virtual servers — routing-table depth (latency) and per-VIP cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">persistence</td><td>Session stickiness — per-request table op</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Join Strategy</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">joinType</td><td>Nested-loop / hash / sort-merge — comparison cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">strategy</td><td>Co-located / broadcast / shuffle — network moved and skew tax</td><td class="t">estimate</td></tr>
+          <tr><td class="k">rightRecords</td><td>Correlated-set size — compare and network</td><td class="t">estimate</td></tr>
+          <tr><td class="k">selectivity</td><td>Match fraction — output storage</td><td class="t">estimate</td></tr>
+          <tr><td class="k">parallelism</td><td>Worker count — CPU and the transform capacity ceiling</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>NGINX</b><span>same model: Envoy</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">rateLimit <em>req/s</em></td><td>Requests/s cap — backend protection and capacity ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">tlsTermination</td><td>TLS at the edge — handshake latency and cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">cacheHitRatio</td><td>Edge cache — origin network offload</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Router</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">strategy</td><td>Consistent-hash / range / least-loaded — per-request latency and skew</td><td class="t">estimate</td></tr>
+          <tr><td class="k">shards</td><td>Route-table size — cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">fanOut</td><td>Downstream targets per request — latency and network</td><td class="t">estimate</td></tr>
+          <tr><td class="k">replicationFactor</td><td>Route replication — network traffic</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h4 class="pcat">Compute &amp; app hosts</h4>
+        <div class="psvc"><b>IIS / .NET Web API</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">instances</td><td>Hosts behind the endpoint — HA, cost, capacity</td><td class="t">estimate</td></tr>
+          <tr><td class="k">concurrency</td><td>Concurrent work — throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">durationMs <em>ms</em></td><td>Per-request work — throughput ceiling and latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">cpuPerInstance</td><td>vCPU per host — cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">memoryMb <em>MB</em></td><td>RAM per host / function — cost (and cold-start on serverless)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">inboundProtocol</td><td>Wire protocol — TLS/transport per-request overhead; sets the port map</td><td class="t">estimate + port map</td></tr>
+          <tr><td class="k">inboundPort</td><td>Listening port — the wire shown on the port map (topology, not cost)</td><td class="t">port map</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Azure Functions</b><span>same model: Container Instances, AWS Lambda</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">memoryMb <em>MB</em></td><td>RAM per host / function — cost (and cold-start on serverless)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">durationMs <em>ms</em></td><td>Per-request work — throughput ceiling and latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">concurrency</td><td>Concurrent work — throughput ceiling</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Windows Service</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">role</td><td>Work profile (api / worker / gateway …) — per-request latency and adapter cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">instances</td><td>Hosts behind the endpoint — HA, cost, capacity</td><td class="t">estimate</td></tr>
+          <tr><td class="k">concurrency</td><td>Concurrent work — throughput ceiling</td><td class="t">estimate</td></tr>
+          <tr><td class="k">durationMs <em>ms</em></td><td>Per-request work — throughput ceiling and latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">cpuPerInstance</td><td>vCPU per host — cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">memoryMb <em>MB</em></td><td>RAM per host / function — cost (and cold-start on serverless)</td><td class="t">estimate</td></tr>
+          <tr><td class="k">inboundProtocol</td><td>Wire protocol — TLS/transport per-request overhead; sets the port map</td><td class="t">estimate + port map</td></tr>
+          <tr><td class="k">inboundPort</td><td>Listening port — the wire shown on the port map (topology, not cost)</td><td class="t">port map</td></tr>
+        </tbody></table>
+        <h4 class="pcat">Orchestration</h4>
+        <div class="psvc"><b>Kubernetes</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">nodes</td><td>Cluster size — read-throughput ceiling and fleet cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">cpuPerNode</td><td>vCPU per node — capacity and cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">hpaTargetPct <em>%</em></td><td>Autoscaler target utilization — headroom vs latency</td><td class="t">estimate</td></tr>
+          <tr><td class="k">oversubscription</td><td>Requested vs actual CPU — noisy-neighbour contention + saturation tail</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Apache Airflow</b><span>same model: Azure Logic Apps</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">actionsPerRun</td><td>Steps per run — cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">runsPerDay</td><td>Invocation volume — cost</td><td class="t">estimate</td></tr>
+          <tr><td class="k">connectorTier</td><td>Standard / enterprise connectors — cost</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <h3>The edge &amp; field bench</h3>
+        <h4 class="pcat">Field devices (load sources)</h4>
+        <div class="psvc"><b>Seismic / tectonic</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">fleetCount</td><td>Devices deployed — the whole offered load scales with it</td><td class="t">estimate</td></tr>
+          <tr><td class="k">channels</td><td>Waveform channels — continuous byte rate</td><td class="t">estimate</td></tr>
+          <tr><td class="k">sampleRate <em>Hz</em></td><td>Samples/s — continuous byte rate</td><td class="t">estimate</td></tr>
+          <tr><td class="k">bytesPerSample</td><td>Bytes per sample — continuous byte rate</td><td class="t">estimate</td></tr>
+          <tr><td class="k">latencyMs <em>ms</em></td><td>Uplink latency — the device’s reported p50/p99</td><td class="t">estimate</td></tr>
+          <tr><td class="k">linkCostMo <em>$/mo</em></td><td>Per-device link cost (e.g. SIM) — monthly</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>Acoustic sensor</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">fleetCount</td><td>Devices deployed — the whole offered load scales with it</td><td class="t">estimate</td></tr>
+          <tr><td class="k">perDeviceDaily</td><td>Events per device per day — average offered load</td><td class="t">estimate</td></tr>
+          <tr><td class="k">peakPerMinute</td><td>Busiest-minute rate — the peak downstream must absorb</td><td class="t">peak load</td></tr>
+          <tr><td class="k">diurnalProfile</td><td>Shape of the 24-h curve — peak hour and distribution</td><td class="t">diurnal curve</td></tr>
+          <tr><td class="k">metadataBytes <em>B</em></td><td>Per-event metadata — bytes and storage</td><td class="t">estimate</td></tr>
+          <tr><td class="k">clipSeconds <em>s</em></td><td>Video clip length per event — payload and bandwidth</td><td class="t">estimate</td></tr>
+          <tr><td class="k">clipMbps <em>Mbps</em></td><td>Clip bitrate — payload and bandwidth</td><td class="t">estimate</td></tr>
+          <tr><td class="k">latencyMs <em>ms</em></td><td>Uplink latency — the device’s reported p50/p99</td><td class="t">estimate</td></tr>
+          <tr><td class="k">linkCostMo <em>$/mo</em></td><td>Per-device link cost (e.g. SIM) — monthly</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>CCTV camera</b></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">fleetCount</td><td>Devices deployed — the whole offered load scales with it</td><td class="t">estimate</td></tr>
+          <tr><td class="k">resolution</td><td>Video resolution — bitrate and byte rate</td><td class="t">estimate</td></tr>
+          <tr><td class="k">codec</td><td>Codec (H.264/265) — bitrate and byte rate</td><td class="t">estimate</td></tr>
+          <tr><td class="k">fps <em>fps</em></td><td>Frame rate — bitrate and byte rate</td><td class="t">estimate</td></tr>
+          <tr><td class="k">latencyMs <em>ms</em></td><td>Uplink latency — the device’s reported p50/p99</td><td class="t">estimate</td></tr>
+          <tr><td class="k">linkCostMo <em>$/mo</em></td><td>Per-device link cost (e.g. SIM) — monthly</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>GPS / AVL tracker</b><span>same model: OBD-II telematics, Environmental sensor, Generic IoT sensor</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">fleetCount</td><td>Devices deployed — the whole offered load scales with it</td><td class="t">estimate</td></tr>
+          <tr><td class="k">perDeviceDaily</td><td>Events per device per day — average offered load</td><td class="t">estimate</td></tr>
+          <tr><td class="k">peakPerMinute</td><td>Busiest-minute rate — the peak downstream must absorb</td><td class="t">peak load</td></tr>
+          <tr><td class="k">diurnalProfile</td><td>Shape of the 24-h curve — peak hour and distribution</td><td class="t">diurnal curve</td></tr>
+          <tr><td class="k">metadataBytes <em>B</em></td><td>Per-event metadata — bytes and storage</td><td class="t">estimate</td></tr>
+          <tr><td class="k">latencyMs <em>ms</em></td><td>Uplink latency — the device’s reported p50/p99</td><td class="t">estimate</td></tr>
+          <tr><td class="k">linkCostMo <em>$/mo</em></td><td>Per-device link cost (e.g. SIM) — monthly</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        <div class="psvc"><b>LPR — vehicle</b><span>same model: LPR — fixed / gantry</span></div>
+        <table class="ptable"><thead><tr><th>Parameter</th><th>What it tunes</th><th>Verified via</th></tr></thead><tbody>
+          <tr><td class="k">fleetCount</td><td>Devices deployed — the whole offered load scales with it</td><td class="t">estimate</td></tr>
+          <tr><td class="k">perDeviceDaily</td><td>Events per device per day — average offered load</td><td class="t">estimate</td></tr>
+          <tr><td class="k">peakPerMinute</td><td>Busiest-minute rate — the peak downstream must absorb</td><td class="t">peak load</td></tr>
+          <tr><td class="k">diurnalProfile</td><td>Shape of the 24-h curve — peak hour and distribution</td><td class="t">diurnal curve</td></tr>
+          <tr><td class="k">metadataBytes <em>B</em></td><td>Per-event metadata — bytes and storage</td><td class="t">estimate</td></tr>
+          <tr><td class="k">imagesPerEvent</td><td>Images attached per event — payload and bandwidth</td><td class="t">estimate</td></tr>
+          <tr><td class="k">imageKB <em>KB</em></td><td>Image size — the dominant payload / bandwidth driver</td><td class="t">estimate</td></tr>
+          <tr><td class="k">alertRatePct <em>%</em></td><td>Fraction of events that raise an alert — added event stream</td><td class="t">estimate</td></tr>
+          <tr><td class="k">alertBytes <em>B</em></td><td>Alert payload size — added bytes</td><td class="t">estimate</td></tr>
+          <tr><td class="k">latencyMs <em>ms</em></td><td>Uplink latency — the device’s reported p50/p99</td><td class="t">estimate</td></tr>
+          <tr><td class="k">linkCostMo <em>$/mo</em></td><td>Per-device link cost (e.g. SIM) — monthly</td><td class="t">estimate</td></tr>
+        </tbody></table>
+        </div>
       </div>
 
       <div class="wrap" style="padding:0">
