@@ -161,8 +161,38 @@
   .endcap .ymark { width: 66px; height: 66px; margin: 0 auto; }
   .endcap p { max-width: 34ch; margin: 14px auto 0; font-size: 14px; }
 
+  /* Appendix — model deep-dives */
+  .appendix-lead { font-size: 18.5px; color: var(--muted); line-height: 1.6; margin-top: 18px; }
+  .appendix-lead strong { color: var(--ink); }
+  .agroup { margin-top: 44px; }
+  .agroup > .gh { display: flex; align-items: baseline; gap: 12px; font-family: var(--mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .16em; color: var(--teal); border-bottom: 1px solid var(--border); padding-bottom: 9px; }
+  .agroup > .gh .no { color: var(--tealdim); }
+  .agroup > .gd { margin: 12px 0 0; color: var(--muted); font-size: 15px; }
+  .model { border: 1px solid var(--border); border-radius: 13px; background: var(--surface); padding: 18px 20px; margin: 18px 0 0; }
+  .model .mh { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .model .mh h4 { font-size: 16.5px; font-weight: 650; color: var(--ink); margin: 0; letter-spacing: -.2px; }
+  .model .mh .src { font-family: var(--mono); font-size: 11px; color: var(--tealdim); white-space: nowrap; }
+  .model .row { margin-top: 11px; display: grid; grid-template-columns: 88px 1fr; gap: 14px; align-items: start; }
+  .model .row .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; font-weight: 700; color: var(--teal); padding-top: 2px; }
+  .model .row.sim .lbl { color: var(--sage); }
+  .model .row.assume .lbl { color: var(--amber); }
+  .model .row.dials .lbl { color: var(--blue); }
+  .model .row .bd { min-width: 0; }
+  .model .row .bd p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.58; }
+  .model .row .bd p + p { margin-top: 7px; }
+  .model .row .bd b { color: var(--ink); }
+  .formula { font-family: var(--mono); background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; overflow-x: auto; color: #dbe4e0; font-size: 12.5px; line-height: 1.8; margin: 8px 0 0; }
+  .formula:first-child { margin-top: 0; }
+  .formula .v { color: var(--teal); } .formula .c { color: var(--faint); }
+  .dl-list { margin: 0; padding-left: 0; list-style: none; }
+  .dl-list li { font-size: 14px; color: var(--faint); padding: 3px 0; line-height: 1.5; }
+  .dl-list li b { color: var(--muted); font-weight: 600; }
+  .dl-list li .u { color: var(--sage); font-family: var(--mono); font-size: 12px; } /* ↑ up */
+  .dl-list li .d { color: var(--rose); font-family: var(--mono); font-size: 12px; } /* ↓ down */
+
   .mnav { display: none; }
   @media (max-width: 880px) {
+    .model .row { grid-template-columns: 1fr; gap: 3px; }
     .shell { grid-template-columns: 1fr; }
     aside { display: none; }
     main { padding-top: 8px; }
@@ -198,6 +228,7 @@
       <a href="#report"><span class="n">07</span>Reporting &amp; sharing</a>
       <a href="#ai"><span class="n">08</span>The AI Layer</a>
       <a href="#zen" class="peak"><span class="n">▲</span>Summit — Zen Mode &amp; the Yeti</a>
+      <a href="#appendix"><span class="n">§</span>Appendix — how the models work</a>
       <a href="#field"><span class="n">✦</span>Field Notes &amp; glossary</a>
     </nav>
     <div class="foot">Runs on your own laptop.<br>Your keys never leave the machine.<br><br>Keep your layers pure.</div>
@@ -602,6 +633,336 @@
       <div class="yeti">
         <span class="ymark" aria-hidden="true"></span>
         <div><div class="say">The Yeti's rule</div><p><em>Sightings correlate with well-bounded contexts, honest interfaces, and a p99 that never spikes. Keep your layers pure — and I may bless your build.</em></p></div>
+      </div>
+    </div></section>
+
+    <!-- ░░ Appendix — how the models work ░░ -->
+    <section id="appendix"><div class="wrap">
+      <div class="camp-tag">Appendix <span class="alt">· §</span></div>
+      <h2>How the models work</h2>
+      <p class="appendix-lead">Every number in the Workbench is produced by an explicit model — never a vibe. This appendix opens each one up: <strong>what real-world behaviour it simulates, the actual formula, the assumptions baked in, and the dials you turn to change it.</strong> The models are deliberately transparent and heuristic — built for relative comparison and “what-if,” and honest about being directional rather than a vendor benchmark.</p>
+
+      <div class="call note"><div class="h">One honest caveat up front</div><p>Two capacity engines live in the codebase: the shipping per-service models (hand-tuned per-unit constants; latency roughly flat in load) and a newer, physics-grounded M/M/1 <b>queueing engine</b> (latency explodes near saturation) that services opt into. Where they disagree, the queueing engine is the more realistic — and reconciling the two is an open design decision. The reference figures on each node card come from a lookup of published vendor/benchmark numbers, so the invented constants always sit next to grounded reality.</p></div>
+
+      <!-- ══ Group: Capacity, scaling, resilience, load ══ -->
+      <div class="agroup">
+        <div class="gh"><span class="no">§1</span> Capacity · scaling · resilience · load</div>
+        <p class="gd">The chain from “a fleet emits load” to “which node breaks first, and when.” Load is offered by sources, propagated downstream, compared against three physical ceilings, and projected forward under growth.</p>
+
+        <div class="model">
+          <div class="mh"><h4>Offered load — the device model</h4><span class="src">catalog/devices.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>What a fleet of field devices actually puts on the wire — events/sec, peak/sec, bytes/event, GB/day — in three emission styles.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd">
+            <p class="formula"><span class="c">// discrete (LPR, GPS, sensors) — has a real avg↔peak gap</span>
+readsSec  = fleet × perDeviceDaily / 86400
+readsPeak = fleet × peakPerMinute / 60
+alertsSec = readsSec × alertRatePct/100
+<span class="c">// stream (CCTV): eventsSec = fleet × fps;  peak = avg  (flat)</span>
+<span class="c">// waveform (seismic): eventsSec = fleet × sampleRate × channels;  peak = avg (flat)</span>
+gbDay = avgBytesSec × 86400 / 1e9</p>
+          </div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Discrete devices carry a genuine peak; <b>stream and waveform sources set peak = average</b> — which is exactly why CCTV and seismic read “flat” downstream while an LPR commuter fleet is spiky.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list">
+            <li><b>fleetCount / perDeviceDaily</b> <span class="u">↑</span> raises the mean (and everything downstream)</li>
+            <li><b>peakPerMinute</b> <span class="u">↑</span> widens the avg-to-peak gap (discrete only)</li>
+            <li><b>channels · sampleRate · bytesPerSample</b> <span class="u">↑</span> raises a seismic fleet's steady rate</li>
+          </ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>“Where will it break first” — the binding constraint</h4><span class="src">analysis/capacity.ts · breakpoints.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Every engine has three independent ceilings — <b>compute</b> (parallelism), <b>disk I/O</b>, and <b>memory fit</b>. The smallest one binds; a chain is only as strong as its weakest link. Offered load ÷ that ceiling is the utilisation you see.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd">
+            <p class="formula"><span class="c">// compute ceiling — linear in the scaling knob, per category</span>
+messaging: partitions × 15000    storage: vcores × 2500 × nodes
+search: min(shards×2500, dataNodes×4000)    cache: memoryGb × 25000 × nodes
+<span class="c">// disk ceiling</span>
+diskQps = IOPS / iosPerQuery,   iosPerQuery = max(0.25, factor×3×(0.3 + miss×0.7))
+<span class="c">// memory fit — working set spilling RAM derates compute linearly</span>
+workingSet = recordCount × 256 × hot / 1e9,   hot = clamp(0.05+(1−skew)×0.35, .05, .5)
+if workingSet &gt; RAM:  ceiling = compute × (RAM / workingSet)
+<span class="c">// binding = min(compute, disk, memory);  a measured value overrides all</span></p>
+          </div></div>
+          <div class="row"><div class="lbl">Projection</div><div class="bd"><p class="formula"><span class="c">// month it saturates under monthly growth m = 1 + growth%/100</span>
+k = ln(capacity / offered) / ln(m)      <span class="c">// null if k &gt; horizon; 0 if already over</span>
+cumulativeStorage += gbDay × 30 × (m^horizon − 1)/(m − 1)   <span class="c">// geometric</span></p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Ceilings are linear in the knob with hand-tuned per-unit constants. Load propagates as a <b>superset union</b> — a node behind two sources sees the sum of both means, with no fan-out splitting, sampling, or filtering. This model compares throughput only; latency lives in the queueing engine below.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list">
+            <li>the scaling knob (vcores, shards, nodes, partitions, memoryGb) <span class="u">↑</span> raises the compute ceiling</li>
+            <li><b>cacheHitRatio</b> <span class="u">↑</span> → fewer disk I/Os → higher disk ceiling</li>
+            <li><b>recordCount</b> <span class="u">↑</span> grows the working set → memory binds sooner; <b>skew</b> <span class="u">↑</span> shrinks the hot set → memory binds later</li>
+            <li><b>growth% · horizon</b> <span class="u">↑</span> pull the saturation month sooner</li>
+          </ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Latency under load — the queueing engine</h4><span class="src">analysis/resourceModel.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>The non-linear “cliff”: a design that's fine at average load falls over at peak. Standard operational-analysis / M/M/1 queueing, so response time climbs steeply as any resource approaches full utilisation.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">ρ = λ · D            <span class="c">// utilisation = arrival rate × service demand</span>
+R = D / (1 − ρ)      <span class="c">// residence time per resource — blows up as ρ→1</span>
+response = Σ R + fixed_overhead        p99 = mean × ln(100) ≈ 4.6× mean
+cacheHit = 1 − e^(−2 × cacheGb/workingSetGb)     <span class="c">// saturating: ~86% at 1×, ~98% at 3×</span></p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Single-server M/M/1 per resource (Poisson arrivals). ρ is capped at 0.995 so an overloaded queue returns a large finite latency plus an <b>overloaded</b> flag, not infinity. Three resources only (CPU / disk / net); no lock contention or GC. Fixed round-trip overhead is added to latency but excluded from utilisation — so a Redis GET floors at ~0.1 ms however fast the server.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list">
+            <li><b>arrival rate (λ)</b> <span class="u">↑</span> → ρ→1 → residence time explodes</li>
+            <li><b>memoryGb</b> <span class="u">↑</span> → higher hit ratio → fewer physical I/Os → lower disk ρ</li>
+            <li>disk tier / cores / netGbps <span class="u">↑</span> → lower service demand on that resource</li>
+          </ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Resilience — RPO / RTO / blast radius</h4><span class="src">analysis/resilience.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Disaster-recovery posture per node: <b>RPO</b> (worst-case data-loss window), <b>RTO</b> (time to restore service), and a size-based rebuild time. The system rolls up to the worst node on each axis.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">redundant = copies ≥ 2   (from replicationFactor / replicas)
+RPO: sync 0 · async 15s in-region / 60s cross-region · else backup interval · else ∞
+RTO: stateless 45s · redundant 45s (auto) / 900s (manual) · backup → restore time · else ∞
+blast radius = 600s provision + storageGb × 1000 / 200 MB/s     <span class="c">// size-based rebuild</span>
+object stores short-circuit: RPO 0, RTO 45s (multi-AZ, ~11 nines)</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Flat 200 MB/s restore and 600 s provisioning regardless of engine; constant replication lag; the rollup is a pure max — no correlated failures, split-brain, or dependency chains.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list">
+            <li><b>replicationFactor ≥ 2</b> → redundant → far lower RTO and RPO</li>
+            <li><b>dr.replicationMode</b> (sync → RPO 0) · <b>dr.multiRegion</b> (flat 120 s failover) · <b>dr.failover</b> (auto 45 s vs manual 900 s)</li>
+          </ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Load propagation — size for the peak</h4><span class="src">analysis/diurnal.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>A fleet doesn't emit constant load — it follows a 24-hour curve (commuter AM/PM peaks, business hours, or flat). Converging fleets sum point-by-point and the aggregate flows downstream, so every node sees the actual time-varying load reaching it.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula"><span class="c">// commuter: twin Gaussians at 08:00 &amp; 17:36 on a 6% overnight floor</span>
+level(h) = 0.06 + 0.94 × max( gauss(h,8,1.15), gauss(h,17.6,1.5) )
+<span class="c">// affine fit so the curve's mean = daily total AND its max = target peak</span>
+rate(t) = a + b·s(t),   a = (avg − peak·sBar)/(1 − sBar),   b = peak − a
+<span class="c">// converging sources add their 96-point vectors — staggered peaks only stack where they overlap</span></p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Instant, lossless propagation — no transit delay, batching, or backpressure; the same rate vector is added unchanged to every downstream node (no fan-out division, no filtering/dedup). Fixed 15-minute resolution; all commuter fleets peak at exactly the same instants, so their peaks stack fully. <b>Note the deliberate tension:</b> the capacity model sizes on the <em>mean</em>, while this view exists to remind you to size for the <em>peak</em>.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list">
+            <li><b>diurnalProfile</b> selects the shape (commuter / business / evening / flat / custom hand-plotted points)</li>
+            <li><b>peakPerMinute</b> <span class="u">↑</span> spikier curve; graph topology — more converging sources → higher summed peaks</li>
+          </ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Sizing — the reverse solver</h4><span class="src">analysis/sizing.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>The capacity model run backwards: from a plain-language target (QPS, users, ingest, dataset size, p95 SLA) solve for cluster shape — nodes, shards, replicas, provisioned RU/s, brokers — plus a monthly cost, and drop it straight onto the canvas.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula"><span class="c">// tighter SLA → lower per-node utilisation target → more nodes for headroom</span>
+utilFactor: 0.80 (≥200ms) → 0.62 → 0.48 → 0.34 → 0.25 (&lt;20ms)
+search nodes = max(2, qps/(3000·util), users/(300·util));  shards = max(dataGb/40, ingest/12000)
+postgres vcores = clamp(qps/(1200·util), 2, 96);   kafka partitions = max(3, ingest/10000)</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Fixed per-unit throughputs (3000 qps/node search, 1200 qps/vcore Postgres, 10k/partition Kafka), fixed shard-size targets and replication factors, fixed ~7× time-series compression. Explicitly “heuristic, for relative sizing.”</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list">
+            <li><b>slaP95Ms</b> <span class="d">↓</span> (tighter) → more nodes via utilFactor</li>
+            <li><b>qps · ingest · concurrentUsers · dataGb</b> each drive their own <code>max()</code> term</li>
+          </ul></div></div>
+        </div>
+      </div>
+      <!-- ══ Group: Architecture cost/performance models ══ -->
+      <div class="agroup">
+        <div class="gh"><span class="no">§2</span> Architecture — per-service cost &amp; performance</div>
+        <p class="gd">Each service card's p50/p99, throughput, storage and $/mo come from a small explicit model. They share three foundations, then each service adds its own physics.</p>
+
+        <div class="model">
+          <div class="mh"><h4>Shared foundations</h4><span class="src">catalog/nodeCatalog.ts · types</span></div>
+          <div class="row"><div class="lbl">The rules</div><div class="bd"><ul class="dl-list">
+            <li><b>Every record = 256 bytes.</b> The single biggest simplification — one constant (<code>AVG_RECORD_BYTES</code>) sizes every payload. (A schema type exists to derive real bytes later; no model uses it yet.) A few models override: Neo4j uses 64 B/node + 48 B/rel, Pinecone <code>dim×4</code>, Windows 512 B/op.</li>
+            <li><b>Rates:</b> read QPS = <code>queriesPerDay / 86400</code>; write QPS = <code>writePerDay / 86400</code>.</li>
+            <li><b>Rounding hides infinity:</b> the shared <code>round()</code> returns <b>0</b> for any non-finite value, so an ∞/NaN silently becomes 0.</li>
+            <li><b>Health:</b> p99 &gt; 800 ms → bottleneck, &gt; 250 ms → warning. Several models tune their tails to cross these on purpose.</li>
+            <li><b>The saturation signature:</b> most compute/messaging models compute <code>sat = min(demand/ceiling, ~1.2)</code> and add a <b>quadratic <code>sat²</code></b> term to p99 — the fingerprint of a queue collapsing near capacity. The 1.2 cap means no model ever renders a fully-melted system.</li>
+          </ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>PostgreSQL — cache-governed reads</h4><span class="src">nodeCatalog.ts:31</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>A relational cluster where read latency is set by the buffer-cache hit ratio (cached ~1 ms, disk ~12 ms); the tail is inflated by misses and hot-row skew; indexes bloat storage.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">storage = recordCount × 256 × (1 + indexes×0.12) × replicas / 1e9
+p50 = 1 + (1−hit)×12
+p99 = p50 + (1−hit)×60 + skew×40
+cost = storage×0.12 + nodes×vcores×45 + (indexes&gt;12 ? 60 : 0)</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>The <b>write path isn't modelled at all</b> (<code>writePerDay</code> ignored); <code>connectionPool</code> is a dial the math never reads; no throughput ceiling — QPS is pass-through.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>cacheHitRatio</b> <span class="u">↑</span> lowers both p50 and p99 · <b>indexes / replicationFactor</b> <span class="u">↑</span> storage · <b>skew</b> <span class="u">↑</span> tail · nodes·vcores = cost only</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Apache Kafka — partition-bound streaming</h4><span class="src">nodeCatalog.ts:80</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Throughput bounded by <code>partitions × 12,000 msg/s</code>; as write load nears that ceiling, consumer lag spikes as a quadratic. Compression × retention × replication set storage.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">ratio = {none:1, gzip:.35, snappy:.55, lz4:.5, zstd:.3}
+storage = writeQps × 256 × ratio × retentionH×3600 × rf / 1e9
+sat = min(writeQps / (partitions×12000), 1.2)
+p50 = 3 + sat×20        p99 = p50 + sat²×200        <span class="c">// lag spike</span>
+cost = storage×0.10 + brokers×220</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Reads/consumers ignored (<code>queriesPerDay</code> unused); flat 12k/partition regardless of message size; static compression ratios.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>partitions</b> <span class="u">↑</span> raises the ceiling → eases the tail · <b>retentionHours / rf</b> <span class="u">↑</span> storage · <b>compression</b> (zstd) <span class="d">↓</span> storage · brokers = cost only</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Elasticsearch — scatter-gather + GC</h4><span class="src">nodeCatalog.ts:194</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>A query fans out to <em>every</em> shard; the coordination tail grows with <code>log₂(shards)</code>. Both very large and very small JVM heaps hurt (GC) — a non-monotone penalty with a 8–32 GB sweet spot.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">scatter = log2(shards+1) × 12
+gc = heap&gt;32 ? 40 : heap&lt;8 ? 25 : 8          <span class="c">// U-shaped</span>
+p99 = 6 + scatter + gc + skew×30
+storage = recordCount × 256 × 1.3 × (1+replicas) / 1e9</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Every query hits all shards (no routing); GC is a 3-bucket step; <code>refreshIntervalS</code> is inert; more shards genuinely <em>hurt</em> latency here.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>shards</b> <span class="u">↑</span> widen the tail (real trade-off) · <b>heapGb</b> U-shaped via GC · <b>replicas</b> <span class="u">↑</span> storage · dataNodes = cost only</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Redis — memory-pressure cache</h4><span class="src">nodeCatalog.ts:139</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>A 5% hot set (amplified by skew) must fit cluster RAM. When it overflows (<code>pressure&gt;1</code>), the effective hit ratio degrades and the tail grows — eviction thrash.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">hotSet = recordCount × 256 × 0.05 × (1+skew) / 1e9
+pressure = min(hotSet / (memGb×nodes), 3)
+effHit = pressure&gt;1 ? hit/pressure : hit
+p50 = 0.4 + (1−effHit)×8      p99 = p50 + (pressure&gt;1 ? pressure×6 : 1)</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Hot fraction hardcoded 5%; <code>evictionPolicy</code> is inert (LRU vs LFU = no effect); writes ignored.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>memoryGb · nodes</b> <span class="u">↑</span> relieve pressure → lower latency · <b>recordCount / skew</b> <span class="u">↑</span> grow the hot set</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Join strategy — the complexity core</h4><span class="src">nodeCatalog.ts:246</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Joining a big left set against a smaller right one. Algorithm class (nested-loop quadratic / hash linear / sort-merge n·log n) × movement (co-located free / broadcast / shuffle) — with a skew tax and a straggler penalty on shuffle.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">nested = left × min(right,1e6) × 1e-9     hash = (left+right)×1e-7
+shuffle bytes = (left+right)×256           skewTax = shuffle ? 1+skew×1.5 : 1+skew×0.3
+p99 = p50×(1.4+skew) + (shuffle ? 200 : 0)  <span class="c">// straggler</span></p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>The 1e-9/1e-7/1e-8 constants are calibration, not hardware; bandwidth fixed 1.25 GB/s; nested-loop right side capped at 1M so even the "catastrophic" case stays finite.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>joinType</b> picks the complexity class · <b>strategy</b> sets movement + skew sensitivity + straggler · <b>parallelism</b> <span class="d">↓</span> CPU but <span class="u">↑</span> broadcast bytes</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Stream processor · TimescaleDB — windowing &amp; retention</h4><span class="src">nodeCatalog.ts:388 · 499</span></div>
+          <div class="row"><div class="lbl">Stream</div><div class="bd"><p class="formula">cpuFactor = {tumbling:1, hopping:2.2, sliding:4}   ceiling = units×20000 / cpuFactor
+p50 = watermarkS×1000×0.5 + sat×40      p99 = watermarkS×1000 + sat²×300</p><p>Latency is dominated by the <b>watermark grace period</b> (results emit at window close); sliding windows re-evaluate on every event (4× CPU) and keep 2× state.</p></div></div>
+          <div class="row"><div class="lbl">Timescale</div><div class="bd"><p class="formula">kept = min(retentionDays / timeSpanDays, 1)    <span class="c">// the ONE model that reads timeSpanDays</span>
+storage = recordCount × kept × 256 × (compressed ? 0.14 : 1) / 1e9
+p99 = p50 + (compressed ? 35 : 8) + skew×20     <span class="c">// compression adds a cold-read tail</span></p><p>Compression is a genuine trade-off: ~7× smaller, but +35 ms decompressing cold chunks.</p></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>The breadth factories &amp; sources</h4><span class="src">catalog/services.ts · devices.ts · windows.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Beyond the hero engines, archetype factories stamp out the AWS/Azure/OSS catalog with per-service constants, all on the same 256-byte assumption:</p></div></div>
+          <div class="row"><div class="lbl">Patterns</div><div class="bd"><ul class="dl-list">
+            <li><b>relational / nosql / queue / cacheSvc / warehouse / serverless / gateway / f5</b> — each a saturation model (<code>sat²</code> tail). <b>nosql</b> is the only one folding in both reads and writes (writes count 5×). <b>warehouse</b> carries high 200/400 ms floors (OLAP is slow).</li>
+            <li><b>objectStore</b> — tier latency cliffs: hot 18 ms, cool 45 ms, <b>archive 60,000 ms</b> (rehydrate).</li>
+            <li><b>Field devices</b> (<code>deviceLoad</code>) are <em>sources</em>, not consumers — they produce offered load; <code>storage_gb</code> reports GB/<em>day</em> generated, not accumulated. Devices, Windows services and <code>workflow()</code> ignore the Workload entirely, driving off their own config.</li>
+            <li><b>Windows / IIS</b> — a thread-pool model: <code>qps = concurrency × 1000/durationMs</code> (Little's Law), plus a per-instance Windows Server license.</li>
+          </ul></div></div>
+          <div class="row assume"><div class="lbl">Inert dials</div><div class="bd"><p>A handful of dials appear in the inspector but the math never reads them — modelled qualitatively, not quantitatively: Postgres <code>connectionPool</code>, Redis <code>evictionPolicy</code>, Elasticsearch <code>refreshIntervalS</code>, Timescale <code>chunkIntervalDays</code>, Pinecone <code>metric</code>, warehouse <code>concurrency</code>, F5 <code>vips/persistence</code>, Windows <code>role</code>.</p></div></div>
+        </div>
+      </div>
+
+      <!-- ══ Group: Physical & cloud ══ -->
+      <div class="agroup">
+        <div class="gh"><span class="no">§3</span> Physical plane &amp; cloud pricing</div>
+        <p class="gd">The data-centre twin turns watts into heat, weight and money and checks it survives a feed failure; the cloud model translates the same design to Azure at live prices. Every ceiling is a <b>Budget</b> — amber at 75%, red at 90%.</p>
+
+        <div class="model">
+          <div class="mh"><h4>Power — draw, derate &amp; 2N failover</h4><span class="src">analysis/rackPower.ts · facility.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Server draw rolling up to rack kW to facility kW, and the essential 2N check: can <em>each</em> redundant feed carry the whole rack when its partner dies?</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">watts = idleW + (maxW − idleW) × util/100        <span class="c">// util defaults 50%, or the hosted node's live util</span>
+circuitKw = amps × volts × (three-phase ? √3 : 1) × 0.8 / 1000   <span class="c">// 0.8 = NEC continuous-load derate</span>
+requiredPerFeed = redundant ? drawKw : drawKw/feeds     <span class="c">// 2N: one feed carries ALL</span>
+totalKw = itKw × PUE                              energy$/mo = totalKw × 730 × $perKwh</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Draw is a linear idle→max interpolation (real curves are convex); a rack at 60% on both feeds is a <b>failure</b>, not a pass. PUE inflates the utility/generator/energy checks but not UPS/cooling (those are sized to IT load).</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>node utilizationPct</b> <span class="u">↑</span> → watts → the whole bill · <b>PUE</b> <span class="u">↑</span> total kW &amp; energy$ · <b>rack.redundancy</b> (2N/N+1) doubles required-per-feed · PDU amps/volts/phase = capacity</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Heat · weight · floor loading</h4><span class="src">analysis/rackPower.ts · rackSpace.ts · facility.ts</span></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">BTU/h = kW × 3412.14        tons = kW × 0.2843     <span class="c">// heat keyed to IT kW (heat to reject)</span>
+peakFloorLoad = max over racks of (weightKg / footprintM²)   <span class="c">// worst point-load, not room average</span>
+roomArea = Σ footprint × 2.5   <span class="c">// AISLE_FACTOR: hot/cold aisles + clearance</span></p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>1:1 electrical→heat (true to first order); floor loading uses the bare enclosure footprint (worst case for slab rating); a single global 2.5× aisle factor; no tip/centre-of-gravity check.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li>chassis <b>weightKg</b> → rack weight &amp; floor load · rack <b>width/depth</b> trades floor-load kg/m² against room area · anything that moves kW moves heat proportionally</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Rack packing &amp; fault-domain placement</h4><span class="src">analysis/rackSpace.ts · clusterPlacement.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Chassis bin-packed into U slots (independent front/rear planes, first-fit), and — crucially — the gap between what a config <em>promises</em> and what placement <em>delivers</em>: three replicas in one rack share a PDU pair and a switch, so losing the rack loses all three.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">for each domain (rack/room/site/zone/region):
+  surviving = total − largestDomain.members
+  dataSurvives = copies≥2 AND domains≥2 AND surviving≥1
+  quorumSurvives = surviving ≥ floor(total/2)+1
+verdict: single instance + multi-copy config → bottleneck ("replication isn't real")
+         !dataSurvives → bottleneck · !quorumSurvives → warning</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Fault domains are hierarchical tags (no shared-spine/PSU modelling below rack); only the "largest domain fails" scenario is evaluated; a zone-less Azure VM is flagged because Azure may co-locate the copies. A <b>bottleneck</b> verdict <em>rewrites</em> the node's resilience — RTO becomes a restore, not a failover.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>replicationFactor</b> · actual machine <b>rackId/room/site</b> · Azure instance <b>count/zone</b> — spreading copies across domains is what turns a bottleneck healthy</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Azure pricing — map, then price</h4><span class="src">analysis/cloudCost.ts · azurePricing.ts · server/azurePricingPlugin.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Each on-prem tier → an Azure VM family/size, managed disks snapped to real SKU boundaries, ExpressRoute, and a container registry — costed against <b>live</b> Azure Retail Prices, falling back per-line to a dated snapshot. Every cost line records its <code>basis</code> (live vs snapshot) so an estimate is never passed off as current.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">compute = rate × riFactor × (730 × duty) × count   <span class="c">// duty discounts PAYG only; a reservation bills 24×7</span>
+disk (fixed tier) = rate of smallest tier that holds sizeGb × count
+ER = portCharge(bandwidth, sku) + (Metered ? egressGb×0.025 : 0)
+ACR = dayRate×30×(1+geoReplicas) + overageGb×0.1 + egress×0.087</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Snapshot basis is East US / PAYG / Linux; RI discount is a flat multiplier (no savings plans / Hybrid Benefit); fixed-tier disks round <em>up</em>. The live proxy fetches <b>VM and managed-disk rates only</b> (6-hour cache) — ExpressRoute and ACR are always snapshot, even under "live pricing." The public Azure API needs no key.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>vmSize · count</b> linear · <b>reservation</b> (ri1y/ri3y) applies the discount, disables duty · <b>dutyCycle</b> discounts PAYG only · region chooses which live keys resolve</li></ul></div></div>
+        </div>
+      </div>
+
+      <!-- ══ Group: Org, value stream, services, rates, OKR ══ -->
+      <div class="agroup">
+        <div class="gh"><span class="no">§4</span> Organization · value stream · services · rates · OKRs</div>
+        <p class="gd">The people side. Two constants make every figure comparable — <code>WEEKS_PER_MONTH = 4.333</code> and <code>fte = headcount × allocation%</code> — and one principle governs meaning: <b>wiring is truth</b> (every edge's endpoints disambiguate it; config values are only fallbacks for un-wired elements).</p>
+
+        <div class="model">
+          <div class="mh"><h4>The capacity ledger</h4><span class="src">analysis/orgMetrics.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>An org as a two-sided ledger of hours: roles <b>supply</b> them, meetings <b>consume</b> them. An org that never balances the two reports a headcount it doesn't actually have — the ceremonies are already spending it.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">capacity = fte × hoursPerWeek × 4.333
+meetingHrs(role) = fte × Σ (durationHrs × perMonth)  over wired ceremonies
+ceremonyPct = attributedMeetingHrs / capacity        effectiveHeadcount = headcount × (1 − ceremonyPct)
+utilization = demandHrs / effectiveHrs               <span class="c">// demand ÷ POST-ceremony capacity</span>
+automation: combined = 1 − Π(1 − rᵢ)   <span class="c">// tools stack multiplicatively, capped 95%</span></p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>A meeting wired to <em>nobody</em> still shows in the total but taxes no one (attributed vs unattributed — the gap is surfaced on purpose). Everyone in a role attends every wired ceremony at full FTE; effective capacity floors at 0; org-level demand isn't attributed to a specific role (that needs the flow model).</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>headcount / hoursPerWeek</b> supply · meeting <b>duration/perMonth</b> + <b>wiring attendees</b> tax capacity · <b>effortReductionPct</b> frees FTE · org demand knobs drive utilization</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Six Sigma — yield → sigma</h4><span class="src">analysis/swimlane.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>A cross-functional value stream's quality. The mathematical heart is converting a first-pass yield into a sigma level the same way industry does.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">flowEfficiency = workHrs / (workHrs + waitHrs)          <span class="c">// value-add ÷ elapsed</span>
+RTY = Π step.firstPassYield                              <span class="c">// pass EVERY step first time</span>
+sigma = Φ⁻¹(yield) + 1.5                                 <span class="c">// Acklam inverse-normal + 1.5σ long-term shift</span>
+DPMO = (1 − yield) × 1,000,000
+<span class="c">// yield .99 → 3.83σ · .933 → 3.0σ · .5 → 1.5σ · .9999966 → 6.0σ</span></p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Φ⁻¹ is Acklam's rational approximation (~1e-9 error, no lookup table). Steps are independent (RTY is a naive product); the +1.5σ Motorola drift is applied uniformly as a convention; sigma clamped 0–6; cycle time is a pure sum (no parallelism).</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li>step <b>firstPassYieldPct</b> <span class="u">↑</span> raises step &amp; process sigma · more steps <span class="d">↓</span> RTY · <b>waitHrs</b> <span class="u">↑</span> kills flow efficiency · same-lane sequencing cuts cross-lane handoffs</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Service roll-up — effort, not payroll</h4><span class="src">analysis/serviceRollup.ts · orgUtilization.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>A business service is charged the cost of the <em>hours actually spent</em> delivering it — a dev who spends 8 h/mo adds 8 h × their rate, not their whole salary — and per-person load is then summed across the <b>whole portfolio</b> to catch quiet over-commitment.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">effortCostMo = Σ step.workHrs × rate(owningRole) × runs   <span class="c">// runs = each stream's OWN cadence</span>
+peopleCost = hasProcess ? effortCostMo : org.payrollCost  <span class="c">// headcount fallback only w/o a process</span>
+utilization(person) = Σ(workHrs × runs across all services) / capacity</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Only <code>workHrs</code> costs money (wait is free queue time); one performing role per step (first owner wins); a step's cadence comes from its process register or the service default.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li>step <b>workHrs</b> · <b>runsPerMonth</b> · role <b>loadedRateHr</b> — and linking an architecture folds in its infra cost, p99 and bottlenecks (can flip service health)</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Rates &amp; staffing — skill × seniority, and reuse-vs-hire</h4><span class="src">catalog/skills.ts · analysis/gsaRates.ts · staffing.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>Price comes from the <b>skill a role name resolves to</b>, not the coarse node type; staffing a new service reuses people with headroom rather than cloning teams or silently overloading someone.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">rate = skillBaseRate × seniorityMult(name)   <span class="c">// principal 1.45 · staff 1.35 · lead 1.25 · senior 1.15 · junior .8</span>
+<span class="c">// "Senior Data Engineer" = 175 × 1.15 ≈ 201/hr; a "Dog Groomer" resolves to no skill → its own identity</span>
+staffing: match by SAME skill + headroom → assign; overloaded → expand (open reqs); no match → new hire
+GSA: applyGsaRates pins every role to its schedule ceiling; anything pushed above is flagged</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Rates are representative US fully-burdened figures; seniority is a flat multiplier; matching is lexical (curated aliases, no semantics); GSA ceilings are keyed by coarse nodeType; two different known skills never match (a "Lead Developer" won't be staffed by a generic "Developer").</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li>per-node <b>loadedRateHr</b> is the master lever · role <b>name</b> (seniority words) applies the multiplier · <b>Apply GSA rates</b> repins + flags over-ceiling</li></ul></div></div>
+        </div>
+
+        <div class="model">
+          <div class="mh"><h4>Design-to-target OKRs</h4><span class="src">analysis/okr.ts</span></div>
+          <div class="row sim"><div class="lbl">Simulates</div><div class="bd"><p>A key result <b>binds to a metric the model already computes</b>, so its current value is derived from the design, not typed in and left to rot. It answers "does what we're proposing hit our targets" — deliberately no actuals or time-series.</p></div></div>
+          <div class="row"><div class="lbl">The math</div><div class="bd"><p class="formula">progress = clamp01( (current − baseline) / (target − baseline) )   <span class="c">// direction-agnostic</span>
+<span class="c">// the sign of the span cancels the sign of the gap — the SAME formula solves "grow it" and "shrink it"</span>
+status: ≥1 met · ≥0.7 on-track · ≥0.3 at-risk · else off-track · null unmeasured</p></div></div>
+          <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Linear progress baseline→target; only metrics the model genuinely computes are bindable; equal weighting of KRs; unmeasured KRs are excluded from the mean (not counted as zero); a single design snapshot, never a trend.</p></div></div>
+          <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>baseline / target</b> set span &amp; direction · the bound <b>metric + scope</b> choose the source · any design change that moves the metric re-scores it live</li></ul></div></div>
+        </div>
+      </div>
+
+      <div class="wrap" style="padding:0">
+        <div class="yeti">
+          <span class="ymark" aria-hidden="true"></span>
+          <div><div class="say">The Yeti says</div><p>Every number here is a model you can read, argue with, and tune — that's the whole point. A diagram asks you to trust it; a model <em>shows its work.</em></p></div>
+        </div>
       </div>
     </div></section>
 
