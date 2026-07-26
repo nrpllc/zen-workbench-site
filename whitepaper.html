@@ -159,7 +159,7 @@
     <div class="meta">
       <span><b>Zen Analytics Workbench</b></span>
       <span>v0.2 · Field edition</span>
-      <span>600+ automated checks · 14 cited benchmarks</span>
+      <span>Transparent models · Cited-benchmark calibration</span>
     </div>
   </header>
 
@@ -210,8 +210,8 @@
   <section class="col">
     <h2><span class="no">04</span>Every knob is real</h2>
     <p class="lede">A dial that renders in the tuning panel but changes no output is a lie — to the user, and to the AI specialist that claims to tune it. So we made a rule: <strong>there are no phantom knobs.</strong></p>
-    <p>Every tunable parameter on every service must move the analysis. This isn't a promise, it's an enforced invariant: an automated sweep perturbs each of the 165 dials across every service and field-device source and fails the build if any one leaves the output unchanged. Writing this paper's tooling caught real offenders — an eviction policy, a refresh interval, a Kubernetes oversubscription ratio, all of which rendered but computed nothing — and they were wired into the model until the sweep went green.</p>
-    <div class="call teal"><p class="h">The invariant</p><p>Perturb any dial, and some output must move. 600+ automated checks hold the line, so the specialist personas that tune your nodes are reasoning about levers that genuinely bite.</p></div>
+    <p>Every tunable parameter on every service must move the analysis. This isn't a promise, it's an enforced invariant: an automated sweep perturbs every dial across every service and field-device source and fails the build if any one leaves the output unchanged. Writing this paper's tooling caught real offenders — an eviction policy, a refresh interval, a Kubernetes oversubscription ratio, all of which rendered but computed nothing — and they were wired into the model until the sweep went green.</p>
+    <div class="call teal"><p class="h">The invariant</p><p>Perturb any dial, and some output must move. An automated sweep holds the line, so the specialist personas that tune your nodes are reasoning about levers that genuinely bite.</p></div>
   </section>
 
   <hr class="rule">
