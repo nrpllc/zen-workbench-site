@@ -189,6 +189,16 @@
   .dl-list li b { color: var(--muted); font-weight: 600; }
   .dl-list li .u { color: var(--sage); font-family: var(--mono); font-size: 12px; } /* ↑ up */
   .dl-list li .d { color: var(--rose); font-family: var(--mono); font-size: 12px; } /* ↓ down */
+  /* Expert personas */
+  .experts { display: grid; grid-template-columns: repeat(auto-fill, minmax(266px,1fr)); gap: 13px; margin-top: 20px; }
+  .expert { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); padding: 14px 15px; }
+  .expert .eh { display: flex; align-items: center; gap: 11px; }
+  .expert .av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-weight: 700; font-size: 15px; flex: none; color: var(--bg); }
+  .expert .en b { display: block; font-size: 14.5px; color: var(--ink); letter-spacing: -.2px; }
+  .expert .en span { font-size: 10px; text-transform: uppercase; letter-spacing: .09em; color: var(--faint); }
+  .expert p { margin: 10px 0 0; font-size: 13px; color: var(--faint); line-height: 1.52; }
+  .expert p em { color: var(--muted); font-style: italic; }
+  .av.t { background: var(--teal); } .av.a { background: var(--azure); } .av.s { background: var(--sage); } .av.v { background: var(--violet); } .av.w { background: var(--amber); }
 
   .mnav { display: none; }
   @media (max-width: 880px) {
@@ -955,6 +965,50 @@ GSA: applyGsaRates pins every role to its schedule ceiling; anything pushed abov
 status: ≥1 met · ≥0.7 on-track · ≥0.3 at-risk · else off-track · null unmeasured</p></div></div>
           <div class="row assume"><div class="lbl">Assumes</div><div class="bd"><p>Linear progress baseline→target; only metrics the model genuinely computes are bindable; equal weighting of KRs; unmeasured KRs are excluded from the mean (not counted as zero); a single design snapshot, never a trend.</p></div></div>
           <div class="row dials"><div class="lbl">Dials</div><div class="bd"><ul class="dl-list"><li><b>baseline / target</b> set span &amp; direction · the bound <b>metric + scope</b> choose the source · any design change that moves the metric re-scores it live</li></ul></div></div>
+        </div>
+      </div>
+
+      <!-- ══ Group: Meet the experts ══ -->
+      <div class="agroup">
+        <div class="gh"><span class="no">§5</span> Meet the experts</div>
+        <p class="gd">When you hit <b>Tune with expert</b> on a node, or ask the AI to design a rack, an Azure footprint, or a process, a <em>named specialist</em> answers. Each one is a persona — and their pedigree below <strong>is literally the system prompt</strong> the AI runs under. Change the bio, change how they think. They introduce themselves the same way: <em>“I'm Larry, your data-centre engineer…”</em></p>
+
+        <h3>The data &amp; storage bench</h3>
+        <div class="experts">
+          <div class="expert"><div class="eh"><div class="av t">R</div><div class="en"><b>Rosa</b><span>Relational expert</span></div></div><p>PostgreSQL / MySQL / Aurora — <em>reads EXPLAIN plans for fun.</em> Levers: indexes (reads vs writes vs storage), replication, connection pool, buffer-cache hit ratio.</p></div>
+          <div class="expert"><div class="eh"><div class="av t">S</div><div class="en"><b>Sam</b><span>SQL Server expert</span></div></div><p>Always On Availability Groups &amp; OLTP — <em>run through more failovers than he can count.</em> Balances vCores, synchronous vs async replicas, buffer pool, and licensing.</p></div>
+          <div class="expert"><div class="eh"><div class="av t">E</div><div class="en"><b>Ellie</b><span>Search expert</span></div></div><p>Elasticsearch / OpenSearch — <em>never met a p99 she couldn't tame.</em> Shards vs scatter-gather, replicas, refresh interval, and keeping heap ≤ 31 GB to dodge GC.</p></div>
+          <div class="expert"><div class="eh"><div class="av t">V</div><div class="en"><b>Vera</b><span>Vector expert</span></div></div><p>Pinecone / Milvus / Qdrant — <em>lives on the recall-vs-latency frontier.</em> Pods/replicas, dimension memory fit, ef_search/nprobe trade-offs.</p></div>
+          <div class="expert"><div class="eh"><div class="av t">N</div><div class="en"><b>Nadia</b><span>NoSQL expert</span></div></div><p>Cosmos / DynamoDB / Cassandra — <em>smells a hot partition from across the room.</em> Provisioned RU/s, consistency level, multi-region replicas, partition keys.</p></div>
+          <div class="expert"><div class="eh"><div class="av t">G</div><div class="en"><b>Graham</b><span>Graph expert</span></div></div><p>Neo4j / Neptune — <em>keeps the whole graph warm in the page cache.</em> Page cache fit, traversal depth × degree blow-up, read replicas.</p></div>
+          <div class="expert"><div class="eh"><div class="av w">W</div><div class="en"><b>Wally</b><span>Warehouse expert</span></div></div><p>ClickHouse / Snowflake / BigQuery — <em>prunes scans in his sleep.</em> Compute units, columnar compression, partition pruning, pre-aggregation.</p></div>
+        </div>
+
+        <h3>The streaming, cache &amp; compute bench</h3>
+        <div class="experts">
+          <div class="expert"><div class="eh"><div class="av a">M</div><div class="en"><b>Max</b><span>Messaging expert</span></div></div><p>Kafka / Kinesis / Pulsar / queues — <em>thinks in partitions and consumer lag.</em> Partitions, replication factor, retention, compression, prefetch/DLQs.</p></div>
+          <div class="expert"><div class="eh"><div class="av a">S</div><div class="en"><b>Steph</b><span>Stream-processing expert</span></div></div><p>Flink / Spark Structured Streaming — <em>treats backpressure as a personal insult.</em> Parallelism/units, window type &amp; size, checkpoint interval.</p></div>
+          <div class="expert"><div class="eh"><div class="av a">C</div><div class="en"><b>Casey</b><span>Cache expert</span></div></div><p>Redis — <em>guards the hit ratio like it's the last cache on earth.</em> Memory to fit the hot set, eviction policy, hit ratio, replicas.</p></div>
+          <div class="expert"><div class="eh"><div class="av a">G</div><div class="en"><b>Gareth</b><span>Gateway expert</span></div></div><p>Envoy / NGINX / F5 — <em>a bouncer for every origin behind him.</em> Rate/connection limits, fan-out, routing strategy, circuit breaking.</p></div>
+          <div class="expert"><div class="eh"><div class="av a">S</div><div class="en"><b>Sergei</b><span>Serverless expert</span></div></div><p>Lambda / Functions / Kubernetes — <em>on a lifelong crusade against cold starts.</em> Concurrency ceiling, memory→CPU, provisioned concurrency, handler duration.</p></div>
+          <div class="expert"><div class="eh"><div class="av a">S</div><div class="en"><b>Sy</b><span>Systems generalist</span></div></div><p>The utility infielder — <em>steps in when no specialist fits.</em> Reasons about any node's knobs against latency, capacity, durability and cost.</p></div>
+        </div>
+
+        <h3>The edge, data-centre &amp; cloud bench</h3>
+        <div class="experts">
+          <div class="expert"><div class="eh"><div class="av w">T</div><div class="en"><b>Terry</b><span>Mobile &amp; field-device expert</span></div></div><p>IoT edge / sensor fleets — <em>has deployed more fleets than he can count.</em> Fleet size, sample rate × channels, payload (images/clips), diurnal peak, connectivity cost.</p></div>
+          <div class="expert"><div class="eh"><div class="av w">L</div><div class="en"><b>Larry</b><span>Data-centre expert</span></div></div><p>Two decades in power, cooling &amp; rack design — <em>lays out elevations a technician could actually build.</em> U-packing, power/weight budgets, 2N feeds, airflow.</p></div>
+          <div class="expert"><div class="eh"><div class="av v">A</div><div class="en"><b>Ava</b><span>Azure architect</span></div></div><p>Azure cloud — <em>personally accountable for every line of the monthly bill.</em> Maps on-prem tiers to VM families/disks, ExpressRoute, ACR, reservations vs PAYG.</p></div>
+        </div>
+
+        <h3>The process &amp; people bench</h3>
+        <div class="experts">
+          <div class="expert"><div class="eh"><div class="av s">C</div><div class="en"><b>Charlie</b><span>Change-management expert</span></div></div><p>ITIL — <em>never let an un-CAB'd change reach production.</em> RFC → risk → CAB gate → build → test → deploy → PIR.</p></div>
+          <div class="expert"><div class="eh"><div class="av s">I</div><div class="en"><b>Ivy</b><span>Incident expert</span></div></div><p>Incident management / SRE — <em>calm under fire, blameless by faith.</em> Detect → triage → engage → diagnose → mitigate → resolve → review.</p></div>
+          <div class="expert"><div class="eh"><div class="av s">D</div><div class="en"><b>Dana</b><span>Agile-delivery expert</span></div></div><p>Agile delivery — <em>spots a review queue turning into a bottleneck three sprints out.</em> Refine → plan → build → review → test → demo → release.</p></div>
+          <div class="expert"><div class="eh"><div class="av s">O</div><div class="en"><b>Olivia</b><span>Onboarding expert</span></div></div><p>People operations — <em>knows provisioning lead times are where onboarding dies.</em> Offer → provision → orient → ramp → 30/60/90 gate.</p></div>
+          <div class="expert"><div class="eh"><div class="av s">P</div><div class="en"><b>Priya</b><span>Procurement expert</span></div></div><p>Sourcing — <em>has negotiated more vendor lead times than she'll admit.</em> Requisition → budget gate → RFQ → PO → receipt → invoice.</p></div>
+          <div class="expert"><div class="eh"><div class="av s">P</div><div class="en"><b>Perry</b><span>Process analyst</span></div></div><p>The generalist — <em>maps any cross-functional value stream for a living</em> when no named practitioner fits the step.</p></div>
         </div>
       </div>
 
