@@ -657,6 +657,21 @@
         <div class="card"><b>Keys stay home</b><p>API keys live server-side in <code>.env</code> and never reach the browser bundle. Your machine, your secrets.</p></div>
       </div>
       <div class="call note"><div class="h">No key? No problem.</div><p>Every AI panel has a fallback: run <code>/architect "…"</code> in Claude Code, paste or <b>Load generated</b> the spec, and you get the same result with no backend at all.</p></div>
+
+      <h3 style="margin-top:36px">Running locally — model &amp; VRAM</h3>
+      <p>The demanding job is the <b>architect</b> — generating a whole wired design as tool-calls; the per-node <b>experts</b> are lighter. So size for the architect, and choose for <strong>reliable function-calling</strong>, not raw size: a small model with clean tool-use beats a big one that mangles the call.</p>
+      <table class="ptable">
+        <thead><tr><th>Tier</th><th>Model (quant)</th><th>VRAM / unified</th><th>Good for</th></tr></thead>
+        <tbody>
+          <tr><td class="k">8 GB laptop</td><td>7–8B Qwen · Q4_K_M</td><td>~5 GB + 8K ctx</td><td>Experts &amp; light architecting; the odd tool-call retry</td></tr>
+          <tr><td class="k">Minimum</td><td>~14B Qwen3 · Q4_K_M</td><td>~10–12 GB</td><td>Solid all-round; a stretch on 8 GB via CPU offload (slower)</td></tr>
+          <tr><td class="k">Ideal</td><td>32B Qwen2.5-Coder · Q4/Q5</td><td>~24 GB — 3090/4090, 32 GB Mac</td><td>Reliable tool-use + strong infra reasoning, one GPU</td></tr>
+          <tr><td class="k">Robust</td><td>70B Llama 3.3 · Q4</td><td>~40–48 GB — 2×24 GB, 64 GB Mac</td><td>Most robust; diminishing returns over 32B here</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13.5px;color:var(--faint);margin-top:10px">Rough VRAM ≈ params × (Q4 ≈ 0.55 · Q8 ≈ 1 · FP16 ≈ 2) bytes + ~2–4 GB KV cache at 16–32K context. Context here is modest — a few thousand tokens each way — so 16K is comfortable, 32K generous.</p>
+      <div class="call tip"><div class="h">On a mobile 3070 / 8 GB</div><p>Run a <b>7–8B Qwen at Q4_K_M</b> (~8K context) fully on the GPU — great for the experts and quick iteration. For a one-off top-quality design, step up to a <b>14B at Q4 with CPU offload</b> (needs ≥ 16 GB system RAM — slower but noticeably better), or punt just that call to a hosted model or the <code>/architect</code> fallback. Fast local tuning, high-quality designs on demand. The 32 GB “ideal” really wants a 24 GB card, not a laptop.</p></div>
+      <div class="call note"><div class="h">Pick for tool-use, and serve it right</div><p>Qwen and Llama 3.x are dependable at agentic tool-use; avoid 3–7B models for the architect — they emit plausible-looking but malformed tool-calls. Any OpenAI-compatible runtime works: <b>LM Studio</b> or <b>Ollama</b> for convenience (both do CPU offload), <b>vLLM</b> for higher throughput when serving a team.</p></div>
     </div></section>
 
     <div class="koan"><div class="rule"></div><p>Between the nodes, the network.</p></div>
