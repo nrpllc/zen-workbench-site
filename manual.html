@@ -264,6 +264,7 @@
       <a href="#catalog"><span class="n">06</span>The Service Catalog</a>
       <a href="#report"><span class="n">07</span>Reporting &amp; sharing</a>
       <a href="#ai"><span class="n">08</span>The AI Layer</a>
+      <a href="#twin"><span class="n">09</span>The Digital Twin — from OpenTelemetry</a>
       <a href="#zen" class="peak"><span class="n">▲</span>Summit — Zen Mode &amp; the Yeti</a>
       <a href="#appendix"><span class="n">§</span>Appendix — how the models work</a>
       <a href="#field"><span class="n">✦</span>Field Notes &amp; glossary</a>
@@ -659,6 +660,29 @@
     </div></section>
 
     <div class="koan"><div class="rule"></div><p>Between the nodes, the network.</p></div>
+
+    <!-- ░░ 09 Digital Twin ░░ -->
+    <section id="twin"><div class="wrap">
+      <div class="camp-tag">Camp Nine <span class="alt">· 09</span></div>
+      <h2>The digital twin — import from OpenTelemetry</h2>
+      <p class="intro">Everything so far models a <em>design</em>. This camp brings a <strong>real, running system</strong> into the Workbench: press <strong>Import</strong> in the ribbon and drop in an <strong>OpenTelemetry (OTLP/JSON) export</strong> — the same telemetry your platform already emits — and the Workbench reconstructs it and calibrates the model against it.</p>
+      <div class="grid2">
+        <div class="card"><b>Traces → topology</b><p>Every service that emits spans becomes a node; the databases and brokers it calls — seen as <code>db.system</code> / <code>messaging.system</code> spans — become backend nodes; the trace call-graph becomes the edges. The architecture is <em>discovered, not drawn.</em></p></div>
+        <div class="card"><b>Metrics → observed truth</b><p>Request and operation duration histograms give exact <b>p50 / p99</b> and <b>throughput</b>; CPU and memory gauges give <b>utilisation</b>. Traces, metrics, or both — Import reads whatever the file carries.</p></div>
+        <div class="card"><b>A calibration readout</b><p>Right after import it tells you how closely the model matches reality — the share of observed latencies the model predicts within tolerance. The gap is honest, and it's exactly where to tune.</p></div>
+        <div class="card"><b>What-if from reality</b><p>Because the baseline now matches production, changing a dial predicts a <em>real</em> delta — not a guess from generic defaults.</p></div>
+      </div>
+      <div class="call note"><div class="h">Your defaults are safe</div><p>Observed numbers land in a separate <b>measured</b> overlay — they never overwrite a node's config or the model's defaults. Clear the overlay and you're back to the estimate. Everything stays <b>workspace-local</b>; nothing global is touched.</p></div>
+      <p style="margin-top:20px">The pipeline, end to end:</p>
+      <ol>
+        <li><b>Observe</b> — export OTLP from your collector; no new instrumentation, you read what OpenTelemetry already emits.</li>
+        <li><b>Reconstruct</b> — resource attributes become node configs; the trace service-graph becomes the edges.</li>
+        <li><b>Overlay</b> — observed p50/p99, throughput and utilisation attach as <em>measured</em> values.</li>
+        <li><b>Read the gap</b> — the calibration score shows how far the generic model sits from your system.</li>
+        <li><b>Ask “what if”</b> — perturb the calibrated twin and predict the change with a baseline grounded in reality.</li>
+      </ol>
+      <div class="call tip"><div class="h">Try it now</div><p>A ready-made sample ships with the app at <code>/otel-trace-sample.json</code> — a four-service trace-and-metrics export. Press <b>Import</b>, select it, and watch a live system assemble itself, already carrying its observed latencies. For the deeper rationale, see the <b>Simulation</b> white paper linked from the site.</p></div>
+    </div></section>
 
     <!-- ░░ Summit ░░ -->
     <section id="zen"><div class="wrap">
