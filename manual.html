@@ -265,6 +265,7 @@
       <a href="#report"><span class="n">07</span>Reporting &amp; sharing</a>
       <a href="#ai"><span class="n">08</span>The AI Layer</a>
       <a href="#twin"><span class="n">09</span>The Digital Twin — from OpenTelemetry</a>
+      <a href="#deploy"><span class="n">10</span>Ship it — deploy the design</a>
       <a href="#zen" class="peak"><span class="n">▲</span>Summit — Zen Mode &amp; the Yeti</a>
       <a href="#appendix"><span class="n">§</span>Appendix — how the models work</a>
       <a href="#field"><span class="n">✦</span>Field Notes &amp; glossary</a>
@@ -698,6 +699,20 @@
         <li><b>Ask “what if”</b> — perturb the calibrated twin and predict the change with a baseline grounded in reality.</li>
       </ol>
       <div class="call tip"><div class="h">Try it now</div><p>A ready-made sample ships with the app at <code>/otel-trace-sample.json</code> — a four-service trace-and-metrics export. Press <b>Import</b>, select it, and watch a live system assemble itself, already carrying its observed latencies. For the deeper rationale, see the <b>Simulation</b> white paper linked from the site.</p></div>
+    </div></section>
+
+    <!-- ░░ 10 Deploy ░░ -->
+    <section id="deploy"><div class="wrap">
+      <div class="camp-tag">Camp Ten <span class="alt">· 10</span></div>
+      <h2>Ship it — Docker, Kubernetes &amp; Azure</h2>
+      <p class="intro">A model you can prove deserves a model you can <em>run</em>. Press <strong>Deploy</strong> in the ribbon and the Workbench turns the design — with the exact dials you tuned — into deployable infrastructure: <strong>Docker Compose</strong>, <strong>Kubernetes</strong> manifests, or <strong>Azure Bicep</strong>. Preview, copy, or download.</p>
+      <div class="grid2">
+        <div class="card"><b>Your dials become the parameters</b><p>Redis <code>memoryGb</code> → <code>--maxmemory</code> and the Azure Cache tier; Postgres <code>vCores</code> → CPU requests and the flexible-server SKU; Kafka <code>partitions</code> → <code>KAFKA_NUM_PARTITIONS</code>; Cosmos <code>provisionedThroughput</code> → the database RU/s. What you tuned is what you ship.</p></div>
+        <div class="card"><b>Three targets, one design</b><p><b>Compose</b> and <b>Kubernetes</b> containerise every service — StatefulSet for stores, Deployment for apps, a Service each; <b>Bicep</b> maps the managed stores (Cosmos, Storage, Event Hubs, Redis Cache, Postgres flexible server) sized from the dials.</p></div>
+        <div class="card"><b>Validated on real Docker</b><p>The container targets are checked against Docker Desktop: Postgres, Redis, Mongo, Neo4j, RabbitMQ, Elasticsearch and Kafka (KRaft, single-node) come up healthy — with the tuned config live inside the running container.</p></div>
+        <div class="card"><b>Honest about the edges</b><p>Services with no first-party Azure equivalent are called out, not silently dropped; managed stores appear only in the Bicep tab. Nothing is applied for you.</p></div>
+      </div>
+      <div class="call warn"><div class="h">It's a reviewed scaffold</div><p>Secrets are <code>CHANGE_ME</code>, app images are <code>REPLACE_WITH_YOUR_APP_IMAGE</code>, and there is no ingress. Set your secrets, images and networking — and for a multi-broker Kafka or a real cluster, adjust the replica and listener config — before you <code>docker compose up</code>, <code>kubectl apply</code> or <code>az deployment</code>. Generation only; the apply is yours.</p></div>
     </div></section>
 
     <!-- ░░ Summit ░░ -->
