@@ -266,6 +266,7 @@
       <a href="#ai"><span class="n">08</span>The AI Layer</a>
       <a href="#twin"><span class="n">09</span>The Digital Twin — from OpenTelemetry</a>
       <a href="#deploy"><span class="n">10</span>Ship it — deploy the design</a>
+      <a href="#discover"><span class="n">11</span>Discover — read a running estate</a>
       <a href="#zen" class="peak"><span class="n">▲</span>Summit — Zen Mode &amp; the Yeti</a>
       <a href="#appendix"><span class="n">§</span>Appendix — how the models work</a>
       <a href="#field"><span class="n">✦</span>Field Notes &amp; glossary</a>
@@ -704,15 +705,30 @@
     <!-- ░░ 10 Deploy ░░ -->
     <section id="deploy"><div class="wrap">
       <div class="camp-tag">Camp Ten <span class="alt">· 10</span></div>
-      <h2>Ship it — Docker, Kubernetes &amp; Azure</h2>
-      <p class="intro">A model you can prove deserves a model you can <em>run</em>. Press <strong>Deploy</strong> in the ribbon and the Workbench turns the design — with the exact dials you tuned — into deployable infrastructure: <strong>Docker Compose</strong>, <strong>Kubernetes</strong> manifests, or <strong>Azure Bicep</strong>. Preview, copy, or download.</p>
+      <h2>Ship it — Docker, Kubernetes, Azure, Terraform &amp; Ansible</h2>
+      <p class="intro">A model you can prove deserves a model you can <em>run</em>. Press <strong>Deploy</strong> in the ribbon and the Workbench turns the design — with the exact dials you tuned — into deployable infrastructure across <strong>five targets</strong>: <strong>Docker Compose</strong>, <strong>Kubernetes</strong> manifests, <strong>Azure Bicep</strong>, <strong>Terraform</strong> and an <strong>Ansible</strong> playbook. Preview, copy, or download any tab.</p>
       <div class="grid2">
-        <div class="card"><b>Your dials become the parameters</b><p>Redis <code>memoryGb</code> → <code>--maxmemory</code> and the Azure Cache tier; Postgres <code>vCores</code> → CPU requests and the flexible-server SKU; Kafka <code>partitions</code> → <code>KAFKA_NUM_PARTITIONS</code>; Cosmos <code>provisionedThroughput</code> → the database RU/s. What you tuned is what you ship.</p></div>
-        <div class="card"><b>Three targets, one design</b><p><b>Compose</b> and <b>Kubernetes</b> containerise every service — StatefulSet for stores, Deployment for apps, a Service each; <b>Bicep</b> maps the managed stores (Cosmos, Storage, Event Hubs, Redis Cache, Postgres flexible server) sized from the dials.</p></div>
-        <div class="card"><b>Validated on real Docker</b><p>The container targets are checked against Docker Desktop: Postgres, Redis, Mongo, Neo4j, RabbitMQ, Elasticsearch and Kafka (KRaft, single-node) come up healthy — with the tuned config live inside the running container.</p></div>
+        <div class="card"><b>Your dials become the parameters</b><p>Redis <code>memoryGb</code> → <code>--maxmemory</code> and the Azure Cache tier; Postgres <code>vCores</code> → CPU requests and the flexible-server SKU; Kafka <code>partitions</code> → <code>KAFKA_NUM_PARTITIONS</code> and Event Hubs capacity; Cosmos <code>provisionedThroughput</code> → the database RU/s. What you tuned is what you ship.</p></div>
+        <div class="card"><b>Five targets, one design</b><p><b>Compose</b>, <b>Kubernetes</b>, <b>Terraform</b> and <b>Ansible</b> containerise every service — StatefulSet for stores, Deployment for apps, a Service each — while <b>Bicep</b> maps the managed stores (Cosmos, Storage, Event Hubs, Redis Cache, Postgres flexible server) sized from the dials. One dial-to-deployment map drives all five.</p></div>
+        <div class="card"><b>Validated on real Docker</b><p>The container targets are checked against Docker Desktop: Postgres, TimescaleDB, Redis, MongoDB, Neo4j, RabbitMQ, Elasticsearch, NGINX, Envoy and Kafka (KRaft, single-node) come up healthy — with the tuned config live inside the running container.</p></div>
         <div class="card"><b>Honest about the edges</b><p>Services with no first-party Azure equivalent are called out, not silently dropped; managed stores appear only in the Bicep tab. Nothing is applied for you.</p></div>
       </div>
-      <div class="call warn"><div class="h">It's a reviewed scaffold</div><p>Secrets are <code>CHANGE_ME</code>, app images are <code>REPLACE_WITH_YOUR_APP_IMAGE</code>, and there is no ingress. Set your secrets, images and networking — and for a multi-broker Kafka or a real cluster, adjust the replica and listener config — before you <code>docker compose up</code>, <code>kubectl apply</code> or <code>az deployment</code>. Generation only; the apply is yours.</p></div>
+      <div class="call warn"><div class="h">It's a reviewed scaffold</div><p>Secrets are <code>CHANGE_ME</code>, app images are <code>REPLACE_WITH_YOUR_APP_IMAGE</code>, and there is no ingress. Set your secrets, images and networking — and for a multi-broker Kafka or a real cluster, adjust the replica and listener config — before you <code>docker compose up</code>, <code>kubectl apply</code>, <code>az deployment</code>, <code>terraform apply</code> or <code>ansible-playbook</code>. Generation only; the apply is yours.</p></div>
+    </div></section>
+
+    <!-- ░░ 11 Discover ░░ -->
+    <section id="discover"><div class="wrap">
+      <div class="camp-tag">Camp Eleven <span class="alt">· 11</span></div>
+      <h2>Discover — read a running estate back into the model</h2>
+      <p class="intro">Deploy runs the model outward. <strong>Discover</strong> runs it back: press <strong>Discover</strong> in the ribbon, point the Workbench at infrastructure that is already running, and it reconstructs the design — <em>and recovers the dials you'd have tuned</em> — from what it finds. The exact inverse of Camp&nbsp;10.</p>
+      <div class="grid2">
+        <div class="card"><b>Docker &amp; Kubernetes</b><p>Read the local Docker daemon (<code>docker ps</code> + inspect) or a cluster (<code>kubectl get deploy,sts</code>): each image maps to a catalog node, and the tuned dials come back out of its command, env and CPU/memory limits — Redis <code>--maxmemory</code> → <code>memoryGb</code>, Postgres <code>max_connections</code>, Kafka partitions, Elasticsearch heap, replica counts. All read-only.</p></div>
+        <div class="card"><b>Azure resource groups</b><p>Point it at a resource group (<code>az resource list</code>) and it reverse-maps ARM types to nodes, pulling dials from each SKU and properties — flexible-server vCores, Cosmos RU/s and consistency, Redis Cache capacity → memory.</p></div>
+        <div class="card"><b>It captures the whole config, not just the dials</b><p>Discovery records every observed setting a service carries — the full env and command — alongside the modelled knobs, so nothing is silently thrown away.</p></div>
+        <div class="card"><b>The gap becomes the roadmap</b><p>A config-gap read shows, per service type, the observed settings the model doesn't expose yet — the candidate knobs to promote next. Scan reality → see the gap → make the knob real → hand it to the expert. The model grows toward what you actually run.</p></div>
+      </div>
+      <div class="call note"><div class="h">Nodes and dials, not edges</div><p>Discovery gives you the services and their tuned settings; it doesn't invent the call graph between them. Pair it with the <b>Camp&nbsp;09</b> OpenTelemetry import to wire the edges from real traces — together they rebuild a live twin, topology and tuning both.</p></div>
+      <div class="call tip"><div class="h">It reads; it never crawls</div><p>Discovery only ever reads sources you explicitly point it at — a Docker daemon, a kube context, an Azure resource group — and every probe degrades gracefully when the tool or credentials aren't present. Nothing is scanned unsolicited, and nothing is written to your estate.</p></div>
     </div></section>
 
     <!-- ░░ Summit ░░ -->
