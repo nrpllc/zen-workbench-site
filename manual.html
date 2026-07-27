@@ -659,6 +659,7 @@
       <div class="call note"><div class="h">No key? No problem.</div><p>Every AI panel has a fallback: run <code>/architect "…"</code> in Claude Code, paste or <b>Load generated</b> the spec, and you get the same result with no backend at all.</p></div>
 
       <h3 style="margin-top:36px">Running locally — model &amp; VRAM</h3>
+      <div class="call tip"><div class="h">Let the app size it for you</div><p>Press <b>Local AI</b> in the ribbon: because Zen's server runs on your own machine, it reads your hardware (GPU/VRAM, RAM), <b>recommends a model that fits</b>, detects a running <b>Ollama</b> or <b>LM Studio</b> — including the models you already have loaded — and, in one click, points Zen at it. It even hands you the <code>ollama pull</code> command. The table below is the reference behind that recommendation.</p></div>
       <p>The demanding job is the <b>architect</b> — generating a whole wired design as tool-calls; the per-node <b>experts</b> are lighter. So size for the architect, and choose for <strong>reliable function-calling</strong>, not raw size: a small model with clean tool-use beats a big one that mangles the call.</p>
       <table class="ptable">
         <thead><tr><th>Tier</th><th>Model (quant)</th><th>VRAM / unified</th><th>Good for</th></tr></thead>
