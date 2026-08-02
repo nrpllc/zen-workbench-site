@@ -402,13 +402,93 @@
           <li><b>Watch the strip</b> — the bottom bar re-costs the whole system continuously. No “calculate” button; it's always live.</li>
         </ol>
 
-        <h3>The four views</h3>
+        <h3 id="plugins">Extend the catalog — your own plugins</h3>
+        <p>The bench isn't a fixed set of tools. When the technology you need isn't on it, <b>forge the plugin yourself</b> — no code. Open <b>Plugins</b> (the ribbon, or ⌘K → <i>Plugins</i>), hit <b>New</b>, and either describe the component to the AI wizard or fill the form by hand.</p>
+        <ol class="steps">
+          <li><b>Clone an archetype</b> — relational, cache, queue, search, vector, graph, warehouse… You inherit a real cost model, real dials, and the right capacity behaviour for free; rescale its price if that's all you need.</li>
+          <li><b>Add your own dials</b> — the knobs your technology actually has, rendered as real inputs in the inspector alongside the archetype's.</li>
+          <li><b>Author the cost curve</b> — a formula over your dials, the workload, and the archetype's own estimate (<code>base_cost + dataNodes * 300 + storageGb * 0.1</code>). It runs through a sandbox-safe evaluator — no <code>eval</code> — so a plugin you share with a teammate can never execute code.</li>
+          <li><b>Copy as code</b> — promote a workspace-local plugin into a shipped built-in when it's earned its place.</li>
+        </ol>
+        <div class="call tip"><div class="h">Four tiers of depth</div><p>Simple stays simple, and complex is possible — you climb only as far as your technology demands: <b>(0)</b> archetype + a price multiplier · <b>(1)</b> your own dials + a cost formula · <b>(2)</b> a no-code line-item builder that also authors the capacity ceiling · <b>(3)</b> a sandboxed cost model and fork-a-built-in. Tiers 0–1 are on the bench today; 2–3 are coming. <a href="https://claude.ai/code/artifact/f1102524-538b-4c68-b154-1c83a33d7d7c" target="_blank" rel="noopener">Read the full plugin guide, with diagrams →</a></p></div>
+
+        <h3 id="lenses">The four lenses — one model, four ways to see it</h3>
+        <p>A design in Zen isn't a diagram — it's a <b>model</b>, and you look at that one model through four lenses. The same system, re-drawn: the <b>logic</b> of it, the <b>iron</b> it runs on, the <b>wires</b> between zones, and — new — the <b>source code</b> that actually implements it. Grounding a system top to bottom, from the whiteboard to the function.</p>
+
+        <figure>
+          <div class="frame" style="padding:0;background:var(--bg2)">
+            <svg viewBox="0 0 920 300" width="100%" role="img" aria-label="The four lenses: Logical, Physical, Network and Code — four views of one system model." style="display:block">
+              <text x="460" y="30" text-anchor="middle" fill="#c9ced7" font-family="Inter, system-ui, sans-serif" font-size="15" letter-spacing="0.3">One model — four lenses on the same system</text>
+              <line x1="140" y1="48" x2="780" y2="48" stroke="#2c313b" stroke-width="1"/>
+              <!-- Logical -->
+              <g>
+                <rect x="0" y="60" width="215" height="232" rx="14" fill="#1b1e24" stroke="#2c313b"/>
+                <rect x="16" y="16" width="40" height="4" rx="2" fill="#5eb0b7" transform="translate(0,60)"/>
+                <text x="16" y="104" fill="#f5f3ef" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="600">Logical</text>
+                <g stroke="#5eb0b7" stroke-width="2" fill="#14161a">
+                  <line x1="73" y1="176" x2="137" y2="162" stroke="#3c6d72"/>
+                  <line x1="137" y1="162" x2="115" y2="206" stroke="#3c6d72"/>
+                  <line x1="73" y1="176" x2="115" y2="206" stroke="#3c6d72"/>
+                  <circle cx="73" cy="176" r="10"/><circle cx="137" cy="162" r="10"/><circle cx="115" cy="206" r="10"/>
+                </g>
+                <text x="16" y="252" fill="#a6adba" font-family="Inter, system-ui, sans-serif" font-size="11.5">The design — nodes, flows,</text>
+                <text x="16" y="268" fill="#a6adba" font-family="Inter, system-ui, sans-serif" font-size="11.5">protocols, live cost &amp; latency.</text>
+              </g>
+              <!-- Physical -->
+              <g transform="translate(235,0)">
+                <rect x="0" y="60" width="215" height="232" rx="14" fill="#1b1e24" stroke="#2c313b"/>
+                <rect x="16" y="76" width="40" height="4" rx="2" fill="#6f9cd6"/>
+                <text x="16" y="104" fill="#f5f3ef" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="600">Physical</text>
+                <g stroke="#6f9cd6" stroke-width="2" fill="none">
+                  <rect x="83" y="142" width="50" height="82" rx="4"/>
+                  <line x1="83" y1="162" x2="133" y2="162"/><line x1="83" y1="183" x2="133" y2="183"/><line x1="83" y1="204" x2="133" y2="204"/>
+                  <rect x="90" y="150" width="8" height="6" rx="1" fill="#6f9cd6" stroke="none"/>
+                </g>
+                <text x="16" y="252" fill="#a6adba" font-family="Inter, system-ui, sans-serif" font-size="11.5">Racks, power &amp; placement —</text>
+                <text x="16" y="268" fill="#a6adba" font-family="Inter, system-ui, sans-serif" font-size="11.5">the iron and its security zones.</text>
+              </g>
+              <!-- Network -->
+              <g transform="translate(470,0)">
+                <rect x="0" y="60" width="215" height="232" rx="14" fill="#1b1e24" stroke="#2c313b"/>
+                <rect x="16" y="76" width="40" height="4" rx="2" fill="#8bb894"/>
+                <text x="16" y="104" fill="#f5f3ef" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="600">Network</text>
+                <g stroke="#8bb894" stroke-width="2" fill="none">
+                  <rect x="60" y="150" width="44" height="44" rx="6"/>
+                  <rect x="112" y="168" width="44" height="44" rx="6"/>
+                  <line x1="104" y1="172" x2="112" y2="182" stroke="#8bb894"/>
+                  <circle cx="108" cy="177" r="3" fill="#8bb894" stroke="none"/>
+                </g>
+                <text x="16" y="252" fill="#a6adba" font-family="Inter, system-ui, sans-serif" font-size="11.5">Zones, ports &amp; per-link</text>
+                <text x="16" y="268" fill="#a6adba" font-family="Inter, system-ui, sans-serif" font-size="11.5">bandwidth across the estate.</text>
+              </g>
+              <!-- Code -->
+              <g transform="translate(705,0)">
+                <rect x="0" y="60" width="215" height="232" rx="14" fill="#1b1e24" stroke="#2c313b"/>
+                <rect x="16" y="76" width="40" height="4" rx="2" fill="#a78bd6"/>
+                <text x="16" y="104" fill="#f5f3ef" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="600">Code <tspan fill="#a78bd6" font-size="10" font-weight="500">NEW</tspan></text>
+                <g stroke="#a78bd6" stroke-width="2">
+                  <line x1="107" y1="158" x2="80" y2="200" stroke="#5a4b74"/>
+                  <line x1="107" y1="158" x2="134" y2="200" stroke="#5a4b74"/>
+                  <rect x="90" y="146" width="34" height="18" rx="4" fill="#14161a"/>
+                  <rect x="63" y="196" width="34" height="18" rx="4" fill="#14161a"/>
+                  <rect x="117" y="196" width="34" height="18" rx="4" fill="#14161a"/>
+                </g>
+                <text x="16" y="252" fill="#a6adba" font-family="Inter, system-ui, sans-serif" font-size="11.5">The real call graph — click a</text>
+                <text x="16" y="268" fill="#a6adba" font-family="Inter, system-ui, sans-serif" font-size="11.5">node, land on the source line.</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>Four lenses on one model — Logical, Physical, Network and Code. Flip between them from the ribbon; the model underneath never changes.</figcaption>
+        </figure>
+
         <div class="grid2">
           <div class="card"><b>Logical</b><p>The design itself — nodes, flows, protocols. Where you spend most of your time.</p></div>
-          <div class="card"><b>Physical</b><p>Placement and security posture: on-prem vs edge zones, with cross-zone links flagged where a firewall would block them.</p></div>
+          <div class="card"><b>Physical</b><p>Placement and security posture: on-prem vs edge zones, with cross-zone links flagged where a firewall would block them. Drills into full <b>rack</b> elevations — real machines, power and weight.</p></div>
           <div class="card"><b>Network</b><p>Data-center / domain boxes with ports and per-link bandwidth. Movable, resizable.</p></div>
-          <div class="card"><b>Racks</b><p>The physical twin — real machines in real racks. Its own camp, just ahead.</p></div>
+          <div class="card"><b>Code</b><p>Scan the source into a real call graph: browse it, see latency heat from OpenTelemetry, and click a symbol to jump to the exact line. Ties the architecture to the code that implements it.</p></div>
         </div>
+
+        <div class="call tip"><div class="h">See how it all fits together</div><p>The whole system on one page — surfaces, the shared Node backend &amp; the coding-agent sidecar, the engines, the one model behind the four lenses, and how a trace lights up both the infrastructure and the code. <a href="architecture.html">Open the system architecture →</a></p></div>
 
         <h3>Analyze — “where will it break first?”</h3>
         <p>Flip to <b>Analyze</b> and the bottom strip gains tabs: <b>Bottlenecks, Costs, Network, Events, Capacity</b>. The Scaling view is the one to memorize — it ranks every node by its <em>binding constraint</em> (compute, disk IOPS, memory, cluster nodes) and tells you how much headroom remains before growth saturates it.</p>

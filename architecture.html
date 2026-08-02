@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zen Analytics — System Architecture</title>
+<style>
+  :root{
+    --bg:#14161a; --bg2:#101216; --surface:#1b1e24; --surface2:#22262e;
+    --border:#2c313b; --border-soft:#242932;
+    --ink:#f5f3ef; --muted:#c9ced7; --faint:#a6adba; --dim:#7f8794;
+    --teal:#5eb0b7; --tealdim:#3c6d72; --azure:#6f9cd6; --sage:#8bb894;
+    --violet:#a78bd6; --amber:#d9b26b; --rose:#d68a94;
+    --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0}
+  .page{
+    background:
+      radial-gradient(1100px 600px at 80% -10%, rgba(94,176,183,.06), transparent 60%),
+      radial-gradient(900px 500px at 0% 110%, rgba(167,139,214,.06), transparent 60%),
+      var(--bg);
+    color:var(--ink); font-family:var(--sans);
+    min-height:100vh; padding:48px 24px 72px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px;margin:0 auto}
+  .back{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--faint);text-decoration:none;margin-bottom:22px}
+  .back:hover{color:var(--teal)}
+
+  header{margin-bottom:36px;max-width:820px}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin:0 0 14px}
+  h1{font-size:clamp(28px,4.4vw,46px);line-height:1.05;font-weight:700;margin:0;letter-spacing:-.02em;text-wrap:balance}
+  h1 em{font-style:normal;color:var(--teal)}
+  .lead{font-size:17px;line-height:1.55;color:var(--muted);margin:18px 0 0;max-width:70ch}
+
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:26px 0 6px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:rgba(27,30,36,.5)}
+  .legend .li{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--faint)}
+  .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+  .li b{color:var(--muted);font-weight:600}
+
+  .stack{display:flex;flex-direction:column;gap:0;margin-top:22px}
+  .band{position:relative;border:1px solid var(--border);border-radius:16px;background:linear-gradient(180deg,rgba(34,38,46,.55),rgba(27,30,36,.35));padding:18px 20px 20px}
+  .band + .band{margin-top:26px}
+  .band + .band::before{content:"";position:absolute;top:-26px;left:50%;width:2px;height:26px;background:linear-gradient(var(--tealdim),var(--border));transform:translateX(-50%)}
+  .band + .band::after{content:"";position:absolute;top:-9px;left:50%;width:7px;height:7px;border-right:2px solid var(--tealdim);border-bottom:2px solid var(--tealdim);transform:translateX(-50%) rotate(45deg)}
+  .tier{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+  .tier .n{font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .tier h2{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);margin:0}
+  .tier .note{font-size:12.5px;color:var(--faint);margin-left:auto}
+
+  .row{display:flex;flex-wrap:wrap;gap:12px}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+
+  .c{border:1px solid var(--border);border-left-width:3px;border-radius:11px;background:var(--surface);padding:12px 14px;flex:1 1 210px;min-width:0}
+  .c .t{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:650;color:var(--ink)}
+  .c .t .tag{margin-left:auto;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--faint);border-radius:5px;padding:2px 6px}
+  .c p{margin:7px 0 0;font-size:12px;line-height:1.5;color:var(--faint)}
+  .c code,.mono{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .c .sub{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+  .pill{font-family:var(--mono);font-size:10.5px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:2px 7px;white-space:nowrap}
+
+  .teal{border-left-color:var(--teal)} .azure{border-left-color:var(--azure)}
+  .sage{border-left-color:var(--sage)} .violet{border-left-color:var(--violet)}
+  .amber{border-left-color:var(--amber)} .rose{border-left-color:var(--rose)}
+  .planned{border-style:dashed;opacity:.72}
+  .planned .tag{background:var(--tealdim);color:var(--ink)}
+
+  .lenses{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:6px}
+  .lens{border:1px solid var(--border);border-top-width:3px;border-radius:11px;background:var(--surface);padding:13px 14px}
+  .lens .lt{font-size:14px;font-weight:700;color:var(--ink)}
+  .lens p{margin:6px 0 0;font-size:11.5px;line-height:1.45;color:var(--faint)}
+  .lens.l-log{border-top-color:var(--teal)} .lens.l-phy{border-top-color:var(--azure)}
+  .lens.l-net{border-top-color:var(--sage)} .lens.l-code{border-top-color:var(--violet)}
+  .model-core{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:14px;padding:10px 16px;border:1px dashed var(--tealdim);border-radius:11px;background:rgba(60,109,114,.1);font-size:13px;color:var(--muted)}
+  .model-core b{color:var(--teal)}
+
+  .flow-line{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap}
+  .flow-line .arrow{align-self:center;color:var(--dim);font-size:20px;padding:0 2px}
+
+  .flows{margin-top:40px}
+  .flows h3{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:0 0 14px}
+  .flowgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+  .flow{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:14px 16px;position:relative;overflow:hidden}
+  .flow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+  .flow.f1::before{background:var(--violet)} .flow.f2::before{background:var(--amber)}
+  .flow.f3::before{background:var(--teal)} .flow.f4::before{background:var(--sage)}
+  .flow .fn{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .flow .ft{font-size:14px;font-weight:650;color:var(--ink);margin:3px 0 8px}
+  .flow .fp{font-size:12.5px;line-height:1.55;color:var(--faint)}
+  .flow .fp b{color:var(--muted);font-weight:600}
+  .flow .path{margin-top:9px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7}
+  .flow .path .sep{color:var(--dim)}
+
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:10px 22px;font-size:12px;color:var(--dim)}
+  footer b{color:var(--faint);font-weight:600}
+
+  @media(max-width:640px){ .tier .note{margin-left:0;flex-basis:100%} .page{padding:32px 16px 56px} }
+</style>
+</head>
+<body>
+<div class="page"><div class="wrap">
+
+  <div style="display:flex;gap:18px;margin-bottom:22px">
+    <a class="back" href="manual.html" style="margin:0">← Field Manual</a>
+    <a class="back" href="architecture-wired.html" style="margin:0;color:var(--violet)">Wired view →</a>
+  </div>
+
+  <header>
+    <p class="eyebrow">System Architecture</p>
+    <h1>One model, one bundle, <em>every surface</em>.</h1>
+    <p class="lead">How the Zen Analytics Workbench fits together — from the desktop canvas and the coding-agent sidecar, down through a single Node backend and its engines, to the one model you view through four lenses. Everything is local-first; source and data never leave the machine.</p>
+  </header>
+
+  <div class="legend" aria-label="Colour legend">
+    <span class="li"><span class="dot" style="background:var(--teal)"></span><b>Logical</b> · modeling core</span>
+    <span class="li"><span class="dot" style="background:var(--azure)"></span><b>Physical</b> · backend</span>
+    <span class="li"><span class="dot" style="background:var(--sage)"></span><b>Network</b> · persistence</span>
+    <span class="li"><span class="dot" style="background:var(--violet)"></span><b>Code</b> · sidecar &amp; agents</span>
+    <span class="li"><span class="dot" style="background:var(--amber)"></span><b>External</b> · AI &amp; inputs</span>
+  </div>
+
+  <div class="stack">
+
+    <section class="band">
+      <div class="tier"><span class="n">01</span><h2>Surfaces</h2><span class="note">where people &amp; agents interact</span></div>
+      <div class="cols">
+        <div class="c azure"><div class="t">Desktop app <span class="tag">electron</span></div><p>The Workbench UX — React + reactflow canvas, the four lenses, Inspector, AI panels. Ships the Node backend inside it.</p></div>
+        <div class="c azure"><div class="t">Web / dev <span class="tag">vite</span></div><p>The same UI in the browser for development and self-hosting (<code>npm run dev</code> / <code>npm start</code>).</p></div>
+        <div class="c violet"><div class="t">Claude Code <span class="tag">agent</span></div><p>Vibecoding, grounded. The <code>zen-ground</code> skill, hooks, and MCP tools give the agent architectural awareness of your repo.</p></div>
+        <div class="c violet"><div class="t">VS Code <span class="tag">extension</span></div><p>A thin extension over the same <code>sidecar/core</code> — ground the project, explain a symbol, open the diagram, right beside your editor.</p></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="tier"><span class="n">02</span><h2>Shared backend — one Node bundle</h2><span class="note">framework-agnostic handlers · hosted by Vite dev · standalone · Electron</span></div>
+      <div class="cols">
+        <div class="c amber"><div class="t">/api/architect</div><p>The AI layer — architect from prose, analyze, tune with per-product experts, explain code. <b>Holds the API key server-side.</b></p></div>
+        <div class="c sage"><div class="t">/api/workspaces</div><p>Persistence — workspaces as plain JSON, written <b>atomically</b>. Postgres store when configured.</p></div>
+        <div class="c violet"><div class="t">/api/codeintel</div><p>Scan · graph · source. Per-project index keyed by repo root. <span class="pill">standalone: on the roadmap</span></p></div>
+        <div class="c azure"><div class="t">/api/discover · pricing</div><p>Read a running estate (Docker / K8s / Azure) back into the model; live cloud pricing.</p></div>
+      </div>
+      <div class="cols" style="margin-top:12px">
+        <div class="c violet" style="flex-basis:100%"><div class="t">The Sidecar — <code>sidecar/core</code> (surface-agnostic engine) <span class="tag">shared</span></div>
+          <p>Points the code-intelligence engine at <b>any</b> repo and returns agent-ready grounding. Every client is a thin wrapper — so a VS Code extension later is an adapter, not a rewrite.</p>
+          <div class="sub">
+            <span class="pill">CLI · zen-ground skill</span><span class="pill">MCP · zen_ground</span><span class="pill">zen_symbol</span><span class="pill">zen_index</span><span class="pill">VS Code ext</span><span class="pill">hooks (live re-ground)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="tier"><span class="n">03</span><h2>Engines</h2><span class="note">the brains — pure, deterministic, testable</span></div>
+      <div class="cols">
+        <div class="c teal"><div class="t">Modeling core</div><p>The catalog of node plugins with real config schemas and cost models.</p>
+          <div class="sub"><span class="pill">capacity</span><span class="pill">cost</span><span class="pill">resilience</span><span class="pill">diurnal load</span></div></div>
+        <div class="c violet"><div class="t">Code intelligence</div><p>Indexer + TS provider → an open relationship graph &amp; the five registries.</p>
+          <div class="sub"><span class="pill">analyzers</span><span class="pill">OTel bridge</span><span class="pill">correlator</span><span class="pill">select</span></div></div>
+        <div class="c teal"><div class="t">Organization</div><p>The people/process modality over the same canvas.</p>
+          <div class="sub"><span class="pill">roles</span><span class="pill">value streams</span><span class="pill">staffing</span><span class="pill">skills</span></div></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="tier"><span class="n">04</span><h2>External inputs</h2><span class="note">read-only in · key never out</span></div>
+      <div class="row">
+        <div class="c violet"><div class="t">Your source repos</div><p>Scanned <b>read-only</b> on your machine into the code graph. Never uploaded.</p></div>
+        <div class="c amber"><div class="t">OpenTelemetry traces</div><p>One import drives <b>both</b> the infra twin and the code-graph latency overlay.</p></div>
+        <div class="c azure"><div class="t">Docker · K8s · Azure</div><p>Discovery reads a live estate back into the model.</p></div>
+        <div class="c amber"><div class="t">Anthropic API</div><p>Optional AI. The key stays server-side; only what you send is sent.</p></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="tier"><span class="n">05</span><h2>One model → four lenses</h2><span class="note">the same system, re-drawn</span></div>
+      <div class="model-core"><b>The model</b> — one workspace: nodes, edges, workload, config, code index &amp; links</div>
+      <div class="lenses">
+        <div class="lens l-log"><div class="lt">Logical</div><p>The design — nodes, flows, protocols, live cost &amp; latency.</p></div>
+        <div class="lens l-phy"><div class="lt">Physical</div><p>Racks, power &amp; placement; security zones and blocked cross-zone links.</p></div>
+        <div class="lens l-net"><div class="lt">Network</div><p>Domains, ports &amp; per-link bandwidth across the estate.</p></div>
+        <div class="lens l-code"><div class="lt">Code</div><p>The real call graph — click a node, land on the source line.</p></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="tier"><span class="n">06</span><h2>Persistence — local-first</h2><span class="note">per-project · atomic · never leaves the machine</span></div>
+      <div class="row">
+        <div class="c sage"><div class="t">workspaces/*.json</div><p>One file per workspace — atomic writes, git-versionable, shareable.</p></div>
+        <div class="c sage"><div class="t">.zen/codeintel/&lt;hash&gt;</div><p>Code index keyed by repo root — so concurrent projects can't collide.</p></div>
+        <div class="c amber"><div class="t">.env</div><p>API key &amp; settings — server-side only, never sent to the browser.</p></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="tier"><span class="n">07</span><h2>Delivery — one tag, three channels</h2><span class="note">git tag → CI fans out</span></div>
+      <div class="flow-line">
+        <div class="c teal" style="flex:0 0 auto;min-width:150px"><div class="t">git tag</div><p><code>npm version</code> → CI</p></div>
+        <span class="arrow">→</span>
+        <div class="c azure"><div class="t">GitHub Releases</div><p>Desktop installers (mac / win / linux). <span class="pill">unsigned — right-click&nbsp;→&nbsp;Open</span></p></div>
+        <div class="c violet"><div class="t">npm</div><p><code>npx zen-sidecar</code> — MCP server &amp; CLI. <span class="pill">roadmap</span></p></div>
+        <div class="c violet"><div class="t">Claude Code plugin</div><p>skill + hooks + MCP, one install. <span class="pill">roadmap</span></p></div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="flows">
+    <h3>Key flows — how it plays together</h3>
+    <div class="flowgrid">
+      <div class="flow f1">
+        <div class="fn">FLOW 01</div><div class="ft">Vibecoding, grounded</div>
+        <div class="fp">The agent codes with awareness of your repo's real structure, stack &amp; risks — before it writes the next line.</div>
+        <div class="path">Claude Code <span class="sep">→</span> MCP <span class="sep">→</span> sidecar/core <span class="sep">→</span> code-intel <span class="sep">→</span> <b>your repo</b> <span class="sep">→</span> grounding back</div>
+      </div>
+      <div class="flow f2">
+        <div class="fn">FLOW 02</div><div class="ft">One trace, both layers</div>
+        <div class="fp">A single OpenTelemetry import lights up the infrastructure twin <b>and</b> the code-graph latency heat — a span carries both <code>service.name</code> and <code>code.function</code>.</div>
+        <div class="path">OTel trace <span class="sep">→</span> codeintel/telemetry <span class="sep">→</span> infra nodes <span class="sep">+</span> call-graph overlay</div>
+      </div>
+      <div class="flow f3">
+        <div class="fn">FLOW 03</div><div class="ft">Model → lenses</div>
+        <div class="fp">You edit <b>one</b> model; flipping a lens re-draws it — the model underneath never changes.</div>
+        <div class="path">model <span class="sep">→</span> Logical <span class="sep">·</span> Physical <span class="sep">·</span> Network <span class="sep">·</span> Code</div>
+      </div>
+      <div class="flow f4">
+        <div class="fn">FLOW 04</div><div class="ft">Code ↔ infra tie-in</div>
+        <div class="fp">Assign a module to a canvas node and hop either way — from a node see its code, from a symbol see its node &amp; measured latency.</div>
+        <div class="path">Code lens <span class="sep">⇄</span> codeLinks <span class="sep">⇄</span> architecture node</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span><b>Local-first</b> — runs on your laptop; source &amp; data stay on the machine.</span>
+    <span><b>One bundle</b> — a modular monolith (esbuild), shipped in the app and as the sidecar.</span>
+    <span><b>Extensible</b> — five open registries; every language, telemetry source &amp; correlator is a plugin.</span>
+  </footer>
+
+</div></div>
+</body>
+</html>
