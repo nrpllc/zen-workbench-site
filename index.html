@@ -342,6 +342,224 @@
     <p class="tick"><b>Every screen below</b> <span>is the running product, not a mock-up</span></p>
   </header>
 
+  <!-- ═══ ONE MODEL, FOUR LENSES ═══ -->
+  <section id="lenses">
+    <p class="eyebrow">One model, four lenses</p>
+    <h2>The same system, seen four ways.</h2>
+    <p class="lede" style="margin-top:20px">
+      A design in Zen isn't a diagram — it's a <b>model</b>, and you look at that one model through four
+      lenses: the <b>logic</b> of it, the <b>iron</b> it runs on, the <b>wires</b> between zones, and — now —
+      the <b>source code</b> that implements it. Flip between them from the ribbon; the model underneath
+      never changes.
+    </p>
+
+    <style>
+      #lenses-svg text{font-family:var(--sans)}
+      #lenses-svg .card{fill:var(--panel-2);stroke:var(--rule)}
+      #lenses-svg .title{fill:var(--ink)}
+      #lenses-svg .sub,#lenses-svg .cap{fill:var(--ink-2)}
+      #lenses-svg .rule{stroke:var(--rule)}
+      #lenses-svg .gbg{fill:var(--ground)}
+      #lenses-svg .teal{stroke:var(--teal)} #lenses-svg .b-teal{fill:var(--teal)}
+      #lenses-svg .azure{stroke:var(--azure)} #lenses-svg .b-azure{fill:var(--azure)}
+      #lenses-svg .sage{stroke:var(--oss)} #lenses-svg .b-sage{fill:var(--oss)}
+      #lenses-svg .violet{stroke:var(--violet)} #lenses-svg .b-violet{fill:var(--violet)}
+      .lens-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:30px}
+      .lcard{border:1px solid var(--rule);border-radius:12px;padding:16px 18px;background:var(--panel)}
+      .lcard b{color:var(--ink);font-size:15px}
+      .lcard p{color:var(--ink-2);margin:8px 0 0;font-size:13.5px;line-height:1.5}
+      .lcard.t-log{border-top:3px solid var(--teal)} .lcard.t-phy{border-top:3px solid var(--azure)}
+      .lcard.t-net{border-top:3px solid var(--oss)} .lcard.t-code{border-top:3px solid var(--violet)}
+    </style>
+
+    <figure style="margin-top:30px">
+      <svg id="lenses-svg" viewBox="0 0 920 300" width="100%" role="img" aria-label="One model, four lenses: Logical, Physical, Network and Code." style="display:block;max-width:960px;margin:0 auto">
+        <text class="cap" x="460" y="28" text-anchor="middle" font-size="15">One model — four lenses on the same system</text>
+        <line class="rule" x1="150" y1="46" x2="770" y2="46" stroke-width="1"/>
+        <g>
+          <rect class="card" x="0" y="58" width="215" height="234" rx="14"/>
+          <rect class="b-teal" x="16" y="74" width="40" height="4" rx="2"/>
+          <text class="title" x="16" y="102" font-size="17" font-weight="600">Logical</text>
+          <line class="rule" x1="73" y1="176" x2="137" y2="162" stroke-width="2"/>
+          <line class="rule" x1="137" y1="162" x2="115" y2="206" stroke-width="2"/>
+          <line class="rule" x1="73" y1="176" x2="115" y2="206" stroke-width="2"/>
+          <circle class="teal gbg" cx="73" cy="176" r="10" stroke-width="2"/>
+          <circle class="teal gbg" cx="137" cy="162" r="10" stroke-width="2"/>
+          <circle class="teal gbg" cx="115" cy="206" r="10" stroke-width="2"/>
+          <text class="sub" x="16" y="250" font-size="11.5">The design — nodes, flows,</text>
+          <text class="sub" x="16" y="266" font-size="11.5">protocols, live cost &amp; latency.</text>
+        </g>
+        <g transform="translate(235,0)">
+          <rect class="card" x="0" y="58" width="215" height="234" rx="14"/>
+          <rect class="b-azure" x="16" y="74" width="40" height="4" rx="2"/>
+          <text class="title" x="16" y="102" font-size="17" font-weight="600">Physical</text>
+          <rect class="azure" x="83" y="140" width="50" height="84" rx="4" fill="none" stroke-width="2"/>
+          <line class="azure" x1="83" y1="160" x2="133" y2="160" stroke-width="2"/>
+          <line class="azure" x1="83" y1="182" x2="133" y2="182" stroke-width="2"/>
+          <line class="azure" x1="83" y1="204" x2="133" y2="204" stroke-width="2"/>
+          <rect class="b-azure" x="90" y="148" width="8" height="6" rx="1"/>
+          <text class="sub" x="16" y="250" font-size="11.5">Racks, power &amp; placement —</text>
+          <text class="sub" x="16" y="266" font-size="11.5">the iron and its security zones.</text>
+        </g>
+        <g transform="translate(470,0)">
+          <rect class="card" x="0" y="58" width="215" height="234" rx="14"/>
+          <rect class="b-sage" x="16" y="74" width="40" height="4" rx="2"/>
+          <text class="title" x="16" y="102" font-size="17" font-weight="600">Network</text>
+          <rect class="sage" x="60" y="150" width="44" height="44" rx="6" fill="none" stroke-width="2"/>
+          <rect class="sage" x="112" y="168" width="44" height="44" rx="6" fill="none" stroke-width="2"/>
+          <line class="sage" x1="104" y1="172" x2="112" y2="182" stroke-width="2"/>
+          <circle class="b-sage" cx="108" cy="177" r="3"/>
+          <text class="sub" x="16" y="250" font-size="11.5">Zones, ports &amp; per-link</text>
+          <text class="sub" x="16" y="266" font-size="11.5">bandwidth across the estate.</text>
+        </g>
+        <g transform="translate(705,0)">
+          <rect class="card" x="0" y="58" width="215" height="234" rx="14"/>
+          <rect class="b-violet" x="16" y="74" width="40" height="4" rx="2"/>
+          <text class="title" x="16" y="102" font-size="17" font-weight="600">Code <tspan class="b-violet" font-size="10" font-weight="500">NEW</tspan></text>
+          <line class="rule" x1="107" y1="158" x2="80" y2="200" stroke-width="2"/>
+          <line class="rule" x1="107" y1="158" x2="134" y2="200" stroke-width="2"/>
+          <rect class="violet gbg" x="90" y="146" width="34" height="18" rx="4" stroke-width="2"/>
+          <rect class="violet gbg" x="63" y="196" width="34" height="18" rx="4" stroke-width="2"/>
+          <rect class="violet gbg" x="117" y="196" width="34" height="18" rx="4" stroke-width="2"/>
+          <text class="sub" x="16" y="250" font-size="11.5">The real call graph — click a</text>
+          <text class="sub" x="16" y="266" font-size="11.5">node, land on the source line.</text>
+        </g>
+      </svg>
+      <figcaption style="text-align:center;color:var(--ink-3);font-size:13px;margin-top:14px">Four lenses on one model — flip between them from the ribbon; the model underneath never changes.</figcaption>
+    </figure>
+
+    <div class="lens-cards">
+      <div class="lcard t-log"><b>Logical</b><p>The design — nodes, flows, protocols, and live cost &amp; latency. Where you spend most of your time.</p></div>
+      <div class="lcard t-phy"><b>Physical</b><p>Placement, security zones, and full rack elevations — real machines, power and weight.</p></div>
+      <div class="lcard t-net"><b>Network</b><p>Domains, ports and per-link bandwidth across the estate. Movable, resizable.</p></div>
+      <div class="lcard t-code"><b>Code</b><p>Scan the source into a real call graph, overlay live OpenTelemetry latency, and click a symbol to jump to the exact line — tying the architecture to the code that runs it.</p></div>
+    </div>
+  </section>
+
+  <!-- ═══ THE CODE LENS — CODE INTELLIGENCE ═══ -->
+  <section id="code">
+    <p class="eyebrow">The Code lens · code intelligence</p>
+    <h2>Down to the source line.</h2>
+    <p class="lede" style="margin-top:20px">
+      The newest lens goes deeper than a diagram. Point Zen at your repository and it scans the source
+      into a real <b>call graph</b> — who calls whom, across files. Click any function to land on the
+      <b>exact line</b>. Import an OpenTelemetry trace and the graph lights up with <b>measured
+      latency</b>. And an AI, grounded in the graph and the source itself, tells you what a symbol does
+      and where the risk is.
+    </p>
+
+    <style>
+      #cl-screen{border:1px solid var(--rule);border-radius:14px;background:var(--panel);overflow:hidden;max-width:980px;margin:0 auto;box-shadow:0 24px 60px -34px rgba(0,0,0,.55)}
+      #cl-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--rule);background:var(--panel-2)}
+      #cl-bar i{width:10px;height:10px;border-radius:50%;background:var(--rule)}
+      #cl-bar span{margin-left:12px;font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+      #cl-body{display:grid;grid-template-columns:186px 0.9fr 1.06fr}
+      #cl-nav{border-right:1px solid var(--rule);background:var(--panel-2);padding:9px;font-family:var(--mono);font-size:11px}
+      #cl-nav .s{color:var(--ink-3);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;margin-bottom:9px;background:var(--panel)}
+      #cl-nav .mod{display:flex;align-items:center;color:var(--ink-2);padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #cl-nav .mod em{margin-left:auto;padding-left:6px;font-style:normal;color:var(--ink-3);font-size:9.5px}
+      #cl-nav .sym{display:flex;align-items:center;color:var(--ink-3);padding:4px 6px 4px 18px}
+      #cl-nav .sym.on{background:rgba(167,139,214,.16);color:var(--ink);border-radius:5px}
+      #cl-nav .sym em{margin-left:auto;font-style:normal;color:var(--warn);font-size:9.5px}
+      #cl-graph{border-right:1px solid var(--rule);padding:14px;background:var(--ground)}
+      #cl-graph svg text{font-family:var(--mono);fill:var(--ink)}
+      #cl-graph svg .node{fill:var(--panel);stroke:var(--rule);stroke-width:1}
+      #cl-graph svg .focus{fill:var(--panel);stroke:var(--violet);stroke-width:2}
+      #cl-graph svg .edge{fill:none;stroke:var(--rule);stroke-width:1.5}
+      #cl-graph svg .arw{fill:var(--ink-3)}
+      #cl-graph svg .lat{fill:var(--warn)}
+      #cl-shd{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid var(--rule)}
+      #cl-shd b{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+      #cl-shd .chip{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--warn);border:1px solid var(--rule);border-radius:6px;padding:2px 7px}
+      #cl-code{margin:0;padding:12px 0;font-family:var(--mono);font-size:11.5px;line-height:1.75}
+      #cl-code .ln{display:flex}
+      #cl-code .ln .n{width:40px;text-align:right;padding-right:12px;color:var(--ink-3);flex:0 0 auto}
+      #cl-code .ln .c{color:var(--ink-2);white-space:pre}
+      #cl-code .ln.hot{background:rgba(94,176,183,.12);border-left:2px solid var(--teal)}
+      #cl-code .ln.hot .n{color:var(--teal)}
+      #cl-ai{border-top:1px solid var(--rule);padding:14px 16px;background:var(--panel-2)}
+      #cl-ai .h{display:flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:8px;font-weight:600}
+      #cl-ai p{margin:0;font-size:13px;line-height:1.55;color:var(--ink-2)}
+      #cl-ai p b{color:var(--ink)}
+      @media(max-width:820px){#cl-body{grid-template-columns:1fr}#cl-nav,#cl-graph{border-right:none;border-bottom:1px solid var(--rule)}}
+    </style>
+
+    <figure style="margin-top:30px">
+      <div id="cl-screen">
+        <div id="cl-bar"><i></i><i></i><i></i><span>Code lens · src/analysis/staffing.ts · runtime overlay ON</span></div>
+        <div id="cl-body">
+          <div id="cl-nav">
+            <div class="s">⌕ search symbols…</div>
+            <div class="mod">▾ analysis/staffing.ts <em>3</em></div>
+            <div class="sym on">ƒ planStaffing <em>42ms</em></div>
+            <div class="sym">ƒ matchExisting</div>
+            <div class="sym">ƒ rateOf</div>
+            <div class="mod">▸ analysis/capacity.ts <em>5</em></div>
+            <div class="mod">▸ analysis/orgMetrics.ts <em>7</em></div>
+            <div class="mod">▸ store/graphStore.ts <em>12</em></div>
+            <div class="mod">▸ components/Inspector.tsx <em>9</em></div>
+          </div>
+          <div id="cl-graph">
+            <svg viewBox="0 0 420 240" width="100%" role="img" aria-label="Call-graph neighbourhood of planStaffing: its callers and callees.">
+              <defs><marker id="cla" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arw" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+              <g class="edge" marker-end="url(#cla)">
+                <path d="M114,49 C135,50 135,110 148,112"/>
+                <path d="M114,165 C135,164 135,116 148,116"/>
+                <path d="M264,110 C284,80 284,42 300,39"/>
+                <path d="M264,114 L300,112"/>
+                <path d="M264,118 C284,148 284,182 300,185"/>
+              </g>
+              <rect class="node" x="6" y="34" width="108" height="30" rx="7"/>
+              <text x="16" y="53" font-size="10.5">designProcess</text>
+              <rect class="node" x="6" y="150" width="108" height="30" rx="7"/>
+              <text x="16" y="169" font-size="10.5">applyStaffed</text>
+              <rect class="focus" x="148" y="90" width="116" height="46" rx="10"/>
+              <text x="160" y="112" font-size="11" font-weight="600">planStaffing</text>
+              <text class="lat" x="160" y="126" font-size="8.5">p99 42ms · 128×</text>
+              <rect class="node" x="300" y="24" width="114" height="30" rx="7"/>
+              <text x="310" y="43" font-size="10.5">orgUtilization</text>
+              <rect class="node" x="300" y="97" width="114" height="30" rx="7"/>
+              <text x="310" y="116" font-size="10.5">matchExisting</text>
+              <rect class="node" x="300" y="170" width="114" height="30" rx="7"/>
+              <text x="310" y="189" font-size="10.5">targetRate</text>
+            </svg>
+          </div>
+          <div id="cl-src">
+            <div id="cl-shd"><b>planStaffing</b> <span style="color:var(--ink-3);font-family:var(--mono);font-size:11px">staffing.ts:126</span> <span class="chip">p99 42ms · 128×</span></div>
+            <div id="cl-code">
+              <div class="ln"><span class="n">126</span><span class="c">export function planStaffing(</span></div>
+              <div class="ln"><span class="n">127</span><span class="c">  spec, nodes, edges, services,</span></div>
+              <div class="ln"><span class="n">128</span><span class="c">  runsPerMonth, roleRates = {},</span></div>
+              <div class="ln"><span class="n">129</span><span class="c">): StaffingPlan {</span></div>
+              <div class="ln hot"><span class="n">130</span><span class="c">  const util = orgUtilization(nodes)</span></div>
+              <div class="ln hot"><span class="n">131</span><span class="c">  const need = demandByRole(spec)</span></div>
+              <div class="ln"><span class="n">132</span><span class="c">  for (const role of need) {</span></div>
+              <div class="ln"><span class="n">133</span><span class="c">    const hit = matchExisting(role)</span></div>
+              <div class="ln"><span class="n">134</span><span class="c">    plan.push(rateOf(role, hit))</span></div>
+              <div class="ln"><span class="n">135</span><span class="c">  }</span></div>
+              <div class="ln"><span class="n">136</span><span class="c">  return reconcile(plan)</span></div>
+            </div>
+          </div>
+        </div>
+        <div id="cl-ai">
+          <div class="h">✦ Ask AI · grounded in the graph, source &amp; trace</div>
+          <p><b>planStaffing</b> is called from <b>designProcess</b> and <b>applyStaffed</b>, and drives
+          orgUtilization, matchExisting and targetRate — a coordination hub, so a change here ripples
+          across staffing. Its p99 of 42 ms over 128 calls is modest, not a hot path. Watch the
+          <b>rateOf</b> fallback when a role has no skill match — that's the branch most likely to
+          mis-price.</p>
+        </div>
+      </div>
+      <figcaption style="text-align:center;color:var(--ink-3);font-size:13px;margin-top:14px">Click a node → land on the source; a trace paints the latency; the AI reads all three.</figcaption>
+    </figure>
+
+    <div class="lens-cards">
+      <div class="lcard t-code"><b>Call graph</b><p>Scan any repo into a cross-file call graph — who calls whom. TypeScript &amp; JavaScript today; more languages next.</p></div>
+      <div class="lcard t-code"><b>Click to source</b><p>Click a node and land on the exact line. Walk callers and callees in both directions, or search every symbol.</p></div>
+      <div class="lcard t-code"><b>AI feedback</b><p>Ask about a symbol — the answer is grounded in the source, the graph, and the measured latency, so it cites real callers and real numbers.</p></div>
+    </div>
+  </section>
+
   <!-- ═══ OKRs — DESIGN TO TARGET ═══ -->
   <section id="okr">
     <p class="eyebrow">Design to target</p>
