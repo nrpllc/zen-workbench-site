@@ -432,7 +432,7 @@
       <div class="lcard t-log"><b>Logical</b><p>The design — nodes, flows, protocols, and live cost &amp; latency. Where you spend most of your time.</p></div>
       <div class="lcard t-phy"><b>Physical</b><p>Placement, security zones, and full rack elevations — real machines, power and weight.</p></div>
       <div class="lcard t-net"><b>Network</b><p>Domains, ports and per-link bandwidth across the estate. Movable, resizable.</p></div>
-      <div class="lcard t-code"><b>Code</b><p>Scan the source into a real call graph, overlay live OpenTelemetry latency, and click a symbol to jump to the exact line — tying the architecture to the code that runs it.</p></div>
+      <div class="lcard t-code"><b>Code</b><p>Scan the source into a real call graph, overlay live latency, see which tests cover each symbol with pass/fail and timing, and click through to the exact line — tying the architecture to the code that runs it.</p></div>
     </div>
   </section>
 
@@ -446,6 +446,14 @@
       <b>exact line</b>. Import an OpenTelemetry trace and the graph lights up with <b>measured
       latency</b>. And an AI, grounded in the graph and the source itself, tells you what a symbol does
       and where the risk is.
+    </p>
+    <p class="lede" style="margin-top:16px">
+      It goes further now. The graph carries <b>globals, class fields and their read/write flow</b>,
+      colour- and shape-coded by kind and scope; the source is <b>syntax-highlighted</b> and
+      <b>full-text searchable</b>; flag any symbol and hand it to <b>Claude or VS Code to fix</b>. And your
+      <b>test suite becomes a lens</b> — pass/fail and per-test timing surface inside Zen, with
+      <b>coverage that falls out of the call graph</b> (a test's calls <i>are</i> the code it covers).
+      Click a failing or slow test and land on its source. Structure, proof, and speed — one view.
     </p>
 
     <style>
