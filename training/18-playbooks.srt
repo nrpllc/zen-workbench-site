@@ -1,0 +1,56 @@
+1
+00:00:00,000 --> 00:00:03,552
+Chapter eighteen — playbooks.
+
+2
+00:00:03,612 --> 00:00:10,658
+A step on a diagram tells you
+nothing about how to run it.
+
+3
+00:00:10,718 --> 00:00:15,959
+Two experts fix that.
+
+4
+00:00:16,019 --> 00:00:25,466
+Expand with expert takes a macro step
+and breaks it into the real ones.
+
+5
+00:00:25,526 --> 00:00:42,672
+And Generate playbook makes
+this step actually runnable.
+
+6
+00:00:42,732 --> 00:01:11,242
+A process-operations expert reads the
+step, its lane, its inputs and its yield —
+
+7
+00:01:11,302 --> 00:01:22,257
+— and writes the entry criteria, the sequence,
+the checks and the artifacts it produces.
+
+8
+00:01:22,317 --> 00:01:33,087
+It lands on the step itself, under Playbook.
+
+9
+00:01:33,147 --> 00:01:42,095
+A playbook a team could
+pick up and run tomorrow.
+
+10
+00:01:42,155 --> 00:01:50,107
+It is kept on the step, and
+it exports with the process.
+
+11
+00:01:50,167 --> 00:01:56,114
+Perry the process analyst is one
+of six experts on this side —
+
+12
+00:01:56,174 --> 00:02:04,181
+change management, agile delivery, incidents,
+onboarding and procurement are the others.

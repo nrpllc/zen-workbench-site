@@ -1,0 +1,50 @@
+1
+00:00:00,001 --> 00:00:03,943
+Chapter twenty — the service catalog.
+
+2
+00:00:04,003 --> 00:00:18,434
+A process is not a service. A
+service is what the business buys.
+
+3
+00:00:18,494 --> 00:00:29,938
+A service is a business capability: a process, plus
+the people who run it, plus the software behind it.
+
+4
+00:00:29,998 --> 00:00:37,188
+Publish this organization and it becomes one.
+
+5
+00:00:37,248 --> 00:00:51,511
+Rolled up: what it costs a month, how
+long it takes, and how capable it is.
+
+6
+00:00:51,571 --> 00:00:58,788
+Sort the catalog by cost —
+
+7
+00:00:58,848 --> 00:01:05,260
+— by cycle time —
+
+8
+00:01:05,320 --> 00:01:14,765
+— or by sigma, to find the service
+that fails people most often.
+
+9
+00:01:14,825 --> 00:01:25,882
+That is a portfolio view an
+executive can actually use.
+
+10
+00:01:25,942 --> 00:01:37,321
+And a new one can be designed the
+same way everything else here is.
+
+11
+00:01:37,381 --> 00:01:44,383
+Cost, cycle time and capability
+— per service, from the model.

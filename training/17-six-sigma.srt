@@ -1,0 +1,68 @@
+1
+00:00:00,000 --> 00:00:03,952
+Chapter seventeen — process capability.
+
+2
+00:00:04,012 --> 00:00:11,764
+Switch to swimlanes and the
+organization becomes the work it does.
+
+3
+00:00:11,824 --> 00:00:20,678
+Lanes are roles. Cards are
+steps. Arrows are handoffs.
+
+4
+00:00:20,738 --> 00:00:32,876
+Cycle time: one point three days — three
+hours of work, and a day and a bit of waiting.
+
+5
+00:00:32,936 --> 00:00:45,068
+Flow efficiency: nine per cent. Typical is
+five to fifteen. Almost all of it is queue.
+
+6
+00:00:45,128 --> 00:00:54,367
+Five handoffs, and every
+one of them crosses a lane.
+
+7
+00:00:54,427 --> 00:01:06,063
+Rolled yield: fifty-nine per cent. Forty-one
+per cent of this process is rework.
+
+8
+00:01:06,123 --> 00:01:16,568
+Which is one point seven sigma — four
+hundred and ten thousand defects per million.
+
+9
+00:01:16,628 --> 00:01:28,077
+Computed from first-pass yield through the normal
+curve, with the conventional one point five sigma shift.
+
+10
+00:01:28,137 --> 00:01:36,087
+And it names the worst step,
+so you know where to start.
+
+11
+00:01:36,147 --> 00:01:40,543
+Open that step and the same
+maths is there, per step.
+
+12
+00:01:40,603 --> 00:01:50,551
+Work, wait, first-pass yield — and the
+sigma and DPMO that fall out of them.
+
+13
+00:01:50,611 --> 00:02:00,561
+Plus who is accountable, who contributes,
+and what those people cost per month.
+
+14
+00:02:00,621 --> 00:02:07,126
+Six Sigma without a spreadsheet,
+on the process as modelled.

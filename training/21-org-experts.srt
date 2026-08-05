@@ -1,0 +1,66 @@
+1
+00:00:00,000 --> 00:00:04,343
+Chapter twenty-one — the
+experts, and the report.
+
+2
+00:00:04,403 --> 00:00:11,849
+The system side has fourteen
+experts. This side has its own.
+
+3
+00:00:11,909 --> 00:00:21,354
+Perry the process analyst. Charlie on
+change management. Dana on agile delivery.
+
+4
+00:00:21,414 --> 00:00:30,155
+Ivy on incidents. Olivia on
+onboarding. Priya on procurement.
+
+5
+00:00:30,215 --> 00:00:39,660
+Each one reads the part of the model it
+knows, with your actual numbers in it.
+
+6
+00:00:39,720 --> 00:00:43,800
+Analyze puts the whole
+organization in front of them.
+
+7
+00:00:43,860 --> 00:01:13,385
+Span of control, coordination load,
+bus factor, cost — read together.
+
+8
+00:01:13,445 --> 00:01:24,831
+And it comes back as findings
+against your structure.
+
+9
+00:01:24,891 --> 00:01:31,901
+Then the report is what leaves the building.
+
+10
+00:01:31,961 --> 00:01:40,405
+Overview and capacity, the org chart,
+roles and cost, coordination load,
+
+11
+00:01:40,465 --> 00:01:49,910
+structure and bus factor, the step
+playbooks, and an AI analysis.
+
+12
+00:01:49,970 --> 00:02:00,122
+Out as PDF, Word, PowerPoint, Markdown or SVG.
+
+13
+00:02:00,182 --> 00:02:04,725
+The system side proves the architecture.
+
+14
+00:02:04,785 --> 00:02:10,387
+This side proves the
+organization that has to run it.

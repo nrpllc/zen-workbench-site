@@ -1,0 +1,70 @@
+1
+00:00:00,000 --> 00:00:03,543
+Part two — the organization.
+
+2
+00:00:03,603 --> 00:00:09,147
+Same engine, different subject:
+people, process, and what they cost.
+
+3
+00:00:09,207 --> 00:00:13,550
+Chapter fifteen — an
+organization is a model too.
+
+4
+00:00:13,610 --> 00:00:20,656
+A workspace can hold an organization
+instead of an architecture.
+
+5
+00:00:20,716 --> 00:00:27,661
+The lenses change with it:
+an org chart, and swimlanes.
+
+6
+00:00:27,721 --> 00:00:29,683
+And so does the palette.
+
+7
+00:00:29,743 --> 00:00:40,188
+People and roles, meetings, documents, automation
+— the things an organization is made of.
+
+8
+00:00:40,248 --> 00:00:48,564
+Every role is modelled, not drawn.
+
+9
+00:00:48,624 --> 00:00:56,169
+Headcount, allocation, hours
+a week, and a loaded rate.
+
+10
+00:00:56,229 --> 00:01:05,175
+Which gives you capacity in hours a
+month, and cost in dollars a month.
+
+11
+00:01:05,235 --> 00:01:15,180
+The reporting line is a real edge, so span
+of control and bus factor fall out of it.
+
+12
+00:01:15,240 --> 00:01:23,184
+At the bottom, the same always-live
+strip — for an organization.
+
+13
+00:01:23,244 --> 00:01:34,188
+Fifty-six people. One point six million a month.
+Nine managers, average span three point six.
+
+14
+00:01:34,248 --> 00:01:45,038
+And Design builds one from a description,
+the way Architect does for systems.
+
+15
+00:01:45,098 --> 00:01:48,902
+An org chart that costs itself.

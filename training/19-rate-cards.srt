@@ -1,0 +1,65 @@
+1
+00:00:00,000 --> 00:00:03,543
+Chapter nineteen — rate cards.
+
+2
+00:00:03,603 --> 00:00:11,049
+Every number so far rests on what
+an hour of someone’s time costs.
+
+3
+00:00:11,109 --> 00:00:18,457
+That is a rate card, and it is editable.
+
+4
+00:00:18,517 --> 00:00:32,192
+A loaded rate per role, and per skill —
+set them once and every estimate moves.
+
+5
+00:00:32,252 --> 00:00:44,491
+By skill, or by role type — whichever
+way your finance team thinks.
+
+6
+00:00:44,551 --> 00:00:52,419
+And there is a GSA baseline.
+
+7
+00:00:52,479 --> 00:01:02,424
+Turn it on and anything priced above
+the schedule ceiling is flagged.
+
+8
+00:01:02,484 --> 00:01:15,233
+Useful when the rate you are modelling
+has to survive a contracting officer.
+
+9
+00:01:15,293 --> 00:01:21,303
+People are only part of the bill.
+
+10
+00:01:21,363 --> 00:01:33,230
+Twenty-two documents — each one written
+and maintained by someone, and priced.
+
+11
+00:01:33,290 --> 00:01:43,412
+Three tools, a hundred and thirty-five
+dollars a month in licences.
+
+12
+00:01:43,472 --> 00:01:53,916
+Against sixty-seven thousand a month of
+effort removed — two point three FTE freed.
+
+13
+00:01:53,976 --> 00:02:02,920
+Net impact, and the payback, computed
+the same way the cloud bill is.
+
+14
+00:02:02,980 --> 00:02:08,583
+Automation you can defend
+with a number, not a slogan.

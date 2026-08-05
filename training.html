@@ -7,7 +7,7 @@
 <meta name="description" content="A complete, chapter-by-chapter video walkthrough of Zen Analytics Workbench: every lens, panel and dialog, subtitled, in the order that teaches.">
 <meta name="theme-color" content="#0b0e11">
 <meta property="og:title" content="Zen Analytics Workbench — Training">
-<meta property="og:description" content="14 subtitled chapters, 41:48 end to end. Every lens, menu and dialog.">
+<meta property="og:description" content="21 subtitled chapters, 55:41 end to end. Every lens, menu and dialog.">
 <meta property="og:type" content="website">
 <style>
   :root{
@@ -46,6 +46,11 @@
   main{padding:14px 0 90px}
   .note{margin:30px 0 6px;padding:14px 16px;border:1px solid var(--rule-soft);border-radius:10px;
     background:var(--panel);color:var(--ink-2);font-size:14px;max-width:70ch}
+  .part{margin-top:8px}
+  .partband{margin:44px 0 4px;padding:22px 24px;border:1px solid var(--rule);border-radius:14px;
+    background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%)}
+  .partband h2{margin:8px 0 8px;font-size:clamp(22px,2.6vw,30px);letter-spacing:-0.015em}
+  .partband p{margin:0;color:var(--ink-2);max-width:74ch;font-size:15px}
   .chapter{display:grid;grid-template-columns:380px 1fr;gap:26px;padding:30px 0;border-bottom:1px solid var(--rule-soft)}
   .chapter:last-child{border-bottom:0}
   .thumb{position:relative;display:block;padding:0;border:1px solid var(--rule);border-radius:12px;
@@ -85,11 +90,13 @@
     <div class="kicker">Zen Analytics Workbench</div>
     <h1>Training</h1>
     <p class="lede">The complete walkthrough — every lens, menu, panel and dialog, in the order that
-      teaches rather than the order the menus happen to sit in. Each chapter stands alone, so you can
-      watch the film or take one module at a time. Subtitled throughout, and paced to be read.</p>
+      teaches rather than the order the menus happen to sit in. <strong>Part I</strong> is the system:
+      architecture, infrastructure, code. <strong>Part II</strong> is the organization that has to run
+      it: process, capability and cost. Each chapter stands alone, so you can watch the film or take
+      one module at a time. Subtitled throughout, and paced to be read.</p>
     <div class="stats">
-      <span><b>14</b> chapters</span>
-      <span><b>41:48</b> end to end</span>
+      <span><b>21</b> chapters in two parts</span>
+      <span><b>55:41</b> end to end</span>
       <span><b>1920×1080</b> masters · 720p here</span>
       <span>subtitles included (<b>.srt</b>)</span>
     </div>
@@ -105,6 +112,13 @@
     <p class="note">Recorded against a live workbench — the numbers, graphs and AI responses in these
       clips are the real thing, not a mock-up. Captions are burned in; the matching <code>.srt</code>
       is linked under each chapter if you want to re-cut or translate it.</p>
+
+    <section class="part">
+      <div class="partband">
+        <div class="kicker">Part I · 14 chapters · 42 min</div>
+        <h2>The system</h2>
+        <p>Architecture, infrastructure and the code that implements it. Five lenses onto one model — what it does, where it runs, how it is wired, the racks it lands in, and the repository behind it.</p>
+      </div>
 
       <article class="chapter" id="ch01">
         <button class="thumb" data-src="training/01-orientation.mp4" data-title="01 · Orientation" aria-label="Play chapter 01: Orientation">
@@ -357,6 +371,141 @@
           </div>
         </div>
       </article>
+    </section>
+
+    <section class="part">
+      <div class="partband">
+        <div class="kicker">Part II · 7 chapters · 14 min</div>
+        <h2>The organization</h2>
+        <p>A different subject on the same engine: people, process and what they cost. Roles that supply hours and ceremonies that consume them, Six Sigma capability on a real process, playbooks, rate cards, and a service catalog ranked by cost, cycle time and sigma.</p>
+      </div>
+
+      <article class="chapter" id="ch15">
+        <button class="thumb" data-src="training/15-organization.mp4" data-title="15 · An organization is a model too" aria-label="Play chapter 15: An organization is a model too">
+          <img src="training/15-organization.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">1:49</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 15</div>
+          <h3>An organization is a model too</h3>
+          <p>A workspace can hold an organization instead of an architecture — and the lenses, the palette and the maths change with it.</p>
+          <ul class="covers"><li>Org chart and swimlane lenses</li><li>People, meetings, documents, automation</li><li>A role: headcount, allocation, loaded rate</li><li>Capacity in hours, cost in dollars</li><li>Reporting line, span of control, bus factor</li><li>Design an organization from a description</li></ul>
+          <div class="meta">
+            <a href="training/15-organization.mp4" download>Download MP4 (2.7 MB)</a>
+            <a href="training/15-organization.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch16">
+        <button class="thumb" data-src="training/16-cost-of-meetings.mp4" data-title="16 · The cost of meetings" aria-label="Play chapter 16: The cost of meetings">
+          <img src="training/16-cost-of-meetings.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">1:50</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 16</div>
+          <h3>The cost of meetings</h3>
+          <p>The ledger nobody keeps: roles supply hours, ceremonies consume them, and what is left is the capacity that does the work.</p>
+          <ul class="covers"><li>A meeting as a modelled node</li><li>Attendance edges attribute the cost</li><li>Capacity minus ceremonies = effective FTE</li><li>The coordination tax, computed</li><li>Roles ranked by calendar burden</li></ul>
+          <div class="meta">
+            <a href="training/16-cost-of-meetings.mp4" download>Download MP4 (2.2 MB)</a>
+            <a href="training/16-cost-of-meetings.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch17">
+        <button class="thumb" data-src="training/17-six-sigma.mp4" data-title="17 · Process capability — Six Sigma" aria-label="Play chapter 17: Process capability — Six Sigma">
+          <img src="training/17-six-sigma.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:06</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 17</div>
+          <h3>Process capability — Six Sigma</h3>
+          <p>Swimlanes turn the organization into the work it does, and score it: cycle time, flow efficiency, rolled yield, and a sigma level with its DPMO.</p>
+          <ul class="covers"><li>Lanes, steps and handoffs</li><li>Cycle time: work versus wait</li><li>Flow efficiency against the 5–15% norm</li><li>Rolled yield and rework</li><li>Sigma level and DPMO, with the 1.5σ shift</li><li>Per-step yield and accountability</li></ul>
+          <div class="meta">
+            <a href="training/17-six-sigma.mp4" download>Download MP4 (1.6 MB)</a>
+            <a href="training/17-six-sigma.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch18">
+        <button class="thumb" data-src="training/18-playbooks.mp4" data-title="18 · Playbooks" aria-label="Play chapter 18: Playbooks">
+          <img src="training/18-playbooks.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:02</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 18</div>
+          <h3>Playbooks</h3>
+          <p>A step on a diagram tells you nothing about how to run it. Expand it into real steps, then generate a playbook a team can pick up tomorrow.</p>
+          <ul class="covers"><li>Expand with expert</li><li>Generate playbook — a live call on the step</li><li>Entry criteria, sequence, checks, artifacts</li><li>Kept on the step and exported with the process</li><li>The six process-side experts</li></ul>
+          <div class="meta">
+            <a href="training/18-playbooks.mp4" download>Download MP4 (1.6 MB)</a>
+            <a href="training/18-playbooks.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch19">
+        <button class="thumb" data-src="training/19-rate-cards.mp4" data-title="19 · Rate cards, artifacts and automation" aria-label="Play chapter 19: Rate cards, artifacts and automation">
+          <img src="training/19-rate-cards.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:09</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 19</div>
+          <h3>Rate cards, artifacts and automation</h3>
+          <p>Every number rests on what an hour costs. Set the rates, flag anything above the GSA ceiling, and price the documents and tools too.</p>
+          <ul class="covers"><li>Loaded rates by role and by skill</li><li>The GSA baseline and over-ceiling flagging</li><li>What 22 documents cost to maintain</li><li>Automation spend versus effort saved</li><li>Net impact and payback</li></ul>
+          <div class="meta">
+            <a href="training/19-rate-cards.mp4" download>Download MP4 (2.2 MB)</a>
+            <a href="training/19-rate-cards.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch20">
+        <button class="thumb" data-src="training/20-service-catalog.mp4" data-title="20 · The service catalog" aria-label="Play chapter 20: The service catalog">
+          <img src="training/20-service-catalog.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">1:45</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 20</div>
+          <h3>The service catalog</h3>
+          <p>A service is what the business buys: a process, plus the people who run it, plus the software behind it — rolled up and ranked.</p>
+          <ul class="covers"><li>Publish a workspace as a service</li><li>Process + people + software, rolled up</li><li>Sort by cost, cycle time or sigma</li><li>Design a service with AI</li><li>A portfolio view for an executive</li></ul>
+          <div class="meta">
+            <a href="training/20-service-catalog.mp4" download>Download MP4 (1.1 MB)</a>
+            <a href="training/20-service-catalog.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch21">
+        <button class="thumb" data-src="training/21-org-experts.mp4" data-title="21 · The experts, and the report" aria-label="Play chapter 21: The experts, and the report">
+          <img src="training/21-org-experts.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:10</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 21</div>
+          <h3>The experts, and the report</h3>
+          <p>Perry, Charlie, Dana, Ivy, Olivia and Priya read the org the way the fourteen system experts read an architecture — then it all leaves as a document.</p>
+          <ul class="covers"><li>Six process-side experts</li><li>Analyze: span, coordination, bus factor, cost</li><li>The organization report</li><li>PDF, Word, PowerPoint, Markdown, SVG</li></ul>
+          <div class="meta">
+            <a href="training/21-org-experts.mp4" download>Download MP4 (2.2 MB)</a>
+            <a href="training/21-org-experts.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+    </section>
   </main>
 
   <footer>
