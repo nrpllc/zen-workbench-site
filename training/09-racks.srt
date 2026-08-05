@@ -1,92 +1,120 @@
 1
-00:00:00,000 --> 00:00:03,743
+00:00:00,000 --> 00:00:03,742
 Chapter nine — racks and the facility.
 
 2
-00:00:03,803 --> 00:00:14,449
+00:00:03,802 --> 00:00:14,465
 This is where a design stops being a
 diagram and becomes a purchase order.
 
 3
-00:00:14,509 --> 00:00:23,960
+00:00:14,525 --> 00:00:23,974
 The Racks lens takes the services you
 designed and puts them in real machines.
 
 4
-00:00:24,020 --> 00:00:37,549
+00:00:24,034 --> 00:00:37,556
 IT load, heat, weight, inventory and
 energy — across the top, always live.
 
 5
-00:00:37,609 --> 00:00:42,553
+00:00:37,616 --> 00:00:42,558
 It can design the whole
 estate from the architecture.
 
 6
-00:00:42,613 --> 00:00:54,633
+00:00:42,618 --> 00:00:54,659
 Two data centres active-active, primary
 plus DR, or a scale-up analytics build.
 
 7
-00:00:54,693 --> 00:01:10,683
+00:00:54,719 --> 00:01:10,161
 Quick build does it deterministically.
 Design facility hands it to Claude.
 
 8
-00:01:10,743 --> 00:01:20,188
-Nodes placed in chassis, chassis
-placed in racks, racks placed in halls.
+00:01:10,221 --> 00:01:20,665
+It shows its working: nodes to chassis,
+chassis to racks, racks to sites.
 
 9
-00:01:20,248 --> 00:01:33,828
+00:01:20,725 --> 00:01:33,345
+Sites, racks, machines and
+compute — counted, not estimated.
+
+10
+00:01:33,405 --> 00:01:40,351
+And the estate lands on the canvas behind it.
+
+11
+00:01:40,411 --> 00:01:53,923
 The rack elevation is the front face
 — named services in real rack units.
 
-10
-00:01:33,888 --> 00:01:51,165
+12
+00:01:53,983 --> 00:02:03,932
 Turn it round: cable routing,
 top-of-rack A and B, PDU channels.
 
-11
-00:01:51,225 --> 00:02:04,718
-The hall itself — rows, positions
-and the space they take.
-
-12
-00:02:04,778 --> 00:02:15,222
-Cabling gives you the pull list: every
-run, its length, its type and its cost.
-
 13
-00:02:15,282 --> 00:02:28,451
+00:02:03,992 --> 00:02:09,404
+Back to the front.
+
+14
+00:02:09,464 --> 00:02:13,868
+Then the hall itself.
+
+15
+00:02:13,928 --> 00:02:23,378
+Rows, positions, and the
+floor space they take.
+
+16
+00:02:23,438 --> 00:02:27,842
+And the cabling.
+
+17
+00:02:27,902 --> 00:02:38,350
+The pull list: every run, its
+length, its type and its cost.
+
+18
+00:02:38,410 --> 00:02:47,860
 Port headroom on each switch, and
 what the whole plant costs to wire.
 
-14
-00:02:28,511 --> 00:02:37,961
+19
+00:02:47,920 --> 00:02:51,531
+Back to the elevation.
+
+20
+00:02:51,591 --> 00:03:01,038
 On the right: core budgets, power
 feeds in 2N, and hall budgets.
 
-15
-00:02:38,021 --> 00:02:48,970
+21
+00:03:01,098 --> 00:03:12,046
 Kilowatts, BTU per hour, kilograms per square
 metre, floor area — against capacity, not vibes.
 
-16
-00:02:49,030 --> 00:02:53,773
+22
+00:03:12,106 --> 00:03:16,852
 Drawing set exports the lot as a document.
 
-17
-00:02:53,833 --> 00:02:58,976
+23
+00:03:16,912 --> 00:03:22,057
 Ask Larry is the facility
 expert, on the same numbers.
 
-18
-00:02:59,036 --> 00:03:11,074
+24
+00:03:22,117 --> 00:03:30,564
 And the hardware catalog on the left
 is what you are allowed to put in.
 
-19
-00:03:11,134 --> 00:03:16,737
-From a sentence about a system,
-to the racks it lands in.
+25
+00:03:30,624 --> 00:03:34,070
+From a sentence about a system —
+
+26
+00:03:34,130 --> 00:03:39,132
+— to the racks it lands in.
