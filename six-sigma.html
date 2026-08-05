@@ -61,6 +61,9 @@
   .card p{margin:0;font-size:14.5px}
   .card.act{border-color:var(--teal-deep)}
   .card.act h3{color:var(--teal)}
+  .partband{margin:10px 0 4px;padding:22px 24px;border:1px solid var(--rule);border-radius:14px;
+    background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%)}
+  code{font-family:var(--mono);font-size:13.5px;color:var(--ink)}
 
   table{border-collapse:collapse;width:100%;margin-top:18px;font-family:var(--mono);font-size:13.5px}
   th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule-soft)}
@@ -104,6 +107,10 @@
   <p class="lede">Zen puts six indicators on every process you model. They come from Six Sigma, which
     has a reputation for being a week of training. The idea underneath it takes about six minutes —
     and once you have it, the numbers stop being decoration and start telling you where to go.</p>
+  <p class="lede" style="margin-top:10px">Sections 1 to 5 are that six minutes. Sections 6 to 13 are
+    for anyone who has already played with this and found the usual explanations a bit thin — what
+    Zen actually counts, where the 1.5σ convention comes from, what it deliberately does not do, and
+    the arithmetic that decides which improvement is worth making.</p>
   <div class="backlinks">
     <a class="btn" href="training.html">The full training set</a>
     <a class="btn" href="index.html">Product page</a>
@@ -335,6 +342,198 @@
       <p>Each of these is a dial on the model, not a workshop. Change it and every number moves at
         once, so you can see whether the idea was worth doing before you do it.</p>
     </div>
+  </div>
+</section>
+
+
+<!-- ── the longer version ─────────────────────────────────────── -->
+<section id="deeper" style="border-bottom:0;padding-bottom:8px">
+  <div class="partband">
+    <div class="kicker">The longer version</div>
+    <h2 style="margin-top:8px">If you have played with this before</h2>
+    <p style="max-width:74ch">Everything above is true and useful. It is also the version that stops
+      exactly where the interesting questions start. What counts as a defect here? Why 1.5? Why does
+      fixing your worst step barely move the number? What is this costing? Eight more sections, and
+      the arithmetic is shown rather than asserted.</p>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="num">06</div>
+  <h2>What Zen counts as a defect — and what it does not</h2>
+  <p>Zen's per-step number is <strong>first-pass yield</strong>: the share of work that clears the step
+    without going round again. Rolled yield is those multiplied along the chain, and the “DPMO” on the
+    strip is <code>(1 − rolled yield) × 1,000,000</code>.</p>
+  <p>If you have done this before, you will notice that is <strong>defective units per million</strong>,
+    not classical DPMO — which divides by the number of <em>opportunities</em> for a defect in each unit.
+    That is a deliberate choice: opportunity-counting is where Six Sigma numbers go to be gamed, since
+    inflating the opportunity count flatters the result. Zen's version is comparable to itself over
+    time, which is what you need to steer. It is <em>not</em> directly comparable to a DPMO someone
+    quotes from a manufacturing line.</p>
+  <button class="play" data-audio="audio/sec6.mp3"><span class="tri"></span> Listen</button>
+  <div class="cards">
+    <div class="card"><h3>What it means</h3><p>Your sigma here is a yield statement about whole units of
+      work — a claim, a ticket, an onboarding — not about how many ways one unit could go wrong.</p></div>
+    <div class="card act"><h3>What to do</h3><p>Never benchmark this against an external DPMO. Benchmark
+      it against your own last quarter, which is the only comparison that survives scrutiny anyway.</p></div>
+  </div>
+</section>
+
+<section id="s7">
+  <div class="num">07</div>
+  <h2>Where the 1.5σ comes from</h2>
+  <p>A yield of 93.3% is 1.5 standard deviations from the mean of a normal distribution. Zen — like
+    everyone else — reports it as <strong>3σ</strong>. The extra 1.5 is Motorola's long-term drift
+    allowance: processes measured over weeks perform worse than the same processes measured over an
+    afternoon, so the convention builds in a penalty rather than letting a short study flatter you.</p>
+  <p>It is a <em>convention</em>, not mathematics. It is also universal, which is why “six sigma” means
+    3.4 defects per million rather than the 0.002 per million the raw distribution implies.</p>
+  <button class="play" data-audio="audio/sec7.mp3"><span class="tri"></span> Listen</button>
+  <figure>
+    <svg viewBox="0 0 720 150" role="img" aria-label="A normal curve shifted 1.5 sigma to show the long-term drift allowance">
+      <path d="M40 118 C 160 118, 190 30, 300 30 C 410 30, 440 118, 560 118" fill="none" stroke="var(--ink-3)" stroke-width="2" opacity=".5"/>
+      <path d="M160 118 C 280 118, 310 30, 420 30 C 530 30, 560 118, 680 118" fill="none" stroke="var(--teal)" stroke-width="2" class="blink"/>
+      <line x1="300" y1="26" x2="300" y2="126" stroke="var(--ink-3)" stroke-dasharray="3 3"/>
+      <line x1="420" y1="26" x2="420" y2="126" stroke="var(--teal)" stroke-dasharray="3 3"/>
+      <text x="300" y="142" text-anchor="middle" class="lbl">short-term centre</text>
+      <text x="420" y="18" text-anchor="middle" class="lbl">drifted by 1.5σ</text>
+    </svg>
+    <figcaption>the same process, measured over an afternoon and over a year</figcaption>
+  </figure>
+</section>
+
+<section id="s8">
+  <div class="num">08</div>
+  <h2>What this is not</h2>
+  <p>Zen computes <strong>attribute</strong> sigma — pass or fail, counted. It does not do control
+    charts, C<sub>p</sub>/C<sub>pk</sub> capability indices, measurement system analysis, or designed
+    experiments. There is no variance model underneath: a step is 85% good, not “85% good ± 6”.</p>
+  <p>If your process emits a continuous measurement against a specification limit — a diameter, a
+    temperature, a latency SLO — that is variables-based capability, and it is a different toolkit.
+    What Zen gives you is the flow-and-yield half, which is the half most business processes live in.</p>
+  <button class="play" data-audio="audio/sec8.mp3"><span class="tri"></span> Listen</button>
+  <div class="cards">
+    <div class="card"><h3>Why it still earns its place</h3><p>Most office processes have never been
+      measured at all. Going from “nobody knows” to “53%, and here is the worst step” is the expensive
+      part. Control charts can come later, if ever.</p></div>
+    <div class="card act"><h3>Where to be careful</h3><p>Do not present this sigma to someone who lives
+      in Cp/Cpk without saying which one it is. They are different claims about different things.</p></div>
+  </div>
+</section>
+
+<section id="s9">
+  <div class="num">09</div>
+  <h2>Why fixing your worst step barely moves the number</h2>
+  <p>This is the one that changes behaviour. Take the demo process: <strong>59%</strong> rolled yield,
+    <strong>1.7σ</strong>, worst step at 85% first-pass yield. Fix that step — properly, all the way to
+    99% — and here is what the whole process does:</p>
+  <button class="play" data-audio="audio/sec9.mp3"><span class="tri"></span> Listen</button>
+  <table>
+    <thead><tr><th>Worst step goes to</th><th>Rolled yield</th><th>Process sigma</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>85% (today)</td><td>59.0%</td><td>1.73σ</td><td class="warnrow">warned</td></tr>
+      <tr><td>90%</td><td>62.5%</td><td>1.82σ</td><td class="warnrow">still warned</td></tr>
+      <tr><td>95%</td><td>65.9%</td><td>1.91σ</td><td class="warnrow">still warned</td></tr>
+      <tr><td>99%</td><td>68.7%</td><td>1.99σ</td><td class="warnrow">still warned</td></tr>
+    </tbody>
+  </table>
+  <p>A quarter of work, a heroic effort on the worst offender, and the process is still under 2σ. The
+    other five steps were never the story you were told, but they were always the story.</p>
+  <div class="cards">
+    <div class="card"><h3>What it means</h3><p>Multiplication is unsentimental. With six steps you need
+      <strong>98.85% each</strong> to reach 3σ. There is no single hero fix.</p></div>
+    <div class="card act"><h3>What to do</h3><p>Stop running improvement projects on one step. Either
+      lift the whole chain, or shorten the chain — which is section 10.</p></div>
+  </div>
+</section>
+
+<section id="s10">
+  <div class="num">10</div>
+  <h2>Removing a step is the underrated lever</h2>
+  <p>You cannot always make people better. You can often give the work fewer chances to fail.</p>
+  <button class="play" data-audio="audio/sec10.mp3"><span class="tri"></span> Listen</button>
+  <figure>
+    <svg viewBox="0 0 720 128" role="img" aria-label="Rolled yield rising as steps are removed from the chain">
+      <g class="lbl">
+        <text x="24" y="26">6 steps</text><text x="24" y="56">5 steps</text>
+        <text x="24" y="86">4 steps</text><text x="24" y="116">3 steps</text>
+      </g>
+      <rect x="110" y="14" width="326" height="14" rx="7" fill="var(--crit)" opacity=".55"/><text x="446" y="26" class="val">53.1%</text>
+      <rect x="110" y="44" width="362" height="14" rx="7" fill="var(--crit)" opacity=".45"/><text x="482" y="56" class="val">59.0%</text>
+      <rect x="110" y="74" width="403" height="14" rx="7" fill="var(--warn)" opacity=".5"/><text x="523" y="86" class="val">65.6%</text>
+      <rect x="110" y="104" width="448" height="14" rx="7" fill="var(--ok)" opacity=".5"/><text x="568" y="116" class="val">72.9%</text>
+    </svg>
+    <figcaption>every step still at 90% — the only change is how many of them there are</figcaption>
+  </figure>
+  <div class="cards">
+    <div class="card"><h3>What it means</h3><p>Three steps removed buys you twenty points of yield
+      without a single person improving. Approvals that approve nothing, forms nobody reads, a review
+      that duplicates the one before it — those are yield.</p></div>
+    <div class="card act"><h3>What to do</h3><p>Walk the swimlane and ask of each step: what would break
+      if this did not exist? Zen will tell you what it does to the number before you commit.</p></div>
+  </div>
+</section>
+
+<section id="s11">
+  <div class="num">11</div>
+  <h2>Little's Law, and why the queue is a choice</h2>
+  <p>Cycle time = work in progress ÷ throughput. That relationship is why a team that starts fewer
+    things finishes them faster, and why “we're all very busy” and “nothing is coming out” live
+    together comfortably.</p>
+  <p>Zen does not compute your WIP — it has no view of how many items you have in flight. What it does
+    show is <strong>wait before</strong> on every step, and at 9% flow efficiency the wait <em>is</em>
+    the cycle time. Little's Law is the reasoning that tells you what to do about it.</p>
+  <button class="play" data-audio="audio/sec11.mp3"><span class="tri"></span> Listen</button>
+  <div class="cards">
+    <div class="card"><h3>What it means</h3><p>Adding people raises throughput a little and WIP a lot.
+      The ratio often gets worse.</p></div>
+    <div class="card act"><h3>What to do</h3><p>Cap what is in flight before hiring. It is free, and it
+      moves the number Zen is already showing you.</p></div>
+  </div>
+</section>
+
+<section id="s12">
+  <div class="num">12</div>
+  <h2>What the rework is costing you</h2>
+  <p>This is where the process half of Zen meets the money half. The demo organisation runs at
+    <strong>$1.6M a month</strong> in people and process. Its flagship process has
+    <strong>41% rework</strong>.</p>
+  <p>Those two numbers do not multiply into a bill — a reworked item rarely costs exactly what the
+    first pass cost, and not every hour in the organisation is spent on that process. But they bound
+    the conversation. If even half of that rework lands on paid capacity, you are looking at a
+    six-figure monthly sum being spent on doing things a second time, and it has never appeared as a
+    line item because nobody bills “again”.</p>
+  <button class="play" data-audio="audio/sec12.mp3"><span class="tri"></span> Listen</button>
+  <div class="cards">
+    <div class="card"><h3>The hidden factory</h3><p>Rework does not show up as a defect report. It shows
+      up as headcount, as “that's just how long it takes”, and as the meeting where the same three
+      people re-decide something.</p></div>
+    <div class="card act"><h3>What to do</h3><p>Put the yield number and the cost number on the same
+      slide. Quality arguments lose; capacity arguments win.</p></div>
+  </div>
+</section>
+
+<section id="s13">
+  <div class="num">13</div>
+  <h2>The order to act in, with the arithmetic</h2>
+  <p>Same route as section 5, now with the reasons attached.</p>
+  <button class="play" data-audio="audio/sec13.mp3"><span class="tri"></span> Listen</button>
+  <table>
+    <thead><tr><th>Move</th><th>Why</th><th>What it buys</th></tr></thead>
+    <tbody>
+      <tr><td>Lift every step</td><td>yields multiply; one hero fix cannot carry five others</td><td>6 steps need 98.85% each for 3σ</td></tr>
+      <tr><td>Remove a step</td><td>fewer chances to fail, no behaviour change required</td><td>+6 points of yield per step removed</td></tr>
+      <tr><td>Cut a lane crossing</td><td>each crossing is a queue and a context loss</td><td>attacks the 91%, not the 9%</td></tr>
+      <tr><td>Cap work in flight</td><td>Little's Law — cycle time follows WIP</td><td>free, and immediate</td></tr>
+      <tr><td>Re-measure</td><td>the model recomputes on every change</td><td>a number, not a feeling</td></tr>
+    </tbody>
+  </table>
+  <div class="cards">
+    <div class="card"><h3>The honest caveat</h3><p>Each sigma costs more than the last: 3σ→4σ is 11×
+      fewer defects, 4σ→5σ is 27×, 5σ→6σ is 77×. Most business processes should stop at 4σ and spend
+      the effort elsewhere.</p></div>
+    <div class="card act"><h3>The Zen part</h3><p>All five moves are dials on the model. Try them before
+      you try them on people.</p></div>
   </div>
 </section>
 
