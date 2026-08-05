@@ -3,62 +3,111 @@
 Chapter five — design internals.
 
 2
-00:00:03,602 --> 00:00:13,590
+00:00:03,602 --> 00:00:13,618
 So far a node has been one
 box with dials. Open it up.
 
 3
-00:00:13,650 --> 00:00:20,994
-Every node has a subcanvas:
-what happens inside the service.
+00:00:13,678 --> 00:00:21,120
+This is the device registry — a
+Postgres node — from the inside.
 
 4
-00:00:21,054 --> 00:00:30,499
-Input, index, algorithm, cache, execution context,
-output — the primitives a real engine is made of.
+00:00:21,180 --> 00:00:29,124
+The primitives on the left are what a
+relational engine actually contains.
 
 5
-00:00:30,559 --> 00:00:38,003
-Branch, fan-out, join and loop
-wire the control flow between them.
+00:00:29,184 --> 00:00:35,925
+Tables, indexes, procedures,
+caches — not generic shapes.
 
 6
-00:00:38,063 --> 00:00:42,469
-And it runs.
+00:00:35,985 --> 00:00:39,527
+It is empty, so let us build one.
 
 7
-00:00:42,529 --> 00:00:55,751
-Two hundred ticks through the inner
-design — each entity using its own model.
+00:00:39,587 --> 00:00:44,579
+An input — the inbound lookup.
 
 8
-00:00:55,811 --> 00:00:59,955
-If you disagree with the maths, replace it.
+00:00:44,639 --> 00:00:49,647
+A read cache in front of it.
 
 9
-00:01:00,015 --> 00:01:08,459
-A node-level simulate override runs
-your code instead of the built-in model.
+00:00:49,707 --> 00:00:54,690
+An index on device id.
 
 10
-00:01:08,519 --> 00:01:14,963
-Build with AI does the
-same job from a sentence.
+00:00:54,750 --> 00:00:59,728
+The table the rows actually live in.
 
 11
-00:01:15,023 --> 00:01:23,468
-The execution context on the right
-is the worker pool it all runs on.
+00:00:59,788 --> 00:01:05,075
+And an output — what leaves the node.
 
 12
-00:01:23,528 --> 00:01:35,444
-Change what is inside, and the
-outer node’s numbers change with it.
+00:01:05,135 --> 00:01:27,391
+Five entities. Now wire the read path.
 
 13
-00:01:35,504 --> 00:01:40,046
-A node is a model. Inside it, another model.
+00:01:27,451 --> 00:01:39,546
+Lookup, cache, index, table, result
+— the read path as it really runs.
 
 14
-00:01:40,106 --> 00:01:44,309
-All the way down, and all of it computed.
+00:01:39,606 --> 00:01:47,550
+Each entity is modelled too — how
+many entries, and what a lookup costs.
+
+15
+00:01:47,610 --> 00:01:57,553
+The execution context is already computing:
+critical path, inner ceiling, storage.
+
+16
+00:01:57,613 --> 00:02:05,678
+And where the model is
+not enough, you add code.
+
+17
+00:02:05,738 --> 00:02:25,675
+Every entity takes a simulation function: input
+and context in, a value and a latency out.
+
+18
+00:02:25,735 --> 00:02:33,483
+That function runs instead of the
+built-in maths for this entity.
+
+19
+00:02:33,543 --> 00:02:42,486
+Or press Generate, and Claude writes
+it from the entity it is attached to.
+
+20
+00:02:42,546 --> 00:02:47,463
+Then run it.
+
+21
+00:02:47,523 --> 00:03:01,965
+Two hundred ticks through the design you
+just built — each entity using its own model.
+
+22
+00:03:02,025 --> 00:03:12,467
+There is a node-level override too: replace
+the whole node’s maths in one function.
+
+23
+00:03:12,527 --> 00:03:25,183
+Or describe the objective and let Build
+with AI lay the internals out for you.
+
+24
+00:03:25,243 --> 00:03:29,784
+A node is a model. Inside it, another model —
+
+25
+00:03:29,844 --> 00:03:34,247
+and where you disagree with it, your code.

@@ -7,82 +7,97 @@ Chapter two — designing a system.
 An empty canvas, and three ways to fill it.
 
 3
-00:00:07,413 --> 00:00:14,044
+00:00:07,413 --> 00:00:14,045
 First: describe what you want.
 
 4
-00:00:14,104 --> 00:00:27,531
+00:00:14,105 --> 00:00:27,466
 One sentence. No diagram, no template.
 
 5
-00:00:27,591 --> 00:00:46,983
+00:00:27,526 --> 00:00:46,913
 That is a real call to Claude,
 against the live model.
 
 6
-00:00:47,043 --> 00:01:44,955
+00:00:46,973 --> 00:01:44,858
 It answers with a spec — every node
 typed, wired and given its dials.
 
 7
-00:01:45,015 --> 00:01:51,460
+00:01:44,918 --> 00:01:51,362
 Sized, wired and costed the moment it lands.
 
 8
-00:01:51,520 --> 00:01:59,676
+00:01:51,422 --> 00:01:59,580
 Second: by hand, from the catalog on the left.
 
 9
-00:01:59,736 --> 00:02:08,633
+00:01:59,640 --> 00:02:08,513
 Search it, then drag it onto the canvas.
 
 10
-00:02:08,693 --> 00:02:14,635
+00:02:08,573 --> 00:02:14,515
 A node arrives already sized and
 priced — never as an empty shape.
 
 11
-00:02:14,695 --> 00:02:19,964
+00:02:14,575 --> 00:02:19,836
 Ports on each side are the data
 flow. Drag from one to the other.
 
 12
-00:02:20,024 --> 00:02:28,668
+00:02:19,896 --> 00:02:28,538
 That edge is not a line on a drawing — it
 carries protocol, port, bandwidth and cost.
 
 13
-00:02:28,728 --> 00:02:35,372
+00:02:28,598 --> 00:02:35,229
 Third: the spec itself.
 
 14
-00:02:35,432 --> 00:02:43,881
+00:02:35,289 --> 00:02:43,736
 Every design is JSON — nodes, edges,
 workload — and it is editable.
 
 15
-00:02:43,941 --> 00:02:58,762
+00:02:43,796 --> 00:02:58,548
 Paste one in, or run slash architect in
 Claude Code and press Load generated.
 
 16
-00:02:58,822 --> 00:03:05,166
+00:02:58,608 --> 00:03:04,953
 Same result, no backend and no API key needed.
 
 17
-00:03:05,226 --> 00:03:13,444
+00:03:05,013 --> 00:03:13,225
 However it got here, Analyze
 reads the whole thing.
 
 18
-00:03:13,504 --> 00:03:26,794
-It builds a skill card for every node, adds the
-live metrics, and reviews the design as a system.
+00:03:13,285 --> 00:03:23,730
+It builds a skill card for every node, adds
+the live metrics, and sends the lot to Claude.
 
 19
-00:03:26,854 --> 00:03:30,598
-Describe it, draw it, or declare it.
+00:03:23,790 --> 00:03:37,395
+And there is the verdict — findings
+against the design you actually built.
 
 20
-00:03:30,658 --> 00:03:34,660
+00:03:37,455 --> 00:03:50,559
+Each one names the node it came
+from, so you can go and fix it.
+
+21
+00:03:50,619 --> 00:03:59,918
+Re-run it after a change,
+or open what it was given.
+
+22
+00:03:59,978 --> 00:04:03,720
+Describe it, draw it, or declare it.
+
+23
+00:04:03,780 --> 00:04:07,781
 The model underneath is the same either way.
