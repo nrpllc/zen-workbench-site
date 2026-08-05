@@ -1,0 +1,64 @@
+1
+00:00:00,000 --> 00:00:03,542
+Chapter five — design internals.
+
+2
+00:00:03,602 --> 00:00:13,590
+So far a node has been one
+box with dials. Open it up.
+
+3
+00:00:13,650 --> 00:00:20,994
+Every node has a subcanvas:
+what happens inside the service.
+
+4
+00:00:21,054 --> 00:00:30,499
+Input, index, algorithm, cache, execution context,
+output — the primitives a real engine is made of.
+
+5
+00:00:30,559 --> 00:00:38,003
+Branch, fan-out, join and loop
+wire the control flow between them.
+
+6
+00:00:38,063 --> 00:00:42,469
+And it runs.
+
+7
+00:00:42,529 --> 00:00:55,751
+Two hundred ticks through the inner
+design — each entity using its own model.
+
+8
+00:00:55,811 --> 00:00:59,955
+If you disagree with the maths, replace it.
+
+9
+00:01:00,015 --> 00:01:08,459
+A node-level simulate override runs
+your code instead of the built-in model.
+
+10
+00:01:08,519 --> 00:01:14,963
+Build with AI does the
+same job from a sentence.
+
+11
+00:01:15,023 --> 00:01:23,468
+The execution context on the right
+is the worker pool it all runs on.
+
+12
+00:01:23,528 --> 00:01:35,444
+Change what is inside, and the
+outer node’s numbers change with it.
+
+13
+00:01:35,504 --> 00:01:40,046
+A node is a model. Inside it, another model.
+
+14
+00:01:40,106 --> 00:01:44,309
+All the way down, and all of it computed.

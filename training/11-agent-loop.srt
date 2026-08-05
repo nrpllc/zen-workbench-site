@@ -1,0 +1,66 @@
+1
+00:00:00,000 --> 00:00:03,542
+Chapter eleven — the agent loop.
+
+2
+00:00:03,602 --> 00:00:10,346
+The workbench is not an editor. It is the
+thing that tells the editor what to do.
+
+3
+00:00:10,406 --> 00:00:17,738
+Start from a symbol in the code lens.
+
+4
+00:00:17,798 --> 00:00:26,244
+Runs on binds this module to a
+node on the architecture canvas.
+
+5
+00:00:26,304 --> 00:00:36,736
+Now the code has a place in the system,
+and the node has code behind it.
+
+6
+00:00:36,796 --> 00:00:56,526
+VS Code opens this file at this line
+— the exact one, not the folder.
+
+7
+00:00:56,586 --> 00:01:06,519
+Annotate attaches an issue
+to the symbol itself.
+
+8
+00:01:06,579 --> 00:01:18,898
+The annotations rail becomes the worklist
+— a queue of real, located problems.
+
+9
+00:01:18,958 --> 00:01:28,902
+And the handoff is one click: a fix-ready prompt
+with the source, the call graph and your note.
+
+10
+00:01:28,962 --> 00:01:40,296
+Paste that into Claude Code or VS Code and
+the agent starts with the whole picture.
+
+11
+00:01:40,356 --> 00:01:43,699
+It works the other way too.
+
+12
+00:01:43,759 --> 00:01:54,203
+Build architecture derives a design from the
+repository itself — on-prem, Azure, AWS or GCP.
+
+13
+00:01:54,263 --> 00:02:02,704
+There is also an MCP server: zen ground, zen
+symbol and zen index, straight into Claude Code.
+
+14
+00:02:02,764 --> 00:02:08,767
+The agent codes. The workbench
+keeps the whole system in view.

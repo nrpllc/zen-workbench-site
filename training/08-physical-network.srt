@@ -1,0 +1,66 @@
+1
+00:00:00,000 --> 00:00:03,941
+Chapter eight — the
+physical and network lenses.
+
+2
+00:00:04,001 --> 00:00:14,034
+Logical says what talks to what.
+It does not say where anything is.
+
+3
+00:00:14,094 --> 00:00:21,539
+Physical draws the domains:
+edge, on-prem, Azure.
+
+4
+00:00:21,599 --> 00:00:32,044
+Each node sits in the domain you assigned it,
+and every link that crosses a frame is priced.
+
+5
+00:00:32,104 --> 00:00:45,543
+Move a service to the cloud here and the
+cost changes downstairs, immediately.
+
+6
+00:00:45,603 --> 00:00:54,050
+Network is the wiring diagram a
+network engineer would ask for.
+
+7
+00:00:54,110 --> 00:01:00,655
+Protocol, port and bandwidth on every link.
+
+8
+00:01:00,715 --> 00:01:10,160
+Per-domain egress, and exposure —
+internal, private endpoint, or public.
+
+9
+00:01:10,220 --> 00:01:16,968
+The same information is editable in one table.
+
+10
+00:01:17,028 --> 00:01:29,899
+Network configuration: every connection, its
+protocol, its port and the zones it crosses.
+
+11
+00:01:29,959 --> 00:01:36,646
+And when a node needs sizing properly —
+
+12
+00:01:36,706 --> 00:01:48,151
+The cluster sizer takes demand and an SLA and
+returns nodes, partitions, replicas and licences.
+
+13
+00:01:48,211 --> 00:02:03,997
+Elasticsearch, Cosmos, DynamoDB, Redis, Postgres,
+Timescale, Kusto, Kafka — each with its own sizing model.
+
+14
+00:02:04,057 --> 00:02:09,461
+One design. Ask it a different
+question, get a different drawing.

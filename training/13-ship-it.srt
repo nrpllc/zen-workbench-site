@@ -1,0 +1,58 @@
+1
+00:00:00,000 --> 00:00:03,344
+Chapter thirteen — ship it.
+
+2
+00:00:03,404 --> 00:00:15,316
+A design that cannot leave
+the tool is a drawing.
+
+3
+00:00:15,376 --> 00:00:24,821
+Deploy opens on the plan: every service,
+where it runs, and what it costs.
+
+4
+00:00:24,881 --> 00:00:34,326
+Thirteen services, the target domains,
+projected monthly cost and storage.
+
+5
+00:00:34,386 --> 00:00:49,195
+That total is the same number the
+canvas has been showing all along.
+
+6
+00:00:49,255 --> 00:01:05,460
+Then pick an artifact. Docker Compose
+for a laptop or a single host.
+
+7
+00:01:05,520 --> 00:01:19,386
+Kubernetes manifests for a cluster.
+
+8
+00:01:19,446 --> 00:01:35,766
+Azure Bicep for the managed services
+— Cosmos, Blob, and the rest.
+
+9
+00:01:35,826 --> 00:01:49,256
+Terraform if that is your house style.
+
+10
+00:01:49,316 --> 00:02:00,343
+And Ansible for the machines you already own.
+
+11
+00:02:00,403 --> 00:02:12,716
+It is a scaffold, honestly labelled — set your
+secrets, images and networking before you apply it.
+
+12
+00:02:12,776 --> 00:02:16,718
+The design went in as a sentence.
+
+13
+00:02:16,778 --> 00:02:20,980
+It comes out as something you can run.

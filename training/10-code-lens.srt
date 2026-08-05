@@ -1,0 +1,72 @@
+1
+00:00:00,000 --> 00:00:03,344
+Chapter ten — the Code lens.
+
+2
+00:00:03,404 --> 00:00:15,038
+Four lenses model the system you intend.
+This one reads the system you actually wrote.
+
+3
+00:00:15,098 --> 00:00:23,749
+Point it at a repository
+and it indexes the source.
+
+4
+00:00:23,809 --> 00:00:33,258
+Symbols, files and calls — the call
+graph of the codebase, not a folder tree.
+
+5
+00:00:33,318 --> 00:00:37,956
+Browse walks the files.
+
+6
+00:00:38,016 --> 00:00:58,024
+Search by symbol, or switch to
+text and search the source itself.
+
+7
+00:00:58,084 --> 00:01:07,528
+Pick a symbol and you get its call
+graph: what calls it, and what it calls.
+
+8
+00:01:07,588 --> 00:01:20,415
+Depth one is the neighbours. Two and
+three follow the blast radius out.
+
+9
+00:01:20,475 --> 00:01:36,911
+Shape is the kind of symbol. Colour is
+its scope. The legend is on the graph.
+
+10
+00:01:36,971 --> 00:01:53,000
+Hide local helpers strips the
+noise so the real structure shows.
+
+11
+00:01:53,060 --> 00:02:02,505
+Tests reads your test run — pass,
+fail and how long each one took.
+
+12
+00:02:02,565 --> 00:02:17,005
+Failures first, then the slowest, then by
+file. Real results, not a coverage badge.
+
+13
+00:02:17,065 --> 00:02:35,627
+Insights is what the index found: dead code,
+cycles, and the hubs where change is risky.
+
+14
+00:02:35,687 --> 00:02:46,629
+Load a test profile and the graph gets a
+heat overlay — where the time actually went.
+
+15
+00:02:46,689 --> 00:02:52,693
+The architecture is the intent.
+The code lens is the evidence.

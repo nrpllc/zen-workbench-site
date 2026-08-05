@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zen Analytics Workbench — Training</title>
+<meta name="description" content="A complete, chapter-by-chapter video walkthrough of Zen Analytics Workbench: every lens, panel and dialog, subtitled, in the order that teaches.">
+<meta name="theme-color" content="#0b0e11">
+<meta property="og:title" content="Zen Analytics Workbench — Training">
+<meta property="og:description" content="14 subtitled chapters, 37:11 end to end. Every lens, menu and dialog.">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --ink:#f2f5f7; --ink-2:#a8b4bd; --ink-3:#6e7d88;
+    --ground:#0b0e11; --panel:#12171b; --panel-2:#171d23;
+    --rule:#232c34; --rule-soft:#1a2127;
+    --teal:#5eb0b7; --teal-deep:#2b6f76;
+    --mono:ui-monospace,"SFMono-Regular","Cascadia Mono",Menlo,Consolas,monospace;
+    --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --shadow:0 24px 60px -20px rgba(0,0,0,.75);
+  }
+  /* Dark by default, light via data-theme="light" — same contract as index.html. */
+  :root[data-theme="light"]{
+    --ink:#10161b; --ink-2:#44535f; --ink-3:#74838e;
+    --ground:#eef1f4; --panel:#fff; --panel-2:#f5f8fa;
+    --rule:#d3dade; --rule-soft:#e4e9ec;
+    --teal:#14707a; --teal-deep:#0d5158;
+    --shadow:0 20px 44px -22px rgba(20,40,50,.35);
+  }
+  *{box-sizing:border-box}
+  html{background:var(--ground);scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  a{color:var(--teal)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  header.hero{padding:72px 0 40px;border-bottom:1px solid var(--rule-soft)}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+  h1{font-size:clamp(30px,4.4vw,46px);line-height:1.12;margin:14px 0 12px;letter-spacing:-0.02em}
+  .lede{color:var(--ink-2);max-width:62ch;font-size:17px}
+  .stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:26px;font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+  .stats b{color:var(--teal);font-weight:600}
+  .backlinks{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:9px 15px;border-radius:9px;border:1px solid var(--rule);
+    color:var(--ink-2);text-decoration:none;font-size:14px;background:var(--panel)}
+  .btn:hover{border-color:var(--teal-deep);color:var(--ink)}
+  main{padding:14px 0 90px}
+  .note{margin:30px 0 6px;padding:14px 16px;border:1px solid var(--rule-soft);border-radius:10px;
+    background:var(--panel);color:var(--ink-2);font-size:14px;max-width:70ch}
+  .chapter{display:grid;grid-template-columns:380px 1fr;gap:26px;padding:30px 0;border-bottom:1px solid var(--rule-soft)}
+  .chapter:last-child{border-bottom:0}
+  .thumb{position:relative;display:block;padding:0;border:1px solid var(--rule);border-radius:12px;
+    overflow:hidden;background:var(--panel-2);cursor:pointer;line-height:0}
+  .thumb img{width:100%;height:auto;display:block;opacity:.94;transition:opacity .2s,transform .3s}
+  .thumb:hover img{opacity:1;transform:scale(1.015)}
+  .thumb .play{position:absolute;inset:0;margin:auto;width:56px;height:56px;border-radius:50%;
+    background:rgba(10,14,17,.62);border:1px solid rgba(255,255,255,.28)}
+  .thumb .play:after{content:"";position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);
+    border-left:15px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent}
+  .thumb .len{position:absolute;right:9px;bottom:9px;padding:2px 7px;border-radius:5px;
+    background:rgba(8,12,14,.82);color:#eaf1f2;font-family:var(--mono);font-size:12px;line-height:1.5}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .chapter h3{margin:6px 0 8px;font-size:22px;letter-spacing:-0.01em}
+  .chapter p{margin:0 0 12px;color:var(--ink-2);max-width:62ch}
+  ul.covers{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+  ul.covers li{font-family:var(--mono);font-size:12px;color:var(--ink-2);
+    border:1px solid var(--rule);border-radius:999px;padding:3px 10px;background:var(--panel)}
+  .meta{margin-top:14px;display:flex;gap:16px;font-size:13px}
+  .meta a{color:var(--ink-3);text-decoration:none;border-bottom:1px dotted var(--rule)}
+  .meta a:hover{color:var(--teal)}
+  dialog#player{border:0;padding:0;background:transparent;max-width:min(1360px,94vw);width:100%}
+  dialog#player::backdrop{background:rgba(4,7,9,.86)}
+  .frame{background:#05080a;border:1px solid var(--rule);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  .frame video{width:100%;display:block;background:#000}
+  .bar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 14px;
+    background:var(--panel);border-top:1px solid var(--rule-soft);color:var(--ink-2);font-size:14px}
+  .bar button{background:transparent;border:1px solid var(--rule);color:var(--ink-2);
+    border-radius:8px;padding:6px 12px;cursor:pointer;font:inherit;font-size:13px}
+  footer{padding:36px 0 70px;border-top:1px solid var(--rule-soft);color:var(--ink-3);font-size:14px}
+  @media (max-width:820px){ .chapter{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Zen Analytics Workbench</div>
+    <h1>Training</h1>
+    <p class="lede">The complete walkthrough — every lens, menu, panel and dialog, in the order that
+      teaches rather than the order the menus happen to sit in. Each chapter stands alone, so you can
+      watch the film or take one module at a time. Subtitled throughout, and paced to be read.</p>
+    <div class="stats">
+      <span><b>14</b> chapters</span>
+      <span><b>37:11</b> end to end</span>
+      <span><b>1920×1080</b> masters · 720p here</span>
+      <span>subtitles included (<b>.srt</b>)</span>
+    </div>
+    <div class="backlinks">
+      <a class="btn" href="index.html">Back to the product page</a>
+      <a class="btn" href="manual.html">Field Manual</a>
+      <a class="btn" href="whitepaper.html">White Paper</a>
+      <a class="btn" href="architecture.html">Architecture</a>
+    </div>
+  </header>
+
+  <main>
+    <p class="note">Recorded against a live workbench — the numbers, graphs and AI responses in these
+      clips are the real thing, not a mock-up. Captions are burned in; the matching <code>.srt</code>
+      is linked under each chapter if you want to re-cut or translate it.</p>
+
+      <article class="chapter" id="ch01">
+        <button class="thumb" data-src="training/01-orientation.mp4" data-title="01 · Orientation" aria-label="Play chapter 01: Orientation">
+          <img src="training/01-orientation.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:27</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 01</div>
+          <h3>Orientation</h3>
+          <p>The cockpit itself, before any feature: five lenses onto one model, the three workload inputs everything is computed against, and the live analysis strip.</p>
+          <ul class="covers"><li>The Logical, Physical, Network, Racks and Code lenses</li><li>Workspaces and the backend sync</li><li>RECORDS · QUERIES/DAY · SKEW</li><li>The always-live analysis strip</li><li>The service and field-device catalog</li></ul>
+          <div class="meta">
+            <a href="training/01-orientation.mp4" download>Download MP4 (1.7 MB)</a>
+            <a href="training/01-orientation.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch02">
+        <button class="thumb" data-src="training/02-designing.mp4" data-title="02 · Designing a system" aria-label="Play chapter 02: Designing a system">
+          <img src="training/02-designing.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">3:39</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 02</div>
+          <h3>Designing a system</h3>
+          <p>Three ways into a design, in order of ambition — drag it from the catalog, describe it to Claude, or declare it as a spec.</p>
+          <ul class="covers"><li>Drag, drop and wire from the catalog</li><li>Architect: describe a change in a sentence</li><li>The architecture spec as editable JSON</li><li>Load generated from the Claude Code skill</li><li>Analyze the finished design</li></ul>
+          <div class="meta">
+            <a href="training/02-designing.mp4" download>Download MP4 (2.2 MB)</a>
+            <a href="training/02-designing.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch03">
+        <button class="thumb" data-src="training/03-node-is-a-model.mp4" data-title="03 · A node is a model, not a box" aria-label="Play chapter 03: A node is a model, not a box">
+          <img src="training/03-node-is-a-model.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">4:04</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 03</div>
+          <h3>A node is a model, not a box</h3>
+          <p>The core chapter. One node, opened top to bottom — ten dials, a cost model and a capacity ceiling, all of it recomputing as you turn things.</p>
+          <ul class="covers"><li>Basic, Config, Objectives, Data shape</li><li>Incoming load over 24 hours</li><li>Network exposure, port and protocol</li><li>Host and disk — the ceiling that binds</li><li>Measured values overriding the model</li><li>Resilience (RPO/RTO) and the Metrics readout</li></ul>
+          <div class="meta">
+            <a href="training/03-node-is-a-model.mp4" download>Download MP4 (3.7 MB)</a>
+            <a href="training/03-node-is-a-model.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch04">
+        <button class="thumb" data-src="training/04-experts.mp4" data-title="04 · Experts and skills" aria-label="Play chapter 04: Experts and skills">
+          <img src="training/04-experts.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:10</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 04</div>
+          <h3>Experts and skills</h3>
+          <p>Fourteen domain experts, each attached to the node type they know, reasoning about your actual configuration rather than a generic best practice.</p>
+          <ul class="covers"><li>Tune with expert</li><li>The four standing objectives</li><li>A real tuning pass, end to end</li><li>Ask — a free-form question against the live model</li><li>Skill — sizing a node from first principles</li></ul>
+          <div class="meta">
+            <a href="training/04-experts.mp4" download>Download MP4 (1.5 MB)</a>
+            <a href="training/04-experts.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch05">
+        <button class="thumb" data-src="training/05-internals.mp4" data-title="05 · Design internals" aria-label="Play chapter 05: Design internals">
+          <img src="training/05-internals.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">1:48</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 05</div>
+          <h3>Design internals</h3>
+          <p>Open a node and there is another model inside it: the tables, caches, algorithms and execution context that make up the service.</p>
+          <ul class="covers"><li>The subcanvas and its primitives</li><li>Branch, fan-out, join and loop</li><li>Running the inner design</li><li>NODE SIMULATE() OVERRIDE — your maths instead of ours</li><li>Build with AI</li></ul>
+          <div class="meta">
+            <a href="training/05-internals.mp4" download>Download MP4 (1.3 MB)</a>
+            <a href="training/05-internals.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch06">
+        <button class="thumb" data-src="training/06-running.mp4" data-title="06 · Running it" aria-label="Play chapter 06: Running it">
+          <img src="training/06-running.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:28</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 06</div>
+          <h3>Running it</h3>
+          <p>Playback along the real edges at the modelled rates, and the six-tab analysis panel that is always telling you the state of the design.</p>
+          <ul class="covers"><li>Play run at 0.5× to 4×</li><li>Arrange / auto-layout</li><li>Bottlenecks, Costs, Network</li><li>Events, Capacity and Ask</li></ul>
+          <div class="meta">
+            <a href="training/06-running.mp4" download>Download MP4 (1.6 MB)</a>
+            <a href="training/06-running.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch07">
+        <button class="thumb" data-src="training/07-scale.mp4" data-title="07 · Scale and cost" aria-label="Play chapter 07: Scale and cost">
+          <img src="training/07-scale.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:38</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 07</div>
+          <h3>Scale and cost</h3>
+          <p>Not "does it work" but "when does it stop working" — growth curves, binding constraints, and the report you send upstairs.</p>
+          <ul class="covers"><li>Pushing the workload sliders</li><li>Insights → Scaling: where it breaks first</li><li>Insights → Load: the 24-hour profile</li><li>Insights → Compare: two designs side by side</li><li>Insights → Report: the executive summary</li></ul>
+          <div class="meta">
+            <a href="training/07-scale.mp4" download>Download MP4 (1.8 MB)</a>
+            <a href="training/07-scale.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch08">
+        <button class="thumb" data-src="training/08-physical-network.mp4" data-title="08 · Physical and Network lenses" aria-label="Play chapter 08: Physical and Network lenses">
+          <img src="training/08-physical-network.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:10</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 08</div>
+          <h3>Physical and Network lenses</h3>
+          <p>Where each service actually runs, what every link between them costs, and how a node gets sized properly.</p>
+          <ul class="covers"><li>Domain frames: edge, on-prem, Azure</li><li>Per-link protocol, port and bandwidth</li><li>Egress and exposure</li><li>The network configuration table</li><li>The cluster sizer</li></ul>
+          <div class="meta">
+            <a href="training/08-physical-network.mp4" download>Download MP4 (1.5 MB)</a>
+            <a href="training/08-physical-network.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch09">
+        <button class="thumb" data-src="training/09-racks.mp4" data-title="09 · Racks and the facility" aria-label="Play chapter 09: Racks and the facility">
+          <img src="training/09-racks.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">3:18</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 09</div>
+          <h3>Racks and the facility</h3>
+          <p>Where a design stops being a diagram and becomes a purchase order — machines, rack units, cable runs, power feeds and floor loading.</p>
+          <ul class="covers"><li>Build out data centers, with or without AI</li><li>Rack elevation, front and rear</li><li>The data centre floor</li><li>Cabling: pull list, schedule, port headroom</li><li>Core, power and hall budgets</li><li>Drawing set and Ask Larry</li></ul>
+          <div class="meta">
+            <a href="training/09-racks.mp4" download>Download MP4 (1.9 MB)</a>
+            <a href="training/09-racks.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch10">
+        <button class="thumb" data-src="training/10-code-lens.mp4" data-title="10 · The Code lens" aria-label="Play chapter 10: The Code lens">
+          <img src="training/10-code-lens.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:56</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 10</div>
+          <h3>The Code lens</h3>
+          <p>Four lenses model the system you intend; this one reads the system you actually wrote — indexed symbols, real call graphs and real test results.</p>
+          <ul class="covers"><li>Indexing a repository</li><li>Symbol and full-text search</li><li>The call graph at depth 1, 2 and 3</li><li>Shape = kind, colour = scope</li><li>Tests: pass, fail and timing</li><li>Insights: dead code, cycles, risk hubs</li><li>Runtime heat from a test profile</li></ul>
+          <div class="meta">
+            <a href="training/10-code-lens.mp4" download>Download MP4 (2.7 MB)</a>
+            <a href="training/10-code-lens.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch11">
+        <button class="thumb" data-src="training/11-agent-loop.mp4" data-title="11 · The agent loop" aria-label="Play chapter 11: The agent loop">
+          <img src="training/11-agent-loop.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:11</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 11</div>
+          <h3>The agent loop</h3>
+          <p>The workbench is not an editor — it is the thing that tells the editor what to do. Binding code to architecture, and handing work to the agent.</p>
+          <ul class="covers"><li>"Runs on": binding a symbol to a node</li><li>Jumping to the exact line in VS Code</li><li>Annotations as a worklist</li><li>Fix-ready prompts for Claude Code</li><li>Deriving an architecture from the repo</li><li>The zen-sidecar MCP server</li></ul>
+          <div class="meta">
+            <a href="training/11-agent-loop.mp4" download>Download MP4 (2.2 MB)</a>
+            <a href="training/11-agent-loop.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch12">
+        <button class="thumb" data-src="training/12-ingest.mp4" data-title="12 · Ingest what you already run" aria-label="Play chapter 12: Ingest what you already run">
+          <img src="training/12-ingest.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">1:38</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 12</div>
+          <h3>Ingest what you already run</h3>
+          <p>Most systems are not designed from scratch. Recover the design from Docker, Kubernetes or Azure, then add the real call graph from a trace.</p>
+          <ul class="covers"><li>Discover running — the inverse of Deploy</li><li>Docker and Kubernetes from the local context</li><li>Azure by resource group or subscription</li><li>Importing an OpenTelemetry trace</li></ul>
+          <div class="meta">
+            <a href="training/12-ingest.mp4" download>Download MP4 (1.0 MB)</a>
+            <a href="training/12-ingest.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch13">
+        <button class="thumb" data-src="training/13-ship-it.mp4" data-title="13 · Ship it" aria-label="Play chapter 13: Ship it">
+          <img src="training/13-ship-it.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">2:22</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 13</div>
+          <h3>Ship it</h3>
+          <p>The plan and its cost, then the artifacts — an honest scaffold you can take to a cluster, a subscription or the machines you already own.</p>
+          <ul class="covers"><li>Plan &amp; cost: services, targets, $/mo</li><li>Docker Compose and Kubernetes</li><li>Azure Bicep</li><li>Terraform and Ansible</li></ul>
+          <div class="meta">
+            <a href="training/13-ship-it.mp4" download>Download MP4 (1.6 MB)</a>
+            <a href="training/13-ship-it.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="ch14">
+        <button class="thumb" data-src="training/14-make-it-yours.mp4" data-title="14 · Make it yours, and one more thing" aria-label="Play chapter 14: Make it yours, and one more thing">
+          <img src="training/14-make-it-yours.jpg" alt="" loading="lazy" width="960">
+          <span class="play" aria-hidden="true"></span>
+          <span class="len">3:21</span>
+        </button>
+        <div class="body">
+          <div class="eyebrow">Chapter 14</div>
+          <h3>Make it yours, and one more thing</h3>
+          <p>Every registry the workbench reasons from is editable — and there is a temple at the bottom of the app.</p>
+          <ul class="covers"><li>Plugins: ~300 entries, 8 registries</li><li>Skill cards — what the AI reads</li><li>The service catalog</li><li>Settings: provider, model, effort</li><li>Local AI: hardware assessment and a private runtime</li><li>Zen Mode</li></ul>
+          <div class="meta">
+            <a href="training/14-make-it-yours.mp4" download>Download MP4 (3.0 MB)</a>
+            <a href="training/14-make-it-yours.srt" download>Subtitles (.srt)</a>
+          </div>
+        </div>
+      </article>
+  </main>
+
+  <footer>
+    Zen Analytics Workbench · training set recorded 2026-08-05.
+    <a href="index.html">Product page</a>.
+  </footer>
+</div>
+
+<dialog id="player">
+  <div class="frame">
+    <video controls playsinline preload="metadata"></video>
+    <div class="bar"><span id="ptitle"></span><button id="pclose">Close</button></div>
+  </div>
+</dialog>
+
+<script>
+  const dlg = document.getElementById('player')
+  const vid = dlg.querySelector('video')
+  const ttl = document.getElementById('ptitle')
+  document.querySelectorAll('.thumb').forEach((b) => b.addEventListener('click', () => {
+    vid.src = b.dataset.src
+    ttl.textContent = b.dataset.title
+    dlg.showModal()
+    vid.play().catch(() => {})
+  }))
+  const stop = () => { vid.pause(); vid.removeAttribute('src'); vid.load(); dlg.close() }
+  document.getElementById('pclose').addEventListener('click', stop)
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) stop() })
+  dlg.addEventListener('close', () => { vid.pause() })
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+1
+00:00:00,000 --> 00:00:03,344
+Chapter six — running it.
+
+2
+00:00:03,404 --> 00:00:12,553
+A static diagram cannot show you
+where the traffic actually goes.
+
+3
+00:00:12,613 --> 00:00:22,558
+Play run moves packets along the
+real edges, at the modelled rates.
+
+4
+00:00:22,618 --> 00:00:36,240
+Thicker, busier links are carrying more.
+That is the diurnal profile, played back.
+
+5
+00:00:36,300 --> 00:00:55,826
+Half speed to study it, four
+times to watch a whole day go by.
+
+6
+00:00:55,886 --> 00:01:02,312
+Arrange lays the graph out
+again when it gets messy.
+
+7
+00:01:02,372 --> 00:01:11,192
+Underneath is the analysis
+panel — six tabs, always live.
+
+8
+00:01:11,252 --> 00:01:22,567
+Bottlenecks: what is saturated,
+and the number that says so.
+
+9
+00:01:22,627 --> 00:01:34,447
+Costs: per node, per month,
+at the current workload.
+
+10
+00:01:34,507 --> 00:01:46,533
+Network: what each link carries
+and what crossing a domain costs.
+
+11
+00:01:46,593 --> 00:01:57,439
+Events: what the run produced, in order.
+
+12
+00:01:57,499 --> 00:02:08,966
+Capacity: ceilings and headroom, node by node.
+
+13
+00:02:09,026 --> 00:02:19,788
+And Ask, for a question about
+the design in plain English.
+
+14
+00:02:19,848 --> 00:02:23,590
+Nothing here is a report you asked for.
+
+15
+00:02:23,650 --> 00:02:27,853
+It is the state of the design, at all times.

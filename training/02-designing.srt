@@ -1,0 +1,88 @@
+1
+00:00:00,000 --> 00:00:03,547
+Chapter two — designing a system.
+
+2
+00:00:03,607 --> 00:00:07,353
+An empty canvas, and three ways to fill it.
+
+3
+00:00:07,413 --> 00:00:14,044
+First: describe what you want.
+
+4
+00:00:14,104 --> 00:00:27,531
+One sentence. No diagram, no template.
+
+5
+00:00:27,591 --> 00:00:46,983
+That is a real call to Claude,
+against the live model.
+
+6
+00:00:47,043 --> 00:01:44,955
+It answers with a spec — every node
+typed, wired and given its dials.
+
+7
+00:01:45,015 --> 00:01:51,460
+Sized, wired and costed the moment it lands.
+
+8
+00:01:51,520 --> 00:01:59,676
+Second: by hand, from the catalog on the left.
+
+9
+00:01:59,736 --> 00:02:08,633
+Search it, then drag it onto the canvas.
+
+10
+00:02:08,693 --> 00:02:14,635
+A node arrives already sized and
+priced — never as an empty shape.
+
+11
+00:02:14,695 --> 00:02:19,964
+Ports on each side are the data
+flow. Drag from one to the other.
+
+12
+00:02:20,024 --> 00:02:28,668
+That edge is not a line on a drawing — it
+carries protocol, port, bandwidth and cost.
+
+13
+00:02:28,728 --> 00:02:35,372
+Third: the spec itself.
+
+14
+00:02:35,432 --> 00:02:43,881
+Every design is JSON — nodes, edges,
+workload — and it is editable.
+
+15
+00:02:43,941 --> 00:02:58,762
+Paste one in, or run slash architect in
+Claude Code and press Load generated.
+
+16
+00:02:58,822 --> 00:03:05,166
+Same result, no backend and no API key needed.
+
+17
+00:03:05,226 --> 00:03:13,444
+However it got here, Analyze
+reads the whole thing.
+
+18
+00:03:13,504 --> 00:03:26,794
+It builds a skill card for every node, adds the
+live metrics, and reviews the design as a system.
+
+19
+00:03:26,854 --> 00:03:30,598
+Describe it, draw it, or declare it.
+
+20
+00:03:30,658 --> 00:03:34,660
+The model underneath is the same either way.

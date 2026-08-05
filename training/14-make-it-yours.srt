@@ -1,0 +1,85 @@
+1
+00:00:00,000 --> 00:00:03,542
+Chapter fourteen — make it yours.
+
+2
+00:00:03,602 --> 00:00:16,101
+Everything the workbench knows
+is a registry you can edit.
+
+3
+00:00:16,161 --> 00:00:28,106
+Plugins is the whole catalog: node types, expert personas,
+chassis, protocols, deploy targets, SKUs, skills.
+
+4
+00:00:28,166 --> 00:00:49,722
+Nearly three hundred entries across eight
+registries — and you can add your own.
+
+5
+00:00:49,782 --> 00:00:55,326
+Skill cards are what the AI
+reads about each component.
+
+6
+00:00:55,386 --> 00:01:14,090
+Dials, defaults, failure modes and sizing
+rules — the same card an expert is handed.
+
+7
+00:01:14,150 --> 00:01:30,797
+The service catalog rolls a design up into
+business services — process, people and software.
+
+8
+00:01:30,857 --> 00:01:44,950
+And the Field Manual is the guided
+walkthrough of the whole workbench.
+
+9
+00:01:45,010 --> 00:01:54,255
+Settings is provider, model, reasoning
+effort and your default cloud.
+
+10
+00:01:54,315 --> 00:02:11,063
+Anthropic in the cloud, or anything OpenAI-compatible
+— including a model on your own machine.
+
+11
+00:02:11,123 --> 00:02:20,569
+Local AI checks your hardware and
+picks a model that actually fits in it.
+
+12
+00:02:20,629 --> 00:02:31,074
+It reads the GPU, the unified memory and the
+cores, then recommends and configures the runtime.
+
+13
+00:02:31,134 --> 00:02:42,470
+Ollama or LM Studio, entirely on your
+machine — nothing leaves the building.
+
+14
+00:02:42,530 --> 00:02:50,258
+One more thing.
+
+15
+00:02:50,318 --> 00:03:00,265
+Zen Mode — the temple, the
+laws of scale, and a yeti.
+
+16
+00:03:00,325 --> 00:03:11,178
+Because a tool you enjoy opening
+is a tool you keep using.
+
+17
+00:03:11,238 --> 00:03:15,181
+That is the workbench, end to end.
+
+18
+00:03:15,241 --> 00:03:19,843
+Vibecode with the whole system in view.

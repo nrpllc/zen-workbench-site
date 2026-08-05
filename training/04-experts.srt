@@ -1,0 +1,71 @@
+1
+00:00:00,001 --> 00:00:03,544
+Chapter four — experts and skills.
+
+2
+00:00:03,604 --> 00:00:11,399
+Every node type has a
+specialist attached to it.
+
+3
+00:00:11,459 --> 00:00:20,287
+This one is an Elasticsearch cluster,
+so the expert is a search expert.
+
+4
+00:00:20,347 --> 00:00:26,288
+Ellie knows this node: its dials,
+its data shape and its live metrics.
+
+5
+00:00:26,348 --> 00:00:36,581
+Fourteen experts ship with the workbench — messaging, cache,
+search, relational, graph, vector, streaming and the rest.
+
+6
+00:00:36,641 --> 00:00:40,585
+You can state the objective
+in your own words —
+
+7
+00:00:40,645 --> 00:00:50,759
+or take one of the four the
+expert already understands.
+
+8
+00:00:50,819 --> 00:01:05,280
+Pick one, and it goes to the model
+with the whole node as context.
+
+9
+00:01:05,340 --> 00:01:15,829
+It comes back as concrete dial
+changes you can accept or ignore.
+
+10
+00:01:15,889 --> 00:01:21,928
+Two more ways to ask.
+
+11
+00:01:21,988 --> 00:01:34,294
+Ask is a free-form question answered against
+the live model — not a chatbot guessing.
+
+12
+00:01:34,354 --> 00:01:54,363
+The answer is computed against this
+node, not recalled from training data.
+
+13
+00:01:55,670 --> 00:02:01,613
+And Skill asks the model to size
+this node from first principles.
+
+14
+00:02:01,673 --> 00:02:05,617
+The expert sees the same numbers you do.
+
+15
+00:02:05,677 --> 00:02:09,881
+That is the difference
+between advice and a guess.

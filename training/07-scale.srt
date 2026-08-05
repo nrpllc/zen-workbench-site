@@ -1,0 +1,73 @@
+1
+00:00:00,000 --> 00:00:03,344
+Chapter seven — scale and cost.
+
+2
+00:00:03,404 --> 00:00:09,347
+The question is never "does it work".
+It is "when does it stop working".
+
+3
+00:00:09,407 --> 00:00:15,350
+Push the workload and watch.
+
+4
+00:00:15,410 --> 00:00:27,903
+Records up: storage, cost and
+every node metric move together.
+
+5
+00:00:27,963 --> 00:00:36,215
+Queries up: the read paths start
+to bind before the write paths do.
+
+6
+00:00:36,275 --> 00:00:43,021
+Insights answers the same question properly.
+
+7
+00:00:43,081 --> 00:00:57,550
+Where will it break first — every
+node ranked by its binding constraint.
+
+8
+00:00:57,610 --> 00:01:15,658
+Set the growth rate and the horizon,
+and it tells you the month it saturates.
+
+9
+00:01:15,718 --> 00:01:24,666
+Load is the twenty-four hour
+profile, summed across every source.
+
+10
+00:01:24,726 --> 00:01:41,735
+Daily total, peak per minute, and
+which source contributes what.
+
+11
+00:01:41,795 --> 00:01:48,738
+Compare puts two designs side by side
+— cost, latency, storage, bottlenecks.
+
+12
+00:01:48,798 --> 00:02:05,556
+On-prem against Azure, or
+last week against this week.
+
+13
+00:02:05,616 --> 00:02:10,159
+And Report is the version you send upstairs.
+
+14
+00:02:10,219 --> 00:02:29,788
+Overview, diagram, nodes and costs, scaling
+risk, resilience, data centre, multi-year TCO.
+
+15
+00:02:29,848 --> 00:02:33,790
+None of that is a spreadsheet you maintain.
+
+16
+00:02:33,850 --> 00:02:37,653
+It is the design, answering.

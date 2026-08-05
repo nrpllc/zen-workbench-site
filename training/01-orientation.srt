@@ -1,0 +1,129 @@
+1
+00:00:00,000 --> 00:00:03,742
+Zen Analytics Workbench —
+chapter one: orientation.
+
+2
+00:00:03,802 --> 00:00:07,346
+One model of a distributed
+system, seen five ways.
+
+3
+00:00:07,406 --> 00:00:10,436
+The lenses live across the top of the window.
+
+4
+00:00:10,496 --> 00:00:14,640
+Logical is what the system does:
+services, and the data between them.
+
+5
+00:00:14,700 --> 00:00:18,159
+Physical is where it runs.
+
+6
+00:00:18,219 --> 00:00:24,661
+Edge, on-prem and Azure are drawn as domains
+— and every link that crosses one has a price.
+
+7
+00:00:24,721 --> 00:00:28,235
+Network is how it is wired.
+
+8
+00:00:28,295 --> 00:00:34,738
+Protocol, port and bandwidth on each
+link, with per-domain egress and exposure.
+
+9
+00:00:34,798 --> 00:00:38,843
+Racks is the same design as hardware.
+
+10
+00:00:38,903 --> 00:00:45,848
+Real machines in real rack units, with
+power, heat, weight and floor area budgeted.
+
+11
+00:00:45,908 --> 00:00:49,913
+Code is the repository that implements it.
+
+12
+00:00:49,973 --> 00:00:56,920
+Symbols, files and calls, indexed from the
+source — chapter ten covers this lens in full.
+
+13
+00:00:56,980 --> 00:01:00,223
+Back to Logical.
+
+14
+00:01:00,283 --> 00:01:04,426
+One model. Five viewpoints.
+Nothing is redrawn by hand.
+
+15
+00:01:04,486 --> 00:01:07,935
+Designs are kept as workspaces.
+
+16
+00:01:07,995 --> 00:01:14,438
+The switcher holds as many as you like —
+new, duplicate, rename, import, export.
+
+17
+00:01:14,498 --> 00:01:21,044
+Push the whole set to the backend,
+or pull it down on another machine.
+
+18
+00:01:21,104 --> 00:01:23,642
+Under the title bar sit the three
+inputs everything is computed against.
+
+19
+00:01:23,702 --> 00:01:28,337
+RECORDS — how much data the system holds.
+
+20
+00:01:28,397 --> 00:01:33,022
+QUERIES PER DAY — how hard it is asked.
+
+21
+00:01:33,082 --> 00:01:36,424
+And SKEW — how unevenly that load lands.
+
+22
+00:01:36,484 --> 00:01:41,717
+Move one, and the whole model recomputes.
+
+23
+00:01:41,777 --> 00:01:52,221
+Cost per month, storage, issues, network
+findings — all of it live, at the bottom.
+
+24
+00:01:52,281 --> 00:02:03,291
+Bottlenecks, Costs, Network, Events, Capacity
+— and Ask, for a question in plain English.
+
+25
+00:02:03,351 --> 00:02:06,385
+On the left is the catalog you build from.
+
+26
+00:02:06,445 --> 00:02:13,258
+Services on one tab, field
+devices on the other.
+
+27
+00:02:13,318 --> 00:02:20,835
+Filter it to Azure, to open source, or to AWS.
+
+28
+00:02:20,895 --> 00:02:24,037
+Everything you see here is computed.
+
+29
+00:02:24,097 --> 00:02:27,701
+Nothing on this canvas is decoration.

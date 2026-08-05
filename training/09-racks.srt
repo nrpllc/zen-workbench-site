@@ -1,0 +1,92 @@
+1
+00:00:00,000 --> 00:00:03,743
+Chapter nine — racks and the facility.
+
+2
+00:00:03,803 --> 00:00:14,449
+This is where a design stops being a
+diagram and becomes a purchase order.
+
+3
+00:00:14,509 --> 00:00:23,960
+The Racks lens takes the services you
+designed and puts them in real machines.
+
+4
+00:00:24,020 --> 00:00:37,549
+IT load, heat, weight, inventory and
+energy — across the top, always live.
+
+5
+00:00:37,609 --> 00:00:42,553
+It can design the whole
+estate from the architecture.
+
+6
+00:00:42,613 --> 00:00:54,633
+Two data centres active-active, primary
+plus DR, or a scale-up analytics build.
+
+7
+00:00:54,693 --> 00:01:10,683
+Quick build does it deterministically.
+Design facility hands it to Claude.
+
+8
+00:01:10,743 --> 00:01:20,188
+Nodes placed in chassis, chassis
+placed in racks, racks placed in halls.
+
+9
+00:01:20,248 --> 00:01:33,828
+The rack elevation is the front face
+— named services in real rack units.
+
+10
+00:01:33,888 --> 00:01:51,165
+Turn it round: cable routing,
+top-of-rack A and B, PDU channels.
+
+11
+00:01:51,225 --> 00:02:04,718
+The hall itself — rows, positions
+and the space they take.
+
+12
+00:02:04,778 --> 00:02:15,222
+Cabling gives you the pull list: every
+run, its length, its type and its cost.
+
+13
+00:02:15,282 --> 00:02:28,451
+Port headroom on each switch, and
+what the whole plant costs to wire.
+
+14
+00:02:28,511 --> 00:02:37,961
+On the right: core budgets, power
+feeds in 2N, and hall budgets.
+
+15
+00:02:38,021 --> 00:02:48,970
+Kilowatts, BTU per hour, kilograms per square
+metre, floor area — against capacity, not vibes.
+
+16
+00:02:49,030 --> 00:02:53,773
+Drawing set exports the lot as a document.
+
+17
+00:02:53,833 --> 00:02:58,976
+Ask Larry is the facility
+expert, on the same numbers.
+
+18
+00:02:59,036 --> 00:03:11,074
+And the hardware catalog on the left
+is what you are allowed to put in.
+
+19
+00:03:11,134 --> 00:03:16,737
+From a sentence about a system,
+to the racks it lands in.

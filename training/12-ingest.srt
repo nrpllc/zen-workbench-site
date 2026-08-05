@@ -1,0 +1,55 @@
+1
+00:00:00,000 --> 00:00:03,943
+Chapter twelve — ingest what you already run.
+
+2
+00:00:04,003 --> 00:00:12,408
+Most systems are not designed
+from scratch. They already exist.
+
+3
+00:00:12,468 --> 00:00:19,905
+Build has two ways in.
+
+4
+00:00:19,965 --> 00:00:28,112
+Discover reconstructs the design
+from what is actually running.
+
+5
+00:00:28,172 --> 00:00:37,616
+It is the inverse of Deploy: it recovers
+the services and their tuned dials.
+
+6
+00:00:37,676 --> 00:00:46,622
+Docker and Kubernetes come from the
+local daemon and your current context.
+
+7
+00:00:46,682 --> 00:01:03,419
+Azure comes back through the CLI — a
+resource group, or a whole subscription.
+
+8
+00:01:03,479 --> 00:01:09,924
+Import telemetry takes an OpenTelemetry trace.
+
+9
+00:01:09,984 --> 00:01:19,430
+Spans become services, and the parent-child
+links become the call graph between them.
+
+10
+00:01:19,490 --> 00:01:29,758
+Discovery gives you the services.
+Telemetry gives you how they actually talk.
+
+11
+00:01:29,818 --> 00:01:35,360
+Put the two together and the design
+on the canvas is your estate,
+
+12
+00:01:35,420 --> 00:01:39,421
+not an idealised drawing of it.
