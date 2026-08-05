@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zen Analytics Workbench — Reading the process numbers</title>
+<meta name="description" content="A short primer on the Six Sigma indicators Zen puts on a process: first-pass yield, rolled yield, sigma level, DPMO, cycle time, flow efficiency and handoffs — what each one means, and what to do about it.">
+<meta name="theme-color" content="#0b0e11">
+<meta property="og:title" content="Reading the process numbers — Zen Analytics Workbench">
+<meta property="og:description" content="Six Sigma without the training course: what Zen measures on a process, and how to act on it.">
+<meta property="og:type" content="article">
+<style>
+  :root{
+    --ink:#f2f5f7; --ink-2:#a8b4bd; --ink-3:#6e7d88;
+    --ground:#0b0e11; --panel:#12171b; --panel-2:#171d23;
+    --rule:#232c34; --rule-soft:#1a2127;
+    --teal:#5eb0b7; --teal-deep:#2b6f76;
+    --warn:#d9b26b; --crit:#d68a94; --ok:#8bb894;
+    --mono:ui-monospace,"SFMono-Regular","Cascadia Mono",Menlo,Consolas,monospace;
+    --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  :root[data-theme="light"]{
+    --ink:#10161b; --ink-2:#44535f; --ink-3:#74838e;
+    --ground:#eef1f4; --panel:#fff; --panel-2:#f5f8fa;
+    --rule:#d3dade; --rule-soft:#e4e9ec;
+    --teal:#14707a; --teal-deep:#0d5158;
+    --warn:#8f6410; --crit:#a5343f; --ok:#2d7a52;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--ground);scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  a{color:var(--teal)}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+  header.hero{padding:72px 0 34px;border-bottom:1px solid var(--rule-soft)}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+  h1{font-size:clamp(30px,4.4vw,44px);line-height:1.12;margin:14px 0 12px;letter-spacing:-0.02em}
+  .lede{color:var(--ink-2);max-width:64ch;font-size:17px}
+  .btn{display:inline-block;padding:9px 15px;border-radius:9px;border:1px solid var(--rule);
+    color:var(--ink-2);text-decoration:none;font-size:14px;background:var(--panel)}
+  .btn:hover{border-color:var(--teal-deep);color:var(--ink)}
+  .backlinks{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+
+  section{padding:40px 0;border-bottom:1px solid var(--rule-soft)}
+  .num{font-family:var(--mono);font-size:12px;color:var(--teal);letter-spacing:.14em}
+  h2{margin:6px 0 14px;font-size:clamp(21px,2.6vw,27px);letter-spacing:-0.015em}
+  p{max-width:66ch;color:var(--ink-2)}
+  p strong{color:var(--ink);font-weight:600}
+  figure{margin:22px 0;padding:20px;border:1px solid var(--rule);border-radius:14px;background:var(--panel);overflow-x:auto}
+  figcaption{margin-top:12px;font-size:13px;color:var(--ink-3);font-family:var(--mono)}
+  svg{display:block;max-width:100%;height:auto}
+  .lbl{font-family:var(--mono);font-size:11px;fill:var(--ink-3)}
+  .val{font-family:var(--mono);font-size:15px;fill:var(--ink);font-weight:600}
+  .big{font-family:var(--mono);font-size:26px;fill:var(--teal);font-weight:700}
+
+  /* what it means / what to do */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+  .card{border:1px solid var(--rule);border-radius:12px;padding:14px 16px;background:var(--panel-2)}
+  .card h3{margin:0 0 6px;font-size:12px;font-family:var(--mono);letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-3)}
+  .card p{margin:0;font-size:14.5px}
+  .card.act{border-color:var(--teal-deep)}
+  .card.act h3{color:var(--teal)}
+
+  table{border-collapse:collapse;width:100%;margin-top:18px;font-family:var(--mono);font-size:13.5px}
+  th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule-soft)}
+  th{color:var(--ink-3);font-weight:500;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+  td.warnrow{color:var(--warn)}
+
+  .play{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:6px 13px;border-radius:999px;
+    border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);font:inherit;font-size:13px;cursor:pointer}
+  .play:hover{border-color:var(--teal-deep);color:var(--ink)}
+  .play .tri{width:0;height:0;border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
+  .play.on{color:var(--teal);border-color:var(--teal-deep)}
+  .play.on .tri{border-left-color:var(--teal)}
+
+  footer{padding:38px 0 80px;color:var(--ink-3);font-size:14px}
+  @media (max-width:760px){ .cards{grid-template-columns:1fr} }
+  @media (prefers-reduced-motion: reduce){ * {animation:none !important} }
+
+  /* ── animations ─────────────────────────────────────────────── */
+  .flow{animation:flow 5s linear infinite}
+  @keyframes flow{ from{ stroke-dashoffset:0 } to{ stroke-dashoffset:-72 } }
+  .drop1{animation:drop 5s ease-in infinite}
+  .drop2{animation:drop 5s ease-in infinite .9s}
+  .drop3{animation:drop 5s ease-in infinite 2.1s}
+  @keyframes drop{ 0%,55%{opacity:0;transform:translate(0,0)} 65%{opacity:1} 100%{opacity:0;transform:translate(6px,34px)} }
+  .grow{transform-origin:left center;animation:grow 3.4s cubic-bezier(.4,0,.2,1) infinite alternate}
+  @keyframes grow{ from{transform:scaleX(.06)} to{transform:scaleX(1)} }
+  .sweep{animation:sweep 6s cubic-bezier(.5,0,.3,1) infinite alternate}
+  @keyframes sweep{ from{transform:translateX(0)} to{transform:translateX(392px)} }
+  .blink{animation:blink 2.6s ease-in-out infinite}
+  @keyframes blink{ 0%,100%{opacity:.25} 50%{opacity:1} }
+  .queue{animation:queue 4s ease-in-out infinite}
+  @keyframes queue{ 0%,100%{opacity:.3} 50%{opacity:.95} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Zen Analytics Workbench</div>
+  <h1>Reading the process numbers</h1>
+  <p class="lede">Zen puts six indicators on every process you model. They come from Six Sigma, which
+    has a reputation for being a week of training. The idea underneath it takes about six minutes —
+    and once you have it, the numbers stop being decoration and start telling you where to go.</p>
+  <div class="backlinks">
+    <a class="btn" href="training.html">The full training set</a>
+    <a class="btn" href="index.html">Product page</a>
+    <button class="play" id="playall"><span class="tri"></span> Play the whole primer</button>
+  </div>
+</header>
+
+<!-- 1 ────────────────────────────────────────────────────────── -->
+<section id="s1">
+  <div class="num">01</div>
+  <h2>A process is a chain, and chains multiply</h2>
+  <p>Every step in a process gets some of its work right the first time. That number is the step's
+    <strong>first-pass yield</strong>. The whole chain is not the average of those numbers — it is the
+    <em>product</em> of them. That single fact is most of Six Sigma.</p>
+  <button class="play" data-audio="audio/sec1.mp3"><span class="tri"></span> Listen</button>
+
+  <figure>
+    <svg viewBox="0 0 720 150" role="img" aria-label="Six process steps in a chain, each passing 90% of work, with rework peeling away">
+      <line x1="24" y1="60" x2="696" y2="60" stroke="var(--rule)" stroke-width="2"/>
+      <line x1="24" y1="60" x2="696" y2="60" stroke="var(--teal)" stroke-width="2"
+            stroke-dasharray="6 30" class="flow"/>
+      <g>
+        <!-- six steps -->
+        <g transform="translate(24,0)"><rect x="0" y="40" width="86" height="40" rx="7" fill="var(--panel-2)" stroke="var(--rule)"/><text x="43" y="65" text-anchor="middle" class="val">90%</text></g>
+        <g transform="translate(134,0)"><rect x="0" y="40" width="86" height="40" rx="7" fill="var(--panel-2)" stroke="var(--rule)"/><text x="43" y="65" text-anchor="middle" class="val">90%</text></g>
+        <g transform="translate(244,0)"><rect x="0" y="40" width="86" height="40" rx="7" fill="var(--panel-2)" stroke="var(--rule)"/><text x="43" y="65" text-anchor="middle" class="val">90%</text></g>
+        <g transform="translate(354,0)"><rect x="0" y="40" width="86" height="40" rx="7" fill="var(--panel-2)" stroke="var(--rule)"/><text x="43" y="65" text-anchor="middle" class="val">90%</text></g>
+        <g transform="translate(464,0)"><rect x="0" y="40" width="86" height="40" rx="7" fill="var(--panel-2)" stroke="var(--rule)"/><text x="43" y="65" text-anchor="middle" class="val">90%</text></g>
+        <g transform="translate(574,0)"><rect x="0" y="40" width="86" height="40" rx="7" fill="var(--panel-2)" stroke="var(--rule)"/><text x="43" y="65" text-anchor="middle" class="val">90%</text></g>
+      </g>
+      <!-- rework peeling off -->
+      <circle cx="230" cy="82" r="4" fill="var(--crit)" class="drop1"/>
+      <circle cx="450" cy="82" r="4" fill="var(--crit)" class="drop2"/>
+      <circle cx="560" cy="82" r="4" fill="var(--crit)" class="drop3"/>
+      <text x="24" y="126" class="lbl">100 items in</text>
+      <text x="696" y="126" text-anchor="end" class="lbl">53 out first time · 47 reworked</text>
+    </svg>
+    <figcaption>0.9 × 0.9 × 0.9 × 0.9 × 0.9 × 0.9 = 0.531 — rolled throughput yield</figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <h3>What it means</h3>
+      <p>Six respectable-looking steps produce a process that gets it right barely half the time. No
+        single step looks broken, which is exactly why this goes unnoticed.</p>
+    </div>
+    <div class="card act">
+      <h3>What to do</h3>
+      <p>Stop judging steps individually. Judge the chain, then fix the weakest link — Zen names it
+        for you under <span style="color:var(--ink)">Sigma level</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 ────────────────────────────────────────────────────────── -->
+<section id="s2">
+  <div class="num">02</div>
+  <h2>Rolled yield, sigma level and DPMO are one number in three costumes</h2>
+  <p>Zen shows <strong>rolled yield</strong> as a percentage, <strong>sigma level</strong> on the
+    0–6 scale, and <strong>DPMO</strong> — defects per million opportunities. They are conversions of
+    the same quantity, offered because different audiences think in different units. Finance hears
+    the percentage; a quality engineer hears the sigma; an operations lead hears the DPMO.</p>
+  <button class="play" data-audio="audio/sec2.mp3"><span class="tri"></span> Listen</button>
+
+  <figure>
+    <svg viewBox="0 0 720 132" role="img" aria-label="Sigma scale from 0 to 6 with a marker sweeping across, warning band below 3 sigma">
+      <rect x="24" y="46" width="392" height="14" rx="7" fill="var(--crit)" opacity=".22"/>
+      <rect x="416" y="46" width="280" height="14" rx="7" fill="var(--ok)" opacity=".22"/>
+      <line x1="416" y1="34" x2="416" y2="74" stroke="var(--warn)" stroke-width="2" stroke-dasharray="3 3"/>
+      <text x="416" y="26" text-anchor="middle" class="lbl">Zen warns below 3σ</text>
+      <g class="sweep">
+        <line x1="24" y1="40" x2="24" y2="80" stroke="var(--teal)" stroke-width="2"/>
+        <circle cx="24" cy="53" r="6" fill="var(--teal)"/>
+      </g>
+      <text x="24"  y="98" class="lbl">0σ</text>
+      <text x="164" y="98" text-anchor="middle" class="lbl">1σ</text>
+      <text x="290" y="98" text-anchor="middle" class="lbl">2σ</text>
+      <text x="416" y="98" text-anchor="middle" class="lbl">3σ</text>
+      <text x="540" y="98" text-anchor="middle" class="lbl">4σ</text>
+      <text x="660" y="98" text-anchor="middle" class="lbl">5σ</text>
+      <text x="24"  y="120" class="lbl">everything is rework</text>
+      <text x="696" y="120" text-anchor="end" class="lbl">3.4 defects per million</text>
+    </svg>
+    <figcaption>sigma = Φ⁻¹(rolled yield) + 1.5 — the conventional long-term shift, clamped to 0–6</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>Rolled yield</th><th>Sigma</th><th>DPMO</th><th>In practice</th></tr></thead>
+    <tbody>
+      <tr class="warnrow"><td>53%</td><td>1.6σ</td><td>470,000</td><td>six “90%” steps in a row</td></tr>
+      <tr class="warnrow"><td>69%</td><td>2.0σ</td><td>310,000</td><td>a third of the work done twice</td></tr>
+      <tr><td>93.3%</td><td>3.0σ</td><td>67,000</td><td>Zen stops warning here</td></tr>
+      <tr><td>99.4%</td><td>4.0σ</td><td>6,200</td><td>a well-run manual process</td></tr>
+      <tr><td>99.98%</td><td>5.0σ</td><td>230</td><td>automated, with checks</td></tr>
+      <tr><td>99.9997%</td><td>6.0σ</td><td>3.4</td><td>the name on the tin</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cards">
+    <div class="card">
+      <h3>What it means</h3>
+      <p>The scale is deliberately unforgiving at the top: each sigma is roughly an order of magnitude
+        fewer defects. Moving 3σ → 4σ is a ten-fold reduction, not a 33% improvement.</p>
+    </div>
+    <div class="card act">
+      <h3>What to do</h3>
+      <p>Treat <strong>3σ</strong> as the floor for anything a customer touches. Below it, the rework
+        is loud enough that people have already built workarounds you are paying for.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 ────────────────────────────────────────────────────────── -->
+<section id="s3">
+  <div class="num">03</div>
+  <h2>Cycle time and flow efficiency: the wait is the problem</h2>
+  <p><strong>Cycle time</strong> is work plus wait. <strong>Flow efficiency</strong> is the share that
+    was actually work. Five to fifteen per cent is normal — meaning most of what a customer calls
+    “slow” is queue, not effort. Zen warns below 15%.</p>
+  <button class="play" data-audio="audio/sec3.mp3"><span class="tri"></span> Listen</button>
+
+  <figure>
+    <svg viewBox="0 0 720 120" role="img" aria-label="A bar showing three hours of work inside a day and a half of elapsed time">
+      <rect x="24" y="34" width="672" height="30" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+      <rect x="24" y="34" width="672" height="30" rx="6" fill="var(--ink-3)" opacity=".18" class="queue"/>
+      <rect x="24" y="34" width="60" height="30" rx="6" fill="var(--teal)" class="grow"/>
+      <text x="30"  y="86" class="lbl">3h work</text>
+      <text x="696" y="86" text-anchor="end" class="lbl">1.2 days waiting</text>
+      <text x="360" y="22" text-anchor="middle" class="val">9% flow efficiency</text>
+      <text x="360" y="108" text-anchor="middle" class="lbl">cycle time 1.3 days</text>
+    </svg>
+    <figcaption>flow efficiency = work ÷ (work + wait) — the numbers here are from the demo process in chapter 17</figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <h3>What it means</h3>
+      <p>Making people work faster attacks the 9%. Removing a queue attacks the 91%. Almost every
+        “we need more people” conversation is aimed at the wrong bar.</p>
+    </div>
+    <div class="card act">
+      <h3>What to do</h3>
+      <p>Find the longest <strong>wait before</strong> on any step and ask what it is waiting for —
+        an approval, a batch, a person who is in meetings. That is your cycle time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 ────────────────────────────────────────────────────────── -->
+<section id="s4">
+  <div class="num">04</div>
+  <h2>Handoffs: every crossing is a queue and a chance to drop</h2>
+  <p>Zen counts how many handoffs cross a lane — that is, pass between roles — and warns at
+    <strong>four</strong>. A crossing is where work waits for someone else's attention, and where
+    context gets lost in the retelling.</p>
+  <button class="play" data-audio="audio/sec4.mp3"><span class="tri"></span> Listen</button>
+
+  <figure>
+    <svg viewBox="0 0 720 190" role="img" aria-label="Four swimlanes with work crossing between them five times">
+      <g class="lbl">
+        <line x1="120" y1="34" x2="700" y2="34" stroke="var(--rule-soft)"/><text x="24" y="38">Support</text>
+        <line x1="120" y1="76" x2="700" y2="76" stroke="var(--rule-soft)"/><text x="24" y="80">Ops lead</text>
+        <line x1="120" y1="118" x2="700" y2="118" stroke="var(--rule-soft)"/><text x="24" y="122">Engineering</text>
+        <line x1="120" y1="160" x2="700" y2="160" stroke="var(--rule-soft)"/><text x="24" y="164">Finance</text>
+      </g>
+      <path d="M150 22 C 230 22, 230 64, 300 64" fill="none" stroke="var(--warn)" stroke-width="2" class="blink"/>
+      <path d="M330 64 C 400 64, 400 106, 470 106" fill="none" stroke="var(--warn)" stroke-width="2" class="blink" style="animation-delay:.5s"/>
+      <path d="M500 106 C 560 106, 560 148, 620 148" fill="none" stroke="var(--warn)" stroke-width="2" class="blink" style="animation-delay:1s"/>
+      <rect x="126" y="10" width="52" height="24" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+      <rect x="286" y="52" width="52" height="24" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+      <rect x="456" y="94" width="52" height="24" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+      <rect x="606" y="136" width="52" height="24" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+      <text x="700" y="184" text-anchor="end" class="lbl">every handoff crosses a lane</text>
+    </svg>
+    <figcaption>Zen shows “5 of 5 cross a lane” on the demo process — the worst possible ratio</figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <h3>What it means</h3>
+      <p>A process where every handoff crosses a role boundary has no ownership. It is a relay in
+        which nobody is running more than one leg.</p>
+    </div>
+    <div class="card act">
+      <h3>What to do</h3>
+      <p>Merge adjacent steps into one lane, or give one role end-to-end accountability. Zen shows
+        the accountable role and the reporting line on every step.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 ────────────────────────────────────────────────────────── -->
+<section id="s5">
+  <div class="num">05</div>
+  <h2>The order to act in</h2>
+  <p>The indicators are not a scorecard, they are a route. This is the order that pays.</p>
+  <button class="play" data-audio="audio/sec5.mp3"><span class="tri"></span> Listen</button>
+
+  <figure>
+    <svg viewBox="0 0 720 210" role="img" aria-label="Four ordered actions: fix the worst step, attack the wait, remove a crossing, re-measure">
+      <g>
+        <circle cx="46" cy="30" r="15" fill="var(--teal)" opacity=".18"/><text x="46" y="35" text-anchor="middle" class="val">1</text>
+        <text x="78" y="27" class="val">Raise the worst step's first-pass yield</text>
+        <text x="78" y="46" class="lbl">Zen names it: “worst: Coat &amp; health assessment”</text>
+
+        <circle cx="46" cy="80" r="15" fill="var(--teal)" opacity=".18"/><text x="46" y="85" text-anchor="middle" class="val">2</text>
+        <text x="78" y="77" class="val">Attack the wait, not the work</text>
+        <text x="78" y="96" class="lbl">flow efficiency below 15% means queue is the story</text>
+
+        <circle cx="46" cy="130" r="15" fill="var(--teal)" opacity=".18"/><text x="46" y="135" text-anchor="middle" class="val">3</text>
+        <text x="78" y="127" class="val">Remove a lane crossing</text>
+        <text x="78" y="146" class="lbl">fewer handoffs, fewer queues, clearer ownership</text>
+
+        <circle cx="46" cy="180" r="15" fill="var(--ok)" opacity=".22"/><text x="46" y="185" text-anchor="middle" class="val">4</text>
+        <text x="78" y="177" class="val">Re-measure, and prove it</text>
+        <text x="78" y="196" class="lbl">the model recomputes — the improvement is a number, not a claim</text>
+      </g>
+    </svg>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Why this order</h3>
+      <p>Yield first, because rework inflates everything downstream — including the wait you were
+        about to go and fix. Then flow. Then structure.</p>
+    </div>
+    <div class="card act">
+      <h3>The Zen part</h3>
+      <p>Each of these is a dial on the model, not a workshop. Change it and every number moves at
+        once, so you can see whether the idea was worth doing before you do it.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Part of the <a href="training.html">Zen Analytics Workbench training set</a> — chapter 17 walks these
+  numbers through a live process, and chapter 18 turns a step into a runnable playbook.
+</footer>
+
+</div>
+
+<script>
+  // One <audio> reused for every clip, so two sections can't talk over each other.
+  const player = new Audio()
+  let current = null
+  const stop = () => {
+    player.pause()
+    if (current) current.classList.remove('on')
+    current = null
+  }
+  document.querySelectorAll('.play[data-audio]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const same = current === b
+      stop()
+      if (same) return
+      player.src = b.dataset.audio
+      player.play().catch(() => {})
+      current = b
+      b.classList.add('on')
+    })
+  })
+  player.addEventListener('ended', () => {
+    const next = current?.dataset.next
+    stop()
+    if (next) document.querySelector(`[data-audio="${next}"]`)?.click()
+  })
+  // Play the whole primer: chain the sections in document order.
+  document.getElementById('playall').addEventListener('click', () => {
+    const all = [...document.querySelectorAll('.play[data-audio]')]
+    all.forEach((b, i) => { b.dataset.next = all[i + 1]?.dataset.audio || '' })
+    stop()
+    all[0]?.click()
+    all[0]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
+</script>
+</body>
+</html>
