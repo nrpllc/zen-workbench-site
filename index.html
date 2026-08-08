@@ -321,6 +321,7 @@
           <a class="btn ghost" href="#metrics">What it computes</a>
           <a class="btn ghost" href="training.html">Watch the Training</a>
           <a class="btn ghost" href="six-sigma.html">Six Sigma in six minutes</a>
+          <a class="btn ghost" href="observability.html">Live OpenTelemetry</a>
           <a class="btn ghost" href="manual.html">Read the Field Manual</a>
           <a class="btn ghost" href="whitepaper.html">Read the White Paper</a>
           <a class="btn ghost" href="architecture.html">See the Architecture</a>
@@ -445,7 +446,7 @@
     <p class="lede" style="margin-top:20px">
       The newest lens goes deeper than a diagram. Point Zen at your repository and it scans the source
       into a real <b>call graph</b> — who calls whom, across files. Click any function to land on the
-      <b>exact line</b>. Import an OpenTelemetry trace and the graph lights up with <b>measured
+      <b>exact line</b>. Point an OpenTelemetry exporter straight at it — the app is an OTLP receiver — and the graph lights up with <b>measured
       latency</b>. And an AI, grounded in the graph and the source itself, tells you what a symbol does
       and where the risk is.
     </p>
@@ -1024,7 +1025,7 @@
           <li><span class="m">MAP</span><span><b>Dials become parameters</b> — Redis memory → <code>--maxmemory</code> &amp; the Azure Cache tier; Postgres vCores → CPU &amp; the flexible-server SKU; Kafka partitions → <code>KAFKA_NUM_PARTITIONS</code> &amp; Event Hubs capacity; Cosmos RU/s straight through.</span></li>
           <li><span class="m">RUN</span><span><b>Validated on real Docker</b> — Postgres, TimescaleDB, Redis, MongoDB, Neo4j, RabbitMQ, Elasticsearch, NGINX, Envoy and Kafka (KRaft) come up healthy, with the tuned config live in the container.</span></li>
           <li><span class="m">IaC</span><span><b>Five targets, one design</b> — Compose, Kubernetes, Bicep, Terraform and Ansible. A reviewed scaffold: set secrets &amp; images, then apply.</span></li>
-          <li><span class="m">DISC</span><span><b>Discovery is the inverse</b> — read a running Docker, Kubernetes or Azure estate (read-only) and Zen rebuilds the model <em>and</em> recovers the tuned dials from each image, command, env and resource limit. Wire the call graph from an OpenTelemetry trace.</span></li>
+          <li><span class="m">DISC</span><span><b>Discovery is the inverse</b> — read a running Docker, Kubernetes or Azure estate (read-only) and Zen rebuilds the model <em>and</em> recovers the tuned dials from each image, command, env and resource limit. Wire the call graph from live OpenTelemetry, or a trace file.</span></li>
           <li><span class="m">GAP</span><span><b>It learns what it's missing</b> — every observed setting the model doesn't expose yet is surfaced as a candidate knob, so the model grows toward the reality you scanned instead of drifting from it.</span></li>
         </ul>
       </div>
@@ -1079,6 +1080,7 @@
       <a class="btn ghost" href="#engine">See the maths</a>
       <a class="btn ghost" href="training.html">Watch the Training</a>
           <a class="btn ghost" href="six-sigma.html">Six Sigma in six minutes</a>
+          <a class="btn ghost" href="observability.html">Live OpenTelemetry</a>
           <a class="btn ghost" href="manual.html">Read the Field Manual</a>
       <a class="btn ghost" href="whitepaper.html">Read the White Paper</a>
       <a class="btn ghost" href="architecture.html">See the Architecture</a>
